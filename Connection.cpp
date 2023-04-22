@@ -41,6 +41,29 @@ namespace
     { free(ptr); }
   };
 
+  // get channel names
+  std::vector<std::string> get_channel_names( int handle, const Slot& slot )
+  {
+ 
+    // create list of channels for which we want the name
+    std::vector<unsigned short> channels;
+    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
+
+    // create output structure, with automatic deallocation
+    using name_t = char[MAX_CH_NAME];  
+    std::unique_ptr<name_t, Deleter> names(static_cast<name_t*>(malloc(channels.size()*MAX_CH_NAME)));
+    
+    // get channel names
+    const auto reply = CAENHV_GetChName(handle, slot.m_id, channels.size(), &channels[0], names.get() );
+    if( reply != CAENHV_OK ) return std::vector<std::string>();
+  
+    std::vector<std::string> out;
+    for( int i = 0; i < channels.size(); ++i )
+    { out.push_back( names.get()[i] ); }
+    
+    return out;
+  }
+  
   // get parameters of a given type and name for all channels in a slot
   template<class T>
   std::vector<T> get_channel_parvalue( int handle, const Slot& slot, const std::string& parname )
@@ -64,7 +87,7 @@ namespace
 
     return out;
   }
- 
+
   // assign parameters of a given type and name to all channels in list
   template<class T, T (Channel::*accessor)>
     void assign( int handle, const Slot& slot, Channel::List& channels, const std::string& parname )
@@ -141,31 +164,27 @@ Channel::List Connection::get_channels( const Slot& slot )
 {
   if( !m_valid ) return Channel::List();
 
-  // create list of channels for which we want the name
-  std::vector<unsigned short> channel_ids;
-  for( int i = 0; i < slot.m_nchannels; ++i ) channel_ids.push_back(i);
-
-  // create output structure, with automatic deallocation
-  using name_t = char[MAX_CH_NAME];  
-  std::unique_ptr<name_t, Deleter> names(static_cast<name_t*>(malloc(channel_ids.size()*MAX_CH_NAME)));
-  
-  // get channel names
-  m_reply = CAENHV_GetChName(m_handle, slot.m_id, channel_ids.size(), &channel_ids[0], names.get() );
-  if( m_reply != CAENHV_OK ) return Channel::List();
-  
-  Channel::List channels(channel_ids.size());
+  const auto names = get_channel_names( m_handle, slot );
+  if( names.size() != slot.m_nchannels )
+  { 
+    std::cout << "Connection::get_channels - error fetching channel names" << std::endl;
+    return Channel::List();
+  }
+    
+  // create channels, assign id and name
+  Channel::List channels(slot.m_nchannels);
   for( int i = 0; i < channels.size(); ++i )
   { 
     channels[i].m_id = i;
-    channels[i].m_name = names.get()[i];
+    channels[i].m_name = names[i];
   }
 
   // assign V0Set
   assign<float, &Channel::m_svmax>( m_handle, slot, channels, "SVMax" );
   assign<float, &Channel::m_v0set>( m_handle, slot, channels, "V0Set" );
   assign<float, &Channel::m_i0set>( m_handle, slot, channels, "I0Set" );
-  assign<float, &Channel::m_vmon>( m_handle, slot, channels, "Vmon" );
-  assign<float, &Channel::m_imon>( m_handle, slot, channels, "Imon" );
+  assign<float, &Channel::m_vmon>( m_handle, slot, channels, "VMon" );
+  assign<float, &Channel::m_imon>( m_handle, slot, channels, "IMon" );
   assign<unsigned int, &Channel::m_status>( m_handle, slot, channels, "Status" );
   
   return channels;  
