@@ -13,9 +13,8 @@ int main()
     
     for(const auto& slot:connection.get_slots())
     { 
-      // std::cout << "slot: " << slot << std::endl;       
+      std::cout << "slot: " << slot << std::endl;       
       for( const auto& channel:connection.get_channels( slot ) )
-      // { std::cout << "channel: " << channel << std::endl; }
-      { std::cout << slot.m_id << " " << channel.m_id << " " << channel.m_name << " " << channel.m_vmon << " " << channel.m_imon << " " << channel.m_status << std::endl; }
+      { std::cout << "channel: " << channel << std::endl; }
     }
 }
