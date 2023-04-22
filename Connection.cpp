@@ -191,6 +191,8 @@ Channel::List Connection::get_channels( const Slot& slot )
   assign<float, &Channel::m_vmon>( m_handle, slot, channels, "VMon" );
   assign<float, &Channel::m_imon>( m_handle, slot, channels, "IMon" );
   assign<unsigned int, &Channel::m_status>( m_handle, slot, channels, "Status" );
+  assign<unsigned int, &Channel::m_trip_int>( m_handle, slot, channels, "TripInt" );
+  assign<unsigned int, &Channel::m_trip_ext>( m_handle, slot, channels, "TripExt" );
   
   return channels;  
 }

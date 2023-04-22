@@ -32,6 +32,12 @@ class Channel
   //! status
   unsigned int m_status = 0;
   
+  //! trip internal
+  unsigned int m_trip_int = 0;
+  
+  //! trip external
+  unsigned int m_trip_ext = 0;
+  
   //! list of channels alias
   using List = std::vector<Channel>;
   
@@ -47,6 +53,8 @@ class Channel
       << " vmon: " << channel.m_vmon
       << " imon: " << channel.m_imon
       << " status: " << channel.m_status
+      << " trip (internal): " << channel.m_trip_int
+      << " trip (external): " << channel.m_trip_ext
       ;
     return out;
   }
