@@ -14,7 +14,7 @@ and
 $CAENHVWRAPPER_ROOT/include/CAENHVWrapper.h
 
 compilation:
-cd caen_hv_wrapper
+cd caen_hv_reader
 mkdir build
 cd build
 cmake ..
