@@ -24,7 +24,7 @@ FIND_PATH(CAENHVWRAPPER_INCLUDE_DIR
 FIND_LIBRARY(CAENHVWRAPPER_LIBRARY
   NAMES caenhvwrapper
   HINTS ${_caenhvwrapperdirs}
-  PATH_SUFFIXES lib
+  PATH_SUFFIXES lib lib64
 )
 
 # handle the QUIETLY and REQUIRED arguments and set NETTLE_FOUND to TRUE if 
