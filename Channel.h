@@ -23,7 +23,7 @@ class Channel
   //! streamer
   friend std::ostream& operator << ( std::ostream& out, const Channel& channel )
   {
-    out << "id: " << channel.m_id << " name: " << channel.m_name;
+    out << "id: " << channel.m_id << " name: " << channel.m_name << " v0set: " << channel.m_v0set;
     return out;
   }
 
