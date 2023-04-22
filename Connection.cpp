@@ -98,9 +98,11 @@ Connection::string_list_t Connection::get_channel_names()
   {
     std::vector<unsigned short> channels = {0, 1, 2, 3 };
     char (*names)[MAX_CH_NAME];
+    names = static_cast<char (*)[MAX_CH_NAME]>(malloc(channels.size()*MAX_CH_NAME));
     m_reply = CAENHV_GetChName(m_handle, slot.m_id, channels.size(), &channels[0], names );
     for( int i = 0; i < channels.size(); ++i )
     { out.push_back(names[i]); }
+    free( names );
   }
   
   return out;
