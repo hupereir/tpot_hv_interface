@@ -54,6 +54,20 @@ namespace
     { out.push_back( static_cast<T*>( result )[i] ); }
     return out;
   }
+ 
+  // assign parameters of a given type and name to all channels in list
+  template<class T, T (Channel::*accessor)>
+    void assign( int handle, const Slot& slot, Channel::List& channels, const std::string& parname )
+  {
+    auto result = get_channel_parvalue<T>( handle, slot, parname );
+    if( result.size() == channels.size() )
+    {
+      for( int i = 0; i < channels.size(); ++i )
+      { channels[i].*accessor = result[i]; }
+    } else {
+      std::cout << "assign - error fetching " << parname << std::endl;
+    }
+  }
   
 }
 
@@ -133,15 +147,13 @@ Channel::List Connection::get_channels( const Slot& slot )
     out[i].m_name = names[i];
   }
   free( names );
+
+  // assign V0Set
+  assign<float, &Channel::m_v0set>( m_handle, slot, out, "V0Set" );
+  assign<float, &Channel::m_i0set>( m_handle, slot, out, "I0Set" );
+  assign<float, &Channel::m_vmon>( m_handle, slot, out, "Vmon" );
+  assign<float, &Channel::m_imon>( m_handle, slot, out, "Imon" );
+  assign<unsigned int, &Channel::m_status>( m_handle, slot, out, "Status" );
   
-  auto v0set_list = get_channel_parvalue<float>( m_handle, slot, "V0Set" );
-  if( v0set_list.size() == out.size() )
-  {
-    for( int i = 0; i < out.size(); ++i )
-    { out[i].m_v0set = v0set_list[i]; }
-  } else {
-    std::cout << "Connection::get_channels - error fetching V0Set" << std::endl;
-  }
-    
   return out;  
 }
