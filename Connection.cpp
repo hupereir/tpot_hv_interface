@@ -55,8 +55,12 @@ namespace
     
     // get channel names
     const auto reply = CAENHV_GetChName(handle, slot.m_id, channels.size(), &channels[0], names.get() );
-    if( reply != CAENHV_OK ) return std::vector<std::string>();
-  
+    if( reply != CAENHV_OK ) 
+    {
+      std::cout << "get_channel_names - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
+      return std::vector<std::string>();
+    }
+    
     std::vector<std::string> out;
     for( int i = 0; i < channels.size(); ++i )
     { out.push_back( names.get()[i] ); }
@@ -78,7 +82,10 @@ namespace
     
     // get parameter values
     auto reply = CAENHV_GetChParam( handle, slot.m_id, parname.c_str(), slot.m_nchannels, &channels[0], result.get() );
-    if( reply != CAENHV_OK ) { return std::vector<T>(); }
+    if( reply != CAENHV_OK ) { 
+      std::cout << "get_channel_parvalue - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
+      return std::vector<T>(); 
+    }
 
     // store in output
     std::vector<T> out;
@@ -97,13 +104,10 @@ namespace
     {
       for( int i = 0; i < channels.size(); ++i )
       { channels[i].*accessor = result[i]; }
-    } else {
-      std::cout << "assign - error fetching " << parname << std::endl;
     }
   }
   
 }
-
 
 //_____________________________________________________
 Connection::Connection()
@@ -132,13 +136,17 @@ Slot::List Connection::get_slots()
   safe_array<unsigned char> firmware_min_list;
   safe_array<unsigned char> firmware_max_list;
   
-  auto out = CAENHV_GetCrateMap(
+  m_reply = CAENHV_GetCrateMap(
     m_handle, 
     &n_slots, &n_channels_list.get(), &model_list.get(), 
     &description_list.get(), &serial_list.get(),
     &firmware_min_list.get(), &firmware_max_list.get() );
   
-  if( out != CAENHV_OK ) return Slot::List();
+  if( m_reply != CAENHV_OK ) 
+  {
+    std::cout << "Connection::get_slots - failed. reply: " << std::hex << "0x" << m_reply << std::dec << std::endl;
+    return Slot::List();
+  }
   
   Slot::List slots;
   char* model = model_list.get();
@@ -166,10 +174,7 @@ Channel::List Connection::get_channels( const Slot& slot )
 
   const auto names = get_channel_names( m_handle, slot );
   if( names.size() != slot.m_nchannels )
-  { 
-    std::cout << "Connection::get_channels - error fetching channel names" << std::endl;
-    return Channel::List();
-  }
+  { return Channel::List(); }
     
   // create channels, assign id and name
   Channel::List channels(slot.m_nchannels);
