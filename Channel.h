@@ -41,6 +41,7 @@ class Channel
     out 
       << "id: " << channel.m_id 
       << " name: " << channel.m_name 
+      << " svmax: " << channel.m_svmax
       << " v0set: " << channel.m_v0set
       << " i0set: " << channel.m_i0set
       << " vmon: " << channel.m_vmon
