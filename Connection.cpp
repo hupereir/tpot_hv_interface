@@ -149,6 +149,7 @@ Channel::List Connection::get_channels( const Slot& slot )
   free( names );
 
   // assign V0Set
+  assign<float, &Channel::m_svmax>( m_handle, slot, out, "SVMax" );
   assign<float, &Channel::m_v0set>( m_handle, slot, out, "V0Set" );
   assign<float, &Channel::m_i0set>( m_handle, slot, out, "I0Set" );
   assign<float, &Channel::m_vmon>( m_handle, slot, out, "Vmon" );

@@ -14,6 +14,9 @@ class Channel
   //! name
   std::string m_name;
   
+  //! vmax
+  float m_svmax = 0;
+  
   //! v0set
   float m_v0set = 0;
 
