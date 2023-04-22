@@ -1,5 +1,6 @@
 #include "Connection.h"
 
+#include <array>
 #include <cstring>
 #include <memory>
 
@@ -45,7 +46,7 @@ Connection::~Connection()
 { if( m_valid ) CAENHV_DeinitSystem(m_handle); }
 
 //_____________________________________________________
-Slot::List Connection::get_slots() const
+Slot::List Connection::get_slots()
 {
   if( !m_valid ) return Slot::List();
   
@@ -68,7 +69,6 @@ Slot::List Connection::get_slots() const
   Slot::List slots;
   char* model = model_list.get();
   char* description = description_list.get();
-  std::cout << "Connection::get_slots - n_slots: " << n_slots << std::endl;
   for( int i = 0; i < n_slots; ++i, model+=strlen(model)+1, description+=strlen(description)+1 )
   {
     if( *model == '\0' ) continue;
@@ -83,4 +83,25 @@ Slot::List Connection::get_slots() const
   }
   
   return slots;        
+}
+
+//_____________________________________________________
+Connection::string_list_t Connection::get_channel_names()
+{
+  if( !m_valid ) return string_list_t();
+
+  string_list_t out;
+  
+  // get all valid slots
+  const auto slots = get_slots();
+  for( const auto& slot:slots )
+  {
+    std::vector<unsigned short> channels = {0, 1, 2, 3 };
+    char (*names)[MAX_CH_NAME];
+    m_reply = CAENHV_GetChName(m_handle, slot.m_id, channels.size(), &channels[0], names );
+    for( int i = 0; i < channels.size(); ++i )
+    { out.push_back(names[i]); }
+  }
+  
+  return out;
 }

@@ -16,7 +16,11 @@ class Connection
     ~Connection();
     
     //! get list of non empty slots
-    Slot::List get_slots() const;
+    Slot::List get_slots();
+    
+    //! get all channel names
+    using string_list_t  = std::vector<std::string>;
+    string_list_t get_channel_names();
     
     //! valid
     bool is_valid() const
