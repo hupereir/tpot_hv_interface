@@ -14,6 +14,9 @@ class Channel
   //! name
   std::string m_name;
   
+  //! v0set
+  float m_v0set;
+  
   //! list of channels alias
   using List = std::vector<Channel>;
   

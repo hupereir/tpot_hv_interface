@@ -3,11 +3,12 @@
 #include <array>
 #include <cstring>
 #include <memory>
-
-// ensures proper deallocation of arrays as filled by CAEN interface
-template<class T> 
-class safe_array
+namespace 
 {
+  // ensures proper deallocation of arrays as filled by CAEN interface
+  template<class T> 
+    class safe_array
+  {
     public:
     
     // default constructor
@@ -21,15 +22,41 @@ class safe_array
     // accessor
     typename std::add_lvalue_reference<T*>::type get()
     { return m_p; }
-
+    
     // copy constructor and assignment operator are deleted
     safe_array( const safe_array<T>& ) = delete;
     safe_array<T>& operator = ( const safe_array<T>& ) = delete;
-
+    
     private:
     T* m_p = nullptr;
     
-};
+  };
+
+  // get parameters of a given type and name for all channels in a slot
+  template<class T>
+  std::vector<T> get_channel_parvalue( int handle, const Slot& slot, const std::string& parname )
+  {
+ 
+    // create list of channels for which we want the name
+    std::vector<unsigned short> channels;
+    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
+    
+    auto result = malloc( slot.m_nchannels*sizeof(T) );
+    auto reply = CAENHV_GetChParam( handle, slot.m_id, parname.c_str(), slot.m_nchannels, &channels[0], result );
+    if( reply != CAENHV_OK )
+    {
+      free( result );
+      return std::vector<T>();
+    }
+    
+    std::vector<T> out;
+    for( int i = 0; i < slot.m_nchannels; ++i )
+    { out.push_back( static_cast<T*>( result )[i] ); }
+    return out;
+  }
+  
+}
+
 
 //_____________________________________________________
 Connection::Connection()
@@ -107,5 +134,14 @@ Channel::List Connection::get_channels( const Slot& slot )
   }
   free( names );
   
+  auto v0set_list = get_channel_parvalue<float>( m_handle, slot, "V0Set" );
+  if( v0set_list.size() == out.size() )
+  {
+    for( int i = 0; i < out.size(); ++i )
+    { out[i].m_v0set = v0set_list[i]; }
+  } else {
+    std::cout << "Connection::get_channels - error fetching V0Set" << std::endl;
+  }
+    
   return out;  
 }
