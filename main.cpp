@@ -11,9 +11,9 @@ int main()
     }
     
     for(const auto& slot:connection.get_slots())
-    { std::cout << "main - " << slot << std::endl; }
-    
-    for( const auto& channel_name:connection.get_channel_names() )
-    { std::cout << "main - channel name: " << channel_name << std::endl; }
-    return 0;
+    { 
+      std::cout << "slot: " << slot << std::endl;       
+      for( const auto& channel:connection.get_channels( slot ) )
+      { std::cout << "channel: " << channel << std::endl; }
+    }
 }

@@ -86,28 +86,26 @@ Slot::List Connection::get_slots()
 }
 
 //_____________________________________________________
-Connection::string_list_t Connection::get_channel_names()
+Channel::List Connection::get_channels( const Slot& slot )
 {
-  if( !m_valid ) return string_list_t();
+  if( !m_valid ) return Channel::List();
 
-  string_list_t out;
+  // create list of channels for which we want the name
+  std::vector<unsigned short> channels;
+  for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
+
+  // get channel names
+  auto names = static_cast<char (*)[MAX_CH_NAME]>(malloc(channels.size()*MAX_CH_NAME));
+  m_reply = CAENHV_GetChName(m_handle, slot.m_id, channels.size(), &channels[0], names );
+  if( m_reply != CAENHV_OK ) return Channel::List();
   
-  // get all valid slots
-  const auto slots = get_slots();
-  for( const auto& slot:slots )
-  {
-    // create list of channels for which we want the name
-    std::vector<unsigned short> channels;
-    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
-    
-    // get channel names
-    char (*names)[MAX_CH_NAME];
-    names = static_cast<char (*)[MAX_CH_NAME]>(malloc(channels.size()*MAX_CH_NAME));
-    m_reply = CAENHV_GetChName(m_handle, slot.m_id, channels.size(), &channels[0], names );
-    for( int i = 0; i < channels.size(); ++i )
-    { out.push_back(names[i]); }
-    free( names );
+  Channel::List out(channels.size());
+  for( int i = 0; i < channels.size(); ++i )
+  { 
+    out[i].m_id = i;
+    out[i].m_name = names[i];
   }
+  free( names );
   
-  return out;
+  return out;  
 }
