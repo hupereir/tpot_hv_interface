@@ -9,10 +9,10 @@ add_definitions(-DUNIX)
 
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR} ${CAENHVWRAPPER_INCLUDE_DIR} )
 
-set( caen_reader_SOURCES
+set( caen_hv_reader_SOURCES
   Connection.cpp
   main.cpp
 )
 
-add_executable( caen_reader ${caen_reader_SOURCES} )
-target_link_libraries(caen_reader ${CAENHVWRAPPER_LIBRARIES})
+add_executable( caen_hv_reader ${caen_hv_reader_SOURCES} )
+target_link_libraries(caen_hv_reader ${CAENHVWRAPPER_LIBRARIES})
