@@ -96,7 +96,11 @@ Connection::string_list_t Connection::get_channel_names()
   const auto slots = get_slots();
   for( const auto& slot:slots )
   {
-    std::vector<unsigned short> channels = {0, 1, 2, 3 };
+    // create list of channels for which we want the name
+    std::vector<unsigned short> channels;
+    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
+    
+    // get channel names
     char (*names)[MAX_CH_NAME];
     names = static_cast<char (*)[MAX_CH_NAME]>(malloc(channels.size()*MAX_CH_NAME));
     m_reply = CAENHV_GetChName(m_handle, slot.m_id, channels.size(), &channels[0], names );
