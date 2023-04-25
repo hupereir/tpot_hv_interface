@@ -48,9 +48,14 @@ int main(int argc, char *argv[])
     for( const auto& channel:connection.get_channels( slot ) )
     {
       std::cout 
-        << slot.m_id << ", " << channel.m_id << ", " << channel.m_name 
-        << ", " << channel.m_v0set << ", " << channel.m_vmon << ", " << channel.m_imon
-        << ", " << channel.m_status << ", " << channel.m_trip_int 
+        << "{ \"slot_id\":" << slot.m_id 
+        << ", \"ch_id\":" << channel.m_id 
+        << ", \"ch_name\":\"" << channel.m_name << "\""
+        << ", \"v0set\":" << channel.m_v0set
+        << ", \"vmon\":" << channel.m_vmon << ", \"imon\":" << channel.m_imon
+        << ", \"status\":" << channel.m_status
+        << ", \"trip\":" << channel.m_trip_int 
+        << "}"
         << std::endl;
     }
   }
