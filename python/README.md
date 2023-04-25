@@ -5,9 +5,9 @@
 setup the environment in the bash terminal
 
 ```bash
-git clone https://git.racf.bnl.gov/gitea/sPHENIX/mpod_exporter.git
+git clone git@github.com:hupereir/caen_hv_reader.git
 
-cd mpod_exporter
+cd caen_hv_Reader/python
 
 python3 -m venv venv
 source venv/bin/activate
