@@ -110,12 +110,14 @@ namespace
 }
 
 //_____________________________________________________
-Connection::Connection()
+Connection::Connection(
+  const std::string& ip_address, 
+  const std::string& username,
+  const std::string& password)
 {
-  //! connection
   m_reply = CAENHV_InitSystem( m_type, m_link_type, 
-    const_cast<char*>(m_ip_address.c_str()),
-    m_username.c_str(), m_password.c_str(), &m_handle );
+    const_cast<char*>(ip_address.c_str()),
+    username.c_str(), password.c_str(), &m_handle );
   m_valid = (m_reply==CAENHV_OK);
 }
 

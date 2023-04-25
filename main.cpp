@@ -1,9 +1,35 @@
 #include "Connection.h"
 #include "Slot.h"
 
-int main()
+void usage() 
 {
-  Connection connection;
+  std::cout << "Usage: " << std::endl;
+  std::cout << "  caen_hv_reader --ip <ip adress> --user <username> --password <password>" << std::endl;
+}
+
+int main(int argc, char *argv[])
+{
+  
+  // parse arguments
+  if( argc < 7 ) 
+  {
+    usage();
+    return 0;
+  }
+  
+  std::string ip;
+  std::string user;
+  std::string password;
+  
+  for( int iarg = 1; iarg < argc; ++iarg )
+  {
+    std::string value( argv[iarg]);
+    if( value == "--ip" ) ip = argv[++iarg]; 
+    else if( value == "--user" ) user = argv[++iarg];
+    else if( value == "--password" ) password = argv[++iarg];
+  }
+  
+  Connection connection( ip, user, password );
   if( !connection.is_valid() ) 
   {
     std::cout << "main - invalid connection" << std::endl;

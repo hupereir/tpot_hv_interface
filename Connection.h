@@ -11,7 +11,10 @@ class Connection
     public:
     
     //! constructor
-    Connection();
+    Connection( 
+      const std::string& /* ip */,
+      const std::string& /* user */,
+      const std::string& /* password */);
     
     //! destructor
     ~Connection();
@@ -45,9 +48,6 @@ class Connection
     //@{
     CAENHV_SYSTEM_TYPE_t m_type = SY4527;
     int m_link_type = 0;
-    std::string m_ip_address = "10.20.34.154";
-    std::string m_username = "admin";
-    std::string m_password = "admin";
     //@}
 };
 
