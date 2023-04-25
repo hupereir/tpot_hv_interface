@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
         << ", \"vmon\":" << channel.m_vmon << ", \"imon\":" << channel.m_imon
         << ", \"status\":" << channel.m_status
         << ", \"trip\":" << channel.m_trip_int 
-        << "}"
+        << " }"
         << std::endl;
     }
   }
