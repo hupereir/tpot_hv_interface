@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 project(RootUtil CXX)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 ### CAENHVWeapper
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
