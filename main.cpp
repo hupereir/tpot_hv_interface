@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
         << ", \"ch_id\":" << channel.m_id 
         << ", \"ch_name\":\"" << channel.m_name << "\""
         << ", \"v0set\":" << channel.m_v0set
-        << ", \"vmon\":" << channel.m_vmon << ", \"imon\":" << channel.m_imon
+        << ", \"vmon\":" << channel.m_vmon 
+        << ", \"imon\":" << channel.m_imon
         << ", \"status\":" << channel.m_status
         << ", \"trip\":" << channel.m_trip_int 
         << " }"
