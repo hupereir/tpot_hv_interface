@@ -58,6 +58,9 @@ def hv_channel_information(verbose=False):
     # loop over channels
     for channel in channels:
 
+        channel_name = channel["ch_name"]
+        if channel_name.startswith('CHANNEL'):
+            continue
         channel_label['slot_id']=channel["slot_id"]
         channel_label['ch_id']=channel["ch_id"]
         channel_label['ch_name']=channel["ch_name"]
