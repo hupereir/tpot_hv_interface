@@ -87,7 +87,7 @@ def hv_channel_information(verbose=False):
         # special channel_on property, from status
         if 'ch_on' not in metrics:
             metrics['ch_on'] = Gauge(f"{metric_prefix}_ch_on", 'channel ON (boolean)', ['slot_id','ch_id'], registry=registry)
-        metrics['ch_on'].labels(slot_id=channel["slot_id"], ch_id=channel["ch_id"]).set((channel["status"]&1)==1)
+        metrics['ch_on'].labels(**channel_label).set((channel["status"]&1)==1)
 
 # web service
 app = Flask(__name__)
