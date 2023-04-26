@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
-import time
 from flask import Response, Flask, request, render_template_string
-from threading import Lock
 import prometheus_client
 from prometheus_client import CollectorRegistry, Gauge, Info, Counter, Summary
+import re
 import socket
+import time
+from threading import Lock
 
 from tpot_hvcontrol import *
 
@@ -44,7 +45,7 @@ property_map = {
     'vmon': {'metric':'vmon', 'comment':'measured voltage (V)', 'json':'vmon' },
     'imon': {'metric':'imon', 'comment':'measured current (uA)', 'json':'imon' },
     'status': {'metric':'status', 'comment':'channel status (bit pattern)', 'json':'status' },
-    'trip': {'metric':'trip', 'comment':'channel trip (boolean)', 'json':'trip' } 
+    'trip': {'metric':'trip', 'comment':'channel trip (boolean)', 'json':'trip' }
 }
 
 properties = list(property_map.keys())
@@ -58,13 +59,22 @@ def hv_channel_information(verbose=False):
     # loop over channels
     for channel in channels:
 
-        channel_name = channel["ch_name"]
-        if channel_name.startswith('CHANNEL'):
+        # skip unnamed channels
+        ch_name = channel["ch_name"]
+        if ch_name.startswith('CHANNEL'):
             continue
+
+        # parse detector name
+        p = re.search('(\S+)_',ch_name)
+        det_name = p.group(1)
+        print( f"det_name: {det_name}" )
+
         channel_label['slot_id']=channel["slot_id"]
         channel_label['ch_id']=channel["ch_id"]
-        channel_label['ch_name']=channel["ch_name"]
+        channel_label['det_name']=det_name
+        channel_label['ch_name']=ch_name
 
+        # loop over properties and store
         for property in properties:
             metric_name = property_map[property]['metric']
             json_name = property_map[property]['json']
@@ -74,6 +84,7 @@ def hv_channel_information(verbose=False):
                 metrics[metric_name] = Gauge(f"{metric_prefix}_{metric_name}", comment, list(channel_label.keys()), registry=registry)
             metrics[metric_name].labels(**channel_label).set(value)
 
+        # special channel_on property, from status
         if 'ch_on' not in metrics:
             metrics['ch_on'] = Gauge(f"{metric_prefix}_ch_on", 'channel ON (boolean)', ['slot_id','ch_id'], registry=registry)
         metrics['ch_on'].labels(slot_id=channel["slot_id"], ch_id=channel["ch_id"]).set((channel["status"]&1)==1)
@@ -85,7 +96,7 @@ app = Flask(__name__)
 def index():
     return render_template_string("""
 <h1>Prometheus Data Exporter for sPHENIX TPOT HV Module and Utilies</h1>
-<p>Fetch metrics at <a href="./metrics">./metrics</a>.</p>                 
+<p>Fetch metrics at <a href="./metrics">./metrics</a>.</p>
 """)
 
 requests_metrics_lock = Lock()
@@ -93,11 +104,11 @@ requests_metrics_lock = Lock()
 @app.route("/metrics")
 # @request_time.labels(**label_host).time() # did not work under python3.7
 def requests_metrics():
-    
+
     request_counter.labels(status='incoming', **label_host).inc()
-        
+
     with requests_metrics_lock:
-        
+
         start_time = time.time()
 
         try:
