@@ -67,8 +67,8 @@ def hv_channel_information(verbose=False):
         # parse detector name
         p = re.search('(\S+)_',ch_name)
         det_name = p.group(1)
-        print( f"det_name: {det_name}" )
 
+        # create channel labels
         channel_label['slot_id']=channel["slot_id"]
         channel_label['ch_id']=channel["ch_id"]
         channel_label['det_name']=det_name
