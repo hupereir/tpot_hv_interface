@@ -39,6 +39,12 @@ request_counter = Counter(f"{metric_prefix}_request_counter", 'Requests processe
 request_time = Summary(f"{metric_prefix}_requests_processing_seconds", "Inprogress HTTP requests",
                        list(label_host.keys()), registry=registry)
 
+# map detector name to detector index
+detector_map = {
+    'NEP':0, 'NEZ':1, 'NCIP':2,  'NCIZ':3,  'NCOP':4,  'NCOZ':5,  'NWP':6,  'NWZ':7,
+    'SEP':8, 'SEZ':9, 'SCIP':10, 'SCIZ':11, 'SCOP':12, 'SCOZ':13, 'SWP':14, 'SWZ':15,
+}
+
 # define channel properties and json equivalent
 property_map = {
     'v0set': {'metric':'v0set', 'comment':'request voltage (V)', 'json':'v0set' },
@@ -67,11 +73,13 @@ def hv_channel_information(verbose=False):
         # parse detector name
         p = re.search('(\S+)_',ch_name)
         det_name = p.group(1)
+        det_id = detector_map[det_name]
 
         # create channel labels
         channel_label['slot_id']=channel["slot_id"]
         channel_label['ch_id']=channel["ch_id"]
         channel_label['det_name']=det_name
+        channel_label['det_id']=det_id
         channel_label['ch_name']=ch_name
 
         # loop over properties and store
