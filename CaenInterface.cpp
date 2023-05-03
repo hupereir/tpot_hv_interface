@@ -103,4 +103,4 @@ const char* get_channel_status()
 
 //__________________________________________________
 bool last_command_successful() 
-{ return m_connection.is_connected() && m_connection.last_reply() == CAENHV_OK; }
+{ return m_connection.is_connected() && m_connection.get_reply() == CAENHV_OK; }
