@@ -8,6 +8,8 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 find_package(CAENHVWrapper REQUIRED)
 add_definitions(-DUNIX)
 
+list( APPEND CMAKE_INSTALL_RPATH ${CAENHVWRAPPER_LIBDIR} )
+
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR} ${CAENHVWRAPPER_INCLUDE_DIR} )
 
 ### caen_hv_reader executable
