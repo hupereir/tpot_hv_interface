@@ -40,7 +40,7 @@ namespace
       void operator() ( T* ptr )
     { free(ptr); }
   };
-
+  
   // get channel names
   std::vector<std::string> get_channel_names( int handle, const Slot& slot )
   {
@@ -67,39 +67,58 @@ namespace
     
     return out;
   }
-  
-  // get parameters of a given type and name for all channels in a slot
+
+  // get parameter for given slot, channel
   template<class T>
-  std::vector<T> get_channel_parvalue( int handle, const Slot& slot, const std::string& parname )
+  T get_parvalue( int handle, int slot, unsigned short channel, const std::string& parname )
   {
- 
-    // create list of channels for which we want the name
-    std::vector<unsigned short> channels;
-    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
-    
     // create output structure, with automatic deallocation
-    std::unique_ptr<void,Deleter> result( malloc( slot.m_nchannels*sizeof(T) ));
+    std::unique_ptr<void,Deleter> result( malloc( sizeof(T) ));    
+    auto reply = CAENHV_GetChParam( handle, slot, parname.c_str(), 1, &channel, result.get() );
+    if( reply != CAENHV_OK ) { 
+      std::cout << "get_parvalue - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
+      return T(); 
+    }
+    return static_cast<T*>(result.get())[0];
+  }
+  
+  // get parameters of a given type and name for several channels in a slot
+  template<class T>
+  std::vector<T> get_parvalues( int handle, int slot, const std::vector<unsigned short>& channels, const std::string& parname )
+  {
+    // create output structure, with automatic deallocation
+    std::unique_ptr<void,Deleter> result( malloc( channels.size()*sizeof(T) ));
     
     // get parameter values
-    auto reply = CAENHV_GetChParam( handle, slot.m_id, parname.c_str(), slot.m_nchannels, &channels[0], result.get() );
+    auto reply = CAENHV_GetChParam( handle, slot, parname.c_str(), channels.size(), &channels[0], result.get() );
     if( reply != CAENHV_OK ) { 
-      std::cout << "get_channel_parvalue - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
+      std::cout << "get_parvalues - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
       return std::vector<T>(); 
     }
 
     // store in output
     std::vector<T> out;
-    for( int i = 0; i < slot.m_nchannels; ++i )
+    for( int i = 0; i < channels.size(); ++i )
     { out.push_back( static_cast<T*>( result.get() )[i] ); }
-
+  
     return out;
   }
-
+  
+  // get parameters of a given type and name for all channels in a slot
+  template<class T>
+  std::vector<T> get_parvalues( int handle, const Slot& slot, const std::string& parname )
+  { 
+    // create list of channels for which we want the value
+    std::vector<unsigned short> channels;
+    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
+    return get_parvalues<T>( handle, slot.m_id, channels, parname );
+  }
+  
   // assign parameters of a given type and name to all channels in list
   template<class T, T (Channel::*accessor)>
     void assign( int handle, const Slot& slot, Channel::List& channels, const std::string& parname )
   {
-    auto result = get_channel_parvalue<T>( handle, slot, parname );
+    auto result = get_parvalues<T>( handle, slot, parname );
     if( result.size() == channels.size() )
     {
       for( int i = 0; i < channels.size(); ++i )
@@ -110,25 +129,35 @@ namespace
 }
 
 //_____________________________________________________
-Connection::Connection(
+Connection::~Connection()
+{ disconnect(); }
+  
+//_____________________________________________________
+void Connection::connect(
   const std::string& ip_address, 
   const std::string& username,
   const std::string& password)
 {
+  if( m_connected ) 
+  {
+    std::cout << "Connection::connect - already connected" << std::endl;
+    return;
+  }
+  
   m_reply = CAENHV_InitSystem( m_type, m_link_type, 
     const_cast<char*>(ip_address.c_str()),
     username.c_str(), password.c_str(), &m_handle );
-  m_valid = (m_reply==CAENHV_OK);
+  m_connected = (m_reply==CAENHV_OK);
 }
 
 //_____________________________________________________
-Connection::~Connection()
-{ if( m_valid ) CAENHV_DeinitSystem(m_handle); }
+void Connection::disconnect()
+{ if( m_connected ) CAENHV_DeinitSystem(m_handle); }
 
 //_____________________________________________________
 Slot::List Connection::get_slots()
 {
-  if( !m_valid ) return Slot::List();
+  if( !m_connected ) return Slot::List();
   
   unsigned short	n_slots;
   safe_array<unsigned short> n_channels_list;
@@ -172,7 +201,7 @@ Slot::List Connection::get_slots()
 //_____________________________________________________
 Channel::List Connection::get_channels( const Slot& slot )
 {
-  if( !m_valid ) return Channel::List();
+  if( !m_connected ) return Channel::List();
 
   const auto names = get_channel_names( m_handle, slot );
   if( names.size() != slot.m_nchannels )

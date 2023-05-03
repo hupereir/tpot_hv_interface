@@ -11,13 +11,19 @@ class Connection
     public:
     
     //! constructor
-    Connection( 
-      const std::string& /* ip */,
-      const std::string& /* user */,
-      const std::string& /* password */);
+    Connection() = default;
     
     //! destructor
     ~Connection();
+
+    //! connect
+    void connect(       
+      const std::string& /* ip */,
+      const std::string& /* user */,
+      const std::string& /* password */);
+  
+    //! disconnect
+    void disconnect();
     
     //! get list of non empty slots
     Slot::List get_slots();
@@ -26,8 +32,8 @@ class Connection
     Channel::List get_channels( const Slot& );
         
     //! valid
-    bool is_valid() const
-    { return m_valid; }
+    bool is_connected() const
+    { return m_connected; }
     
     //! reply from last command
     CAENHVRESULT get_reply() const
@@ -36,7 +42,7 @@ class Connection
     private:
     
     //! true if connection is valid
-    bool m_valid = false;
+    bool m_connected = false;
     
     //! connection handle
     int m_handle = -1;

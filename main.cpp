@@ -29,8 +29,9 @@ int main(int argc, char *argv[])
     else if( value == "--password" ) password = argv[++iarg];
   }
   
-  Connection connection( ip, user, password );
-  if( !connection.is_valid() ) 
+  Connection connection;
+  connection.connect( ip, user, password );
+  if( !connection.is_connected() ) 
   {
     std::cout << "main - invalid connection" << std::endl;
     std::cout << "main - reply: " << std::hex << "0x" << connection.get_reply() << std::dec << std::endl;
@@ -39,12 +40,8 @@ int main(int argc, char *argv[])
   
   // header
   std::cout << "// slot, channel, chname, vset, vmon, imon, status, trip" << std::endl;
-  
   for(const auto& slot:connection.get_slots())
   { 
-    //       std::cout << "slot: " << slot << std::endl;       
-    //       for( const auto& channel:connection.get_channels( slot ) )
-    //       { std::cout << "channel: " << channel << std::endl; }
     for( const auto& channel:connection.get_channels( slot ) )
     {
       std::cout 
