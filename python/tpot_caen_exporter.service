@@ -1,0 +1,14 @@
+[Unit]
+Description=sPHENIX TPOT CEAN HV Prometheus TSDB Exporter
+After=network.target  home.mount
+StartLimitIntervalSec=10
+
+[Service]
+Type=simple
+User=phnxrc
+WorkingDirectory=/etc/tpot_caen_exporter
+ExecStart=/bin/bash -c 'source ./venv/bin/activate && python tpot_caen_exporter.py -p 9111'
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
