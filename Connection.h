@@ -38,6 +38,10 @@ class Connection
     //! reply from last command
     CAENHVRESULT get_reply() const
     { return m_reply; }
+ 
+    //! get handle
+    int get_handle() const 
+    { return m_handle; }
     
     private:
     
