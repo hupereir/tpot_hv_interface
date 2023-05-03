@@ -60,7 +60,10 @@ void Connection::connect(
 
 //_____________________________________________________
 void Connection::disconnect()
-{ if( m_connected ) CAENHV_DeinitSystem(m_handle); }
+{ 
+  if( m_connected ) CAENHV_DeinitSystem(m_handle); 
+  m_connected = false;
+}
 
 //_____________________________________________________
 Slot::List Connection::get_slots()
