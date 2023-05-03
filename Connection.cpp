@@ -5,6 +5,36 @@
 #include <cstring>
 #include <memory>
 
+namespace 
+{
+  //___________________________________________
+  std::vector<std::string> get_channel_names( int handle, const Slot& slot )
+  {
+    
+    // create list of channels for which we want the name
+    std::vector<unsigned short> channels;
+    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
+    
+    // create output structure, with automatic deallocation
+    using name_t = char[MAX_CH_NAME];  
+    std::unique_ptr<name_t, Deleter> names(static_cast<name_t*>(malloc(channels.size()*MAX_CH_NAME)));
+    
+    // get channel names
+    const auto reply = CAENHV_GetChName(handle, slot.m_id, channels.size(), &channels[0], names.get() );
+    if( reply != CAENHV_OK ) 
+    {
+      std::cout << "get_channel_names - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
+      return std::vector<std::string>();
+    }
+    
+    std::vector<std::string> out;
+    for( int i = 0; i < channels.size(); ++i )
+    { out.push_back( names.get()[i] ); }
+    
+    return out;
+  }  
+}
+
 //_____________________________________________________
 Connection::~Connection()
 { disconnect(); }

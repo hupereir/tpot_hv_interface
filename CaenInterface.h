@@ -1,8 +1,14 @@
 #ifndef CAENINTERFACE_H
 #define CAENINTERFACE_H
 
-#include <memory>
+#include "Slot.h"
+#include "Channel.h"
+
 #include <CAENHVWrapper.h>
+
+#include <iostream>
+#include <memory>
+#include <vector>
 
 // ensures proper deallocation of arrays as filled by CAEN interface
 template<class T> 
@@ -39,33 +45,6 @@ class Deleter
     void operator() ( T* ptr )
   { free(ptr); }
 };
-
-// get channel names
-std::vector<std::string> get_channel_names( int handle, const Slot& slot )
-{
-  
-  // create list of channels for which we want the name
-  std::vector<unsigned short> channels;
-  for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
-  
-  // create output structure, with automatic deallocation
-  using name_t = char[MAX_CH_NAME];  
-  std::unique_ptr<name_t, Deleter> names(static_cast<name_t*>(malloc(channels.size()*MAX_CH_NAME)));
-  
-  // get channel names
-  const auto reply = CAENHV_GetChName(handle, slot.m_id, channels.size(), &channels[0], names.get() );
-  if( reply != CAENHV_OK ) 
-  {
-    std::cout << "get_channel_names - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
-    return std::vector<std::string>();
-  }
-  
-  std::vector<std::string> out;
-  for( int i = 0; i < channels.size(); ++i )
-  { out.push_back( names.get()[i] ); }
-  
-  return out;
-}
 
 // get parameter for given slot, channel
 template<class T>
@@ -127,7 +106,7 @@ template<class T, T (Channel::*accessor)>
 
 // set parameter value of a given type for given slot, channel
 template<class T>
-  CAENHVRESULT set_pararameter_value( int handle, int slot, unsigned short channel, const std::string& parname, const T& value )
+  CAENHVRESULT set_parameter_value( int handle, int slot, unsigned short channel, const std::string& parname, T value )
 {
   auto reply = CAENHV_SetChParam( handle, slot, parname.c_str(), 1, &channel, &value );
   if( reply != CAENHV_OK ) std::cout << "set_pararameter_value - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
@@ -136,7 +115,7 @@ template<class T>
 
 // set parameter value of a given type for given slot, several channels
 template<class T>
-  CAENHVRESULT set_pararameter_value( int handle, int slot, const std::vector<unsigned short>& channels, const std::string& parname, const T& value )
+  CAENHVRESULT set_parameter_value( int handle, int slot, const std::vector<unsigned short>& channels, const std::string& parname, T value )
 {
   auto reply = CAENHV_SetChParam( handle, slot, parname.c_str(), channels.size(), &channels[0], &value );
   if( reply != CAENHV_OK ) std::cout << "set_pararameter_value - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
