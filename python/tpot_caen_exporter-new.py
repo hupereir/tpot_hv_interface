@@ -75,7 +75,7 @@ def hv_channel_information(verbose=False):
     status = str(c_lib.get_channel_status())
     channels_raw = re.findall('\{.*?\}',status)
 
-    if !c_lib.last_command_successful():
+    if c_lib.last_command_successful()==0:
       print( "Reconnecting" )
       disconnect()
       connect()
