@@ -12,16 +12,6 @@ list( APPEND CMAKE_INSTALL_RPATH ${CAENHVWRAPPER_LIBDIR} )
 
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR} ${CAENHVWRAPPER_INCLUDE_DIR} )
 
-### caen_hv_reader executable
-set( caen_hv_reader_SOURCES
-  Connection.cpp
-  main.cpp
-)
-
-add_executable( caen_hv_reader ${caen_hv_reader_SOURCES} )
-target_link_libraries(caen_hv_reader ${CAENHVWRAPPER_LIBRARIES})
-install( TARGETS caen_hv_reader DESTINATION ${CMAKE_INSTALL_PREFIX}/bin )
-
 ### caen_hv_reader library, for python binding
 set( caen_hv_interface_SOURCES
   Connection.cpp
