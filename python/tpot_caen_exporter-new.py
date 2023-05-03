@@ -27,6 +27,7 @@ print(f"Throttling request to no less than {throttling_limit} seconds")
 # load c-library for communicating with caen module
 libname = "libcaen_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
+c_lib.get_channel_status.restype = ctypes.c_char_p
 
 # connection to caen module
 def connect( ip = '10.20.34.154', user = 'admin', password = 'admin' ):
@@ -71,15 +72,15 @@ connect()
 # hv channel information
 def hv_channel_information(verbose=False):
 
-    c_lib.get_channel_status.restype = ctypes.c_char_p
     status = str(c_lib.get_channel_status())
-    channels_raw = re.findall('\{.*?\}',status)
 
     if c_lib.last_command_successful()==0:
       print( "Reconnecting" )
       disconnect()
       connect()
-      return;
+      status = str(c_lib.get_channel_status())
+
+    channels_raw = re.findall('\{.*?\}',status)
 
     # loop over channel lines and parse
     channels = []
