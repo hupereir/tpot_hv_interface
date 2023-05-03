@@ -27,13 +27,17 @@ bool connect_to_interface(
   const char* user,
   const char* password )
 { 
+  std::cout << "connect_to_interface - connecting to " << ip << std::endl;
   m_connection.connect( ip, user, password ); 
   return m_connection.is_connected();
 }
 
 //___________________________________________
 void disconnect_from_interface() 
-{ m_connection.disconnect(); }
+{
+  std::cout << "disconnect_from_interface" << std::endl;
+  m_connection.disconnect(); 
+}
 
 //__________________________________________
 float get_v0set( const char* name )
