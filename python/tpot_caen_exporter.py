@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
+import ctypes
 from flask import Response, Flask, request, render_template_string
+import json
 import prometheus_client
 from prometheus_client import CollectorRegistry, Gauge, Info, Counter, Summary
 import re
@@ -9,8 +11,7 @@ import socket
 import time
 from threading import Lock
 
-from tpot_hvcontrol import *
-
+# process input arguments
 parser = argparse.ArgumentParser(
     prog='status',
     description='Prometheus Data Exporter for sPHENIX TPOT HV module',
@@ -22,6 +23,22 @@ args = parser.parse_args()
 
 throttling_limit = float(args.limit)
 print(f"Throttling request to no less than {throttling_limit} seconds")
+
+# load c-library for communicating with caen module
+libname = "libcaen_hv_interface.so"
+c_lib = ctypes.CDLL(libname)
+c_lib.get_channel_status.restype = ctypes.c_char_p
+
+# connection to caen module
+def connect( ip = '10.20.34.154', user = 'admin', password = 'admin' ):
+  answer = c_lib.connect_to_interface( b'10.20.34.154', b'admin', b'admin')
+  if answer == 0:
+    print( "Unable to connect" )
+    exit
+
+# disconnection from caen module
+def disconnect():
+  c_lib.disconnect_from_interface()
 
 # initialization
 metric_prefix = 'sphenix_tpot_hv'
@@ -39,12 +56,6 @@ request_counter = Counter(f"{metric_prefix}_request_counter", 'Requests processe
 request_time = Summary(f"{metric_prefix}_requests_processing_seconds", "Inprogress HTTP requests",
                        list(label_host.keys()), registry=registry)
 
-# map detector name to detector index
-detector_map = {
-    'NEP':0, 'NEZ':1, 'NCIP':2,  'NCIZ':3,  'NCOP':4,  'NCOZ':5,  'NWP':6,  'NWZ':7,
-    'SEP':8, 'SEZ':9, 'SCIP':10, 'SCIZ':11, 'SCOP':12, 'SCOZ':13, 'SWP':14, 'SWZ':15,
-}
-
 # define channel properties and json equivalent
 property_map = {
     'v0set': {'metric':'v0set', 'comment':'request voltage (V)', 'json':'v0set' },
@@ -56,10 +67,28 @@ property_map = {
 
 properties = list(property_map.keys())
 
+connect()
+
 # hv channel information
 def hv_channel_information(verbose=False):
-    channels = readall()
 
+    status = str(c_lib.get_channel_status())
+
+    if c_lib.last_command_successful()==0:
+      print( "Reconnecting" )
+      disconnect()
+      connect()
+      status = str(c_lib.get_channel_status())
+
+    channels_raw = re.findall('\{.*?\}',status)
+
+    # loop over channel lines and parse
+    channels = []
+    for channel_raw in channels_raw:
+        channel = json.loads(channel_raw)
+        channels.append(channel)
+
+    # channel label    
     channel_label={}
 
     # loop over channels
@@ -73,13 +102,11 @@ def hv_channel_information(verbose=False):
         # parse detector name
         p = re.search('(\S+)_',ch_name)
         det_name = p.group(1)
-        det_id = detector_map[det_name]
 
         # create channel labels
         channel_label['slot_id']=channel["slot_id"]
         channel_label['ch_id']=channel["ch_id"]
         channel_label['det_name']=det_name
-        channel_label['det_id']=det_id
         channel_label['ch_name']=ch_name
 
         # loop over properties and store
@@ -147,3 +174,5 @@ requests_metrics.lastcall = time.time()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=args.port)
+
+disconnect()
