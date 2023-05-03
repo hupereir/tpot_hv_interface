@@ -55,6 +55,7 @@ void Connection::connect(
     const_cast<char*>(ip_address.c_str()),
     username.c_str(), password.c_str(), &m_handle );
   m_connected = (m_reply==CAENHV_OK);
+  if( m_connected ) build_channel_map();
 }
 
 //_____________________________________________________
@@ -133,4 +134,32 @@ Channel::List Connection::get_channels( const Slot& slot )
   assign<unsigned int, &Channel::m_trip_ext>( m_handle, slot, channels, "TripExt" );
   
   return channels;  
+}
+
+//_____________________________________________________
+Connection::channel_id_t Connection::get_channel_id( const std::string& name ) const
+{
+  const auto it = m_channel_map.find( name );
+  if( it == m_channel_map.end() ) return {-1, 0};
+  else return it->second;  
+}
+
+//_____________________________________________________
+void Connection::build_channel_map() 
+{
+  m_channel_map.clear();
+  
+  // get slots
+  const auto slots = get_slots();
+  
+  // loop over slots
+  for( const auto& slot:slots )
+  {    
+    // get channel names
+    const auto names = get_channel_names( m_handle, slot );
+   
+    // loop over names, fill map
+    for( size_t i = 0; i < names.size(); ++i )
+    { m_channel_map.insert( {names[i], {slot.m_id, i} } ); }
+  }  
 }
