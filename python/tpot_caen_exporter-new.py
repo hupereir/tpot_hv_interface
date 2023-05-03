@@ -3,6 +3,7 @@
 import argparse
 import ctypes
 from flask import Response, Flask, request, render_template_string
+import json
 import prometheus_client
 from prometheus_client import CollectorRegistry, Gauge, Info, Counter, Summary
 import re
