@@ -52,7 +52,7 @@ float get_v0set( const char* name )
   const auto& slot = reply.first;
   const auto& channel = reply.second;
   if( slot >= 0 ) {
-    return get_parameter_value<float>( m_connection.get_handle(), slot, channel, "V0Set" ); 
+    return get_parameter_value<float>( m_connection.get_handle(), slot, channel, "V0Set" ).second; 
   } else {
     std::cout << "get_v0Set - channel not found: " << name << std::endl;
     return -1;

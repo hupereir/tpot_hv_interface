@@ -46,23 +46,26 @@ class Deleter
   { free(ptr); }
 };
 
+//! map CAEN reply together with result type in a pair
+template<class T> using Result = std::pair<CAENHVRESULT,T>;
+
 // get parameter for given slot, channel
 template<class T>
-  T get_parameter_value( int handle, int slot, unsigned short channel, const std::string& parname )
+  Result<T> get_parameter_value( int handle, int slot, unsigned short channel, const std::string& parname )
 {
   // create output structure, with automatic deallocation
   std::unique_ptr<void,Deleter> result( malloc( sizeof(T) ));    
   auto reply = CAENHV_GetChParam( handle, slot, parname.c_str(), 1, &channel, result.get() );
   if( reply != CAENHV_OK ) { 
     std::cout << "get_parameter_value - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
-    return T(); 
+    return {reply, T()}; 
   }
-  return static_cast<T*>(result.get())[0];
+  return {reply, static_cast<T*>(result.get())[0]};
 }
 
 // get parameters of a given type and name for several channels in a slot
 template<class T>
-  std::vector<T> get_parameter_values( int handle, int slot, const std::vector<unsigned short>& channels, const std::string& parname )
+  Result<std::vector<T> > get_parameter_values( int handle, int slot, const std::vector<unsigned short>& channels, const std::string& parname )
 {
   // create output structure, with automatic deallocation
   std::unique_ptr<void,Deleter> result( malloc( channels.size()*sizeof(T) ));
@@ -71,7 +74,7 @@ template<class T>
   auto reply = CAENHV_GetChParam( handle, slot, parname.c_str(), channels.size(), &channels[0], result.get() );
   if( reply != CAENHV_OK ) { 
     std::cout << "get_parameter_values - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
-    return std::vector<T>(); 
+    return {reply, std::vector<T>()};
   }
   
   // store in output
@@ -79,12 +82,12 @@ template<class T>
   for( int i = 0; i < channels.size(); ++i )
   { out.push_back( static_cast<T*>( result.get() )[i] ); }
   
-  return out;
+  return {reply, out};
 }
 
 // get parameters of a given type and name for all channels in a slot
 template<class T>
-  std::vector<T> get_parameter_values( int handle, const Slot& slot, const std::string& parname )
+  Result<std::vector<T>> get_parameter_values( int handle, const Slot& slot, const std::string& parname )
 { 
   // create list of channels for which we want the value
   std::vector<unsigned short> channels;
@@ -94,14 +97,16 @@ template<class T>
 
 // assign parameters of a given type and name to all channels in list
 template<class T, T (Channel::*accessor)>
-  void assign( int handle, const Slot& slot, Channel::List& channels, const std::string& parname )
+  CAENHVRESULT assign( int handle, const Slot& slot, Channel::List& channels, const std::string& parname )
 {
-  auto result = get_parameter_values<T>( handle, slot, parname );
-  if( result.size() == channels.size() )
+  const auto result = get_parameter_values<T>( handle, slot, parname );
+  const auto& reply = result.first;
+  if( result.second.size() == channels.size() )
   {
     for( int i = 0; i < channels.size(); ++i )
-    { channels[i].*accessor = result[i]; }
+    { channels[i].*accessor = result.second[i]; }
   }
+  return reply;
 }
 
 // set parameter value of a given type for given slot, channel
