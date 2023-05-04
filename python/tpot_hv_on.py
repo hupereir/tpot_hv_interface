@@ -11,8 +11,8 @@ if len(sys.argv) == 1:
     'usage: \n'
     '  tpot_hv_on.py south|north|<detector names>|<channel names>\n'
     '\nwith\n'
-    '  <detector names>: a list of detectors to turn on, e.g. NCOP, SEW, ...\n'
-    '  <channel names> : a list of single channels to turn on, e.g. NCOP_D, SEW_R1, ...')
+    '  <detector names>: a list of detectors to turn on, e.g. NCOP SEW ...\n'
+    '  <channel names> : a list of single channels to turn on, e.g. NCOP_D SEW_R1 ...')
   exit(0)
 
 # get channel names
