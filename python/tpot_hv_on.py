@@ -29,7 +29,8 @@ for i, arg in enumerate(sys.argv):
     print( f'unknown argument: {arg}' )
 
 # Load the shared library into ctypes
-libname = "libcaen_hv_interface.so"
+path = "/home/phnxrc/hpereira/lib"
+libname = f"{path}/libcaen_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
 
 # connect
