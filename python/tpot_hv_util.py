@@ -65,3 +65,12 @@ def print_channels( channel_dict ):
 # check if a channel name is valid
 def channel_name_is_valid( channel_name ):
   return re.fullmatch( '(N|S)(CO|CI|E|W)(Z|P)_(R[1-4]|D)',channel_name )
+
+def filter_channel_names( channel_names ):
+  valid_channel_names = set()
+  for channel_name in channel_names:
+    if channel_name_is_valid( channel_name ):
+      valid_channel_names.add( channel_name )
+    else:
+      print( f"invalid channel name: {channel_name}" )
+  return valid_channel_names

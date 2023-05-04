@@ -16,10 +16,17 @@ if len(sys.argv) < 3:
     '  <channel names>  a list of single channels to which RUP is assigned, e.g. NCOP_D SEW_R1 ...')
   exit(0)
 
+# parse arguments
 value = float(sys.argv[1]);
-ch_names = sorted( set(sys.argv[2:]) )
-print( f'tpot_hv_set_rup - value: {value}' )
-print( f'tpot_hv_set_rup - channel names: {ch_names}' )
+ch_names = filter_channel_names( sorted( set(sys.argv[2:]) ) )
+if not ch_names:
+  exit(0)
+
+# ask for confirmation
+print( f'this will set RUP to {value} for the following channels: {ch_names}' )
+reply = input('confirm (y/n) ? ')
+if reply != 'y' and reply != 'yes':
+  exit(0)
 
 # Load the shared library into ctypes
 path = "/home/phnxrc/hpereira/lib"
