@@ -43,7 +43,7 @@ suffixes = ['_R1', '_R2', '_R3', '_R4', '_D' ]
 for name in det_names:
   for suffix in suffixes:
     ch_name = name + suffix
-    c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
+    c_lib.set_channel_on( bytes(ch_name,'ascii'), 0 )
     time.sleep(1)
 
 #disconnect

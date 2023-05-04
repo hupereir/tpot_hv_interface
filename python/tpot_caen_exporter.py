@@ -25,7 +25,8 @@ throttling_limit = float(args.limit)
 print(f"Throttling request to no less than {throttling_limit} seconds")
 
 # load c-library for communicating with caen module
-libname = "libcaen_hv_interface.so"
+path = "/home/phnxrc/hpereira/lib"
+libname = f"{path}/libcaen_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
 c_lib.get_channel_status.restype = ctypes.c_char_p
 

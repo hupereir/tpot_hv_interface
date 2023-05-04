@@ -18,7 +18,7 @@ extern "C" {
   float get_v0set( const char* /*channel name*/ );
   void set_v0set( const char* /*channel name*/, float /*value*/ );
   
-  void set_channel_on( const char* /* channel name*/, bool = true );
+  void set_channel_on( const char* /* channel name*/, bool );
   
   const char* get_channel_status();
   
@@ -76,12 +76,14 @@ void set_v0set( const char* name, float value )
 //__________________________________________
 void set_channel_on( const char* name, bool value )
 { 
+  std::cout << "set_channel_on - name: " << name << " value: " << value << std::endl;
+
   if( !m_connection.is_connected() ) return;
   const auto reply = m_connection.get_channel_id( name );
   const auto& slot = reply.first;
   const auto& channel = reply.second;
   if( slot >= 0 ) {
-    set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, "Pw ", value );
+    set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, "Pw", value );
   } else {
     std::cout << "set_channel_on - channel not found: " << name << std::endl;
   }
