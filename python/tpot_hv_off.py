@@ -9,7 +9,7 @@ from tpot_util import *
 if len(sys.argv) == 1:
   print(
     'usage: \n'
-    '  tpot_hv_on.py south|north|<detector name>|<channel name>\n'
+    '  tpot_hv_on.py south|north|<detector names>|<channel names>\n'
     '\nwith\n'
     '  <detector names>: a list of detectors to turn on, e.g. NCOP, SEW, ...\n'
     '  <channel names> : a list of single channels to turn on, e.g. NCOP_D, SEW_R1, ...')
