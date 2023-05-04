@@ -1,30 +1,11 @@
 #include "CaenInterface.h"
+#include "CaenInterface_p.h"
 #include "Connection.h"
 
 #include <sstream>
 
 static Connection m_connection;
 static std::string m_json_output;
-
-extern "C" {
-  
-  bool connect_to_interface( 
-    const char* /*ip*/,
-    const char* /*user*/,
-    const char* /*password*/ ); 
-  
-  void disconnect_from_interface();
-  
-  float get_v0set( const char* /*channel name*/ );
-  void set_v0set( const char* /*channel name*/, float /*value*/ );
-  
-  void set_channel_on( const char* /* channel name*/, bool );
-  
-  const char* get_channel_status();
-  
-  bool last_command_successful();
-
-}
 
 //___________________________________________
 bool connect_to_interface( 

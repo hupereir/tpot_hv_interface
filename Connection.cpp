@@ -1,5 +1,5 @@
 #include "Connection.h"
-#include "CaenInterface.h"
+#include "CaenInterface_p.h"
 
 #include <array>
 #include <cstring>
@@ -8,7 +8,7 @@
 namespace 
 {
   //___________________________________________
-  std::vector<std::string> get_channel_names( int handle, const Slot& slot )
+  Result<std::vector<std::string>> get_channel_names( int handle, const Slot& slot )
   {
     
     // create list of channels for which we want the name
@@ -24,14 +24,14 @@ namespace
     if( reply != CAENHV_OK ) 
     {
       std::cout << "get_channel_names - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
-      return std::vector<std::string>();
+      return {reply, std::vector<std::string>()};
     }
     
     std::vector<std::string> out;
     for( int i = 0; i < channels.size(); ++i )
     { out.push_back( names.get()[i] ); }
     
-    return out;
+    return {reply, out};
   }  
 }
 
@@ -114,8 +114,12 @@ Channel::List Connection::get_channels( const Slot& slot )
 {
   if( !m_connected ) return Channel::List();
 
-  const auto names = get_channel_names( m_handle, slot );
-  if( names.size() != slot.m_nchannels )
+  // get all channel names
+  const auto result = get_channel_names( m_handle, slot );
+
+  m_reply = result.first;
+  const auto& names = result.second;
+  if( !( m_reply == CAENHV_OK && names.size() == slot.m_nchannels ) )
   { return Channel::List(); }
     
   // create channels, assign id and name
@@ -126,15 +130,15 @@ Channel::List Connection::get_channels( const Slot& slot )
     channels[i].m_name = names[i];
   }
 
-  // assign V0Set
-  assign<float, &Channel::m_svmax>( m_handle, slot, channels, "SVMax" );
-  assign<float, &Channel::m_v0set>( m_handle, slot, channels, "V0Set" );
-  assign<float, &Channel::m_i0set>( m_handle, slot, channels, "I0Set" );
-  assign<float, &Channel::m_vmon>( m_handle, slot, channels, "VMon" );
-  assign<float, &Channel::m_imon>( m_handle, slot, channels, "IMon" );
-  assign<unsigned int, &Channel::m_status>( m_handle, slot, channels, "Status" );
-  assign<unsigned int, &Channel::m_trip_int>( m_handle, slot, channels, "TripInt" );
-  assign<unsigned int, &Channel::m_trip_ext>( m_handle, slot, channels, "TripExt" );
+  // assign vmax, v0set, i0set, vmon, imon, status and trop, check success at each stage
+  if( (m_reply = assign<float, &Channel::m_svmax>( m_handle, slot, channels, "SVMax" )) != CAENHV_OK ) return channels;
+  if( (m_reply = assign<float, &Channel::m_v0set>( m_handle, slot, channels, "V0Set" )) != CAENHV_OK ) return channels;
+  if( (m_reply = assign<float, &Channel::m_i0set>( m_handle, slot, channels, "I0Set" )) != CAENHV_OK ) return channels;
+  if( (m_reply = assign<float, &Channel::m_vmon>( m_handle, slot, channels, "VMon" )) != CAENHV_OK ) return channels;
+  if( (m_reply = assign<float, &Channel::m_imon>( m_handle, slot, channels, "IMon" )) != CAENHV_OK ) return channels;
+  if( (m_reply = assign<unsigned int, &Channel::m_status>( m_handle, slot, channels, "Status" )) != CAENHV_OK ) return channels;
+  if( (m_reply = assign<unsigned int, &Channel::m_trip_int>( m_handle, slot, channels, "TripInt" )) != CAENHV_OK ) return channels;
+  if( (m_reply = assign<unsigned int, &Channel::m_trip_ext>( m_handle, slot, channels, "TripExt" )) != CAENHV_OK ) return channels;
   
   return channels;  
 }
@@ -159,7 +163,7 @@ void Connection::build_channel_map()
   for( const auto& slot:slots )
   {    
     // get channel names
-    const auto names = get_channel_names( m_handle, slot );
+    const auto names = get_channel_names( m_handle, slot ).second;
    
     // loop over names, fill map
     for( size_t i = 0; i < names.size(); ++i )
