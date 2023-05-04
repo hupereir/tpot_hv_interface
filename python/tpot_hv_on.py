@@ -6,7 +6,16 @@ import time
 
 from tpot_util import *
 
-# get detector names
+if len(sys.argv) == 1:
+  print(
+    'usage: \n'
+    '  tpot_hv_on.py south|north|<detector name>|<channel name>\n'
+    '\nwith\n'
+    '  <detector names>: a list of detectors to turn on, e.g. NCOP, SEW, ...\n'
+    '  <channel names> : a list of single channels to turn on, e.g. NCOP_D, SEW_R1, ...')
+  exit(0)
+
+# get channel names
 channel_dict = parse_arguments( sys.argv[1:] )
 
 # Load the shared library into ctypes
