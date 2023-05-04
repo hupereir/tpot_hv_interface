@@ -53,3 +53,11 @@ def parse_arguments( arguments ):
         channel_dict[module]={name}
 
   return channel_dict
+
+# print channels from dictionary
+def print_channels( channel_dict ):
+  for det_name in sorted(channel_dict.keys() ):
+    print( f"  {det_name:4}: ", end = '' )
+    for ch_name in sorted(channel_dict[det_name]):
+      print( f" {ch_name:7} ", end = '' )
+    print('')
