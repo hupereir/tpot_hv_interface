@@ -39,7 +39,7 @@ bool set_parameter_unsigned( const char* name, const char* parname, unsigned int
   if( slot >= 0 ) 
   {
     // assign value, return result
-    return set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, "Pw", value ) == CAENHV_OK;
+    return set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, parname, value ) == CAENHV_OK;
   } else {
     // channel not found
     std::cout << "set_parameter_unsigned - channel not found: " << name << std::endl;
@@ -57,7 +57,7 @@ bool set_parameter_float( const char* name, const char* parname, float value )
   if( slot >= 0 ) 
   {
     // assign value, return result
-    return set_parameter_value<float>( m_connection.get_handle(), slot, channel, "Pw", value ) == CAENHV_OK;
+    return set_parameter_value<float>( m_connection.get_handle(), slot, channel, parname, value ) == CAENHV_OK;
   } else {
     // channel not found
     std::cout << "set_parameter_float - channel not found: " << name << std::endl;
