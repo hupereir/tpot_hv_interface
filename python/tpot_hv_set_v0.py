@@ -34,9 +34,10 @@ if answer == 0:
 
 for ch_name in ch_names:
   if channel_name_is_valid( ch_name ): 
+    print( f'processing {ch_name}' )
     c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'V0Set', ctypes.c_float(value) )
     time.sleep(1)
   else:
-    print( f'tpot_hv_set_v0 - invalid channel name: {ch_name}')
+    print( f'invalid channel name: {ch_name}')
 #disconnect
 c_lib.disconnect_from_interface()
