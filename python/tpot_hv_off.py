@@ -21,7 +21,7 @@ channel_dict = parse_arguments( sys.argv[1:] )
 
 # Load the shared library into ctypes
 path = "/home/phnxrc/hpereira/lib"
-libname = f"{path}/libcaen_hv_interface.so"
+libname = f"{path}/libtpot_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
 
 # connect

@@ -23,7 +23,7 @@ print( f'tpot_hv_set_i0 - channel names: {ch_names}' )
 
 # Load the shared library into ctypes
 path = "/home/phnxrc/hpereira/lib"
-libname = f"{path}/libcaen_hv_interface.so"
+libname = f"{path}/libtpot_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
 
 # connect
