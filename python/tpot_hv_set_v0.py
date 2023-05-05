@@ -16,9 +16,9 @@ if len(sys.argv) < 3:
     '  <channel names>  a list of single channels to which V0SET is assigned, e.g. NCOP_D SEW_R1 ...')
   exit(0)
 
-v0_value = float(sys.argv[1]);
+value = float(sys.argv[1]);
 ch_names = sorted( set(sys.argv[2:]) )
-print( f'tpot_hv_set_v0 - value: {v0_value}' )
+print( f'tpot_hv_set_v0 - value: {value}' )
 print( f'tpot_hv_set_v0 - channel names: {ch_names}' )
 
 # Load the shared library into ctypes
