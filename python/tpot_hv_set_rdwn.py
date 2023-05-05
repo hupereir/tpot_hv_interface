@@ -35,7 +35,7 @@ if answer == 0:
 for ch_name in ch_names:
   if channel_name_is_valid( ch_name ): 
     print( f'processing {ch_name}' )
-    c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'RDwn', ctypes.c_float(value) )
+    c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'RDWn', ctypes.c_float(value) )
     time.sleep(1)
   else:
     print( f'invalid channel name: {ch_name}')
