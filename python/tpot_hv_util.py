@@ -61,3 +61,7 @@ def print_channels( channel_dict ):
     for ch_name in sorted(channel_dict[det_name]):
       print( f" {ch_name:7} ", end = '' )
     print('')
+
+# check if a channel name is valid
+def channel_name_is_valid( channel_name ):
+  return re.fullmatch( '(N|S)(CO|CI|E|W)(Z|P)_(R[1-4]|D)',channel_name )

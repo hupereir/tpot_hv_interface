@@ -26,47 +26,42 @@ void disconnect_from_interface()
 }
 
 //__________________________________________
-float get_v0set( const char* name )
-{ 
-  if( !m_connection.is_connected() ) return 0;
+bool set_channel_on( const char* name, bool value )
+{ return set_parameter_unsigned( name, "Pw", value ); }
+
+//__________________________________________
+bool set_parameter_unsigned( const char* name, const char* parname, unsigned int value )
+{
+  if( !m_connection.is_connected() ) return false;
   const auto reply = m_connection.get_channel_id( name );
   const auto& slot = reply.first;
   const auto& channel = reply.second;
-  if( slot >= 0 ) {
-    return get_parameter_value<float>( m_connection.get_handle(), slot, channel, "V0Set" ).second; 
+  if( slot >= 0 ) 
+  {
+    // assign value, return result
+    return set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, "Pw", value ) == CAENHV_OK;
   } else {
-    std::cout << "get_v0Set - channel not found: " << name << std::endl;
-    return -1;
+    // channel not found
+    std::cout << "set_parameter_unsigned - channel not found: " << name << std::endl;
+    return false;
   }
 }
 
 //__________________________________________
-void set_v0set( const char* name, float value )
-{ 
-  if( !m_connection.is_connected() ) return;
+bool set_parameter_float( const char* name, const char* parname, float value )
+{
+  if( !m_connection.is_connected() ) return false;
   const auto reply = m_connection.get_channel_id( name );
   const auto& slot = reply.first;
   const auto& channel = reply.second;
-  if( slot >= 0 ) {
-    set_parameter_value<float>( m_connection.get_handle(), slot, channel, "V0Set", value );
+  if( slot >= 0 ) 
+  {
+    // assign value, return result
+    return set_parameter_value<float>( m_connection.get_handle(), slot, channel, "Pw", value ) == CAENHV_OK;
   } else {
-    std::cout << "get_v0Set - channel not found: " << name << std::endl;
-  }
-}
-
-//__________________________________________
-void set_channel_on( const char* name, bool value )
-{ 
-  std::cout << "set_channel_on - name: " << name << " value: " << value << std::endl;
-
-  if( !m_connection.is_connected() ) return;
-  const auto reply = m_connection.get_channel_id( name );
-  const auto& slot = reply.first;
-  const auto& channel = reply.second;
-  if( slot >= 0 ) {
-    set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, "Pw", value );
-  } else {
-    std::cout << "set_channel_on - channel not found: " << name << std::endl;
+    // channel not found
+    std::cout << "set_parameter_float - channel not found: " << name << std::endl;
+    return false;
   }
 }
 

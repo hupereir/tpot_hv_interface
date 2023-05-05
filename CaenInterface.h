@@ -3,20 +3,29 @@
 
 extern "C" {
   
+  //! connect
   bool connect_to_interface( 
     const char* /*ip*/,
     const char* /*user*/,
     const char* /*password*/ ); 
   
+  //! disconnect
   void disconnect_from_interface();
   
-  float get_v0set( const char* /*channel name*/ );
-  void set_v0set( const char* /*channel name*/, float /*value*/ );
+  //! turn on/off channel
+  bool set_channel_on( const char* /* channel name*/, bool );
+
+  //! assign unsigned parameter value to given channel
+  bool set_parameter_unsigned( const char* /* channel name*/, const char* /* parname */, unsigned int /* value */ );
+
+  //! assign float parameter value to given channel
+  bool set_parameter_float( const char* /* channel name*/, const char* /* parname */, float /* value */ );
   
-  void set_channel_on( const char* /* channel name*/, bool );
-  
+  //! get status for all channels
   const char* get_channel_status();
   
+  /// return true if last command was successful
+  /** note: this is misleading. For now it only refers to commands as run by Connection object */
   bool last_command_successful();
 
 }
