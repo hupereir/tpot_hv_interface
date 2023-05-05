@@ -33,8 +33,10 @@ if answer == 0:
 for det_name in sorted(channel_dict.keys()):
   print( f'processing {det_name}' )
   for ch_name in sorted(channel_dict[det_name] ):
+    print( f'  {ch_name}' )
     c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
     time.sleep(1)
+  print('')
 
 #disconnect
 c_lib.disconnect_from_interface()
