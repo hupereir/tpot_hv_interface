@@ -37,6 +37,6 @@ for ch_name in ch_names:
     c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'V0Set', ctypes.c_float(value) )
     time.sleep(1)
   else:
-    print( f'tpot_hv_set_v0 - invalid channel name: {ch)name')
+    print( f'tpot_hv_set_v0 - invalid channel name: {ch_name}')
 #disconnect
 c_lib.disconnect_from_interface()
