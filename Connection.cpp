@@ -5,36 +5,6 @@
 #include <cstring>
 #include <memory>
 
-namespace 
-{
-  //___________________________________________
-  Result<std::vector<std::string>> get_channel_names( int handle, const Slot& slot )
-  {
-    
-    // create list of channels for which we want the name
-    std::vector<unsigned short> channels;
-    for( int i = 0; i < slot.m_nchannels; ++i ) channels.push_back(i);
-    
-    // create output structure, with automatic deallocation
-    using name_t = char[MAX_CH_NAME];  
-    std::unique_ptr<name_t, Deleter> names(static_cast<name_t*>(malloc(channels.size()*MAX_CH_NAME)));
-    
-    // get channel names
-    const auto reply = CAENHV_GetChName(handle, slot.m_id, channels.size(), &channels[0], names.get() );
-    if( reply != CAENHV_OK ) 
-    {
-      std::cout << "get_channel_names - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
-      return {reply, std::vector<std::string>()};
-    }
-    
-    std::vector<std::string> out;
-    for( int i = 0; i < channels.size(); ++i )
-    { out.push_back( names.get()[i] ); }
-    
-    return {reply, out};
-  }  
-}
-
 //_____________________________________________________
 Connection::~Connection()
 { disconnect(); }
@@ -63,84 +33,6 @@ void Connection::disconnect()
 { 
   if( m_connected ) CAENHV_DeinitSystem(m_handle); 
   m_connected = false;
-}
-
-//_____________________________________________________
-Slot::List Connection::get_slots()
-{
-  if( !m_connected ) return Slot::List();
-  
-  unsigned short	n_slots;
-  safe_array<unsigned short> n_channels_list;
-  safe_array<unsigned short> serial_list;
-  safe_array<char> model_list;
-  safe_array<char> description_list;
-  safe_array<unsigned char> firmware_min_list;
-  safe_array<unsigned char> firmware_max_list;
-  
-  m_reply = CAENHV_GetCrateMap(
-    m_handle, 
-    &n_slots, &n_channels_list.get(), &model_list.get(), 
-    &description_list.get(), &serial_list.get(),
-    &firmware_min_list.get(), &firmware_max_list.get() );
-  
-  if( m_reply != CAENHV_OK ) 
-  {
-    std::cout << "Connection::get_slots - failed. reply: " << std::hex << "0x" << m_reply << std::dec << std::endl;
-    return Slot::List();
-  }
-  
-  Slot::List slots;
-  char* model = model_list.get();
-  char* description = description_list.get();
-  for( int i = 0; i < n_slots; ++i, model+=strlen(model)+1, description+=strlen(description)+1 )
-  {
-    if( *model == '\0' ) continue;
-    
-    Slot current;
-    current.m_id = i;
-    current.m_model = model;
-    current.m_nchannels = n_channels_list.get()[i];
-    if( *description != '\0' ) current.m_description = description;
-    
-    slots.push_back( current );
-  }
-  
-  return slots;        
-}
-
-//_____________________________________________________
-Channel::List Connection::get_channels( const Slot& slot )
-{
-  if( !m_connected ) return Channel::List();
-
-  // get all channel names
-  const auto result = get_channel_names( m_handle, slot );
-
-  m_reply = result.first;
-  const auto& names = result.second;
-  if( !( m_reply == CAENHV_OK && names.size() == slot.m_nchannels ) )
-  { return Channel::List(); }
-    
-  // create channels, assign id and name
-  Channel::List channels(slot.m_nchannels);
-  for( int i = 0; i < channels.size(); ++i )
-  { 
-    channels[i].m_id = i;
-    channels[i].m_name = names[i];
-  }
-
-  // assign vmax, v0set, i0set, vmon, imon, status and trop, check success at each stage
-  if( (m_reply = assign<float, &Channel::m_svmax>( m_handle, slot, channels, "SVMax" )) != CAENHV_OK ) return channels;
-  if( (m_reply = assign<float, &Channel::m_v0set>( m_handle, slot, channels, "V0Set" )) != CAENHV_OK ) return channels;
-  if( (m_reply = assign<float, &Channel::m_i0set>( m_handle, slot, channels, "I0Set" )) != CAENHV_OK ) return channels;
-  if( (m_reply = assign<float, &Channel::m_vmon>( m_handle, slot, channels, "VMon" )) != CAENHV_OK ) return channels;
-  if( (m_reply = assign<float, &Channel::m_imon>( m_handle, slot, channels, "IMon" )) != CAENHV_OK ) return channels;
-  if( (m_reply = assign<unsigned int, &Channel::m_status>( m_handle, slot, channels, "Status" )) != CAENHV_OK ) return channels;
-  if( (m_reply = assign<unsigned int, &Channel::m_trip_int>( m_handle, slot, channels, "TripInt" )) != CAENHV_OK ) return channels;
-  if( (m_reply = assign<unsigned int, &Channel::m_trip_ext>( m_handle, slot, channels, "TripExt" )) != CAENHV_OK ) return channels;
-  
-  return channels;  
 }
 
 //_____________________________________________________

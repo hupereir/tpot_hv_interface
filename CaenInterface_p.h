@@ -127,4 +127,10 @@ template<class T>
   return reply;
 }
 
+// get all channel names
+Result<std::vector<std::string>> get_channel_names( int handle, const Slot& slot );
+
+// get all slots information
+Slot::List get_slots();
+
 #endif

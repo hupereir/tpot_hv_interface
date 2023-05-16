@@ -1,12 +1,10 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include "Channel.h"
-#include "Slot.h"
-
 #include <CAENHVWrapper.h>
 
 #include <map>
+#include <string>
 
 class Connection
 {
@@ -26,13 +24,7 @@ class Connection
   
     //! disconnect
     void disconnect();
-    
-    //! get list of non empty slots
-    Slot::List get_slots();
-    
-    //! get list of channels for a given slot
-    Channel::List get_channels( const Slot& );
-        
+            
     //! valid
     bool is_connected() const
     { return m_connected; }
