@@ -1,8 +1,3 @@
-caen_hv_reader, reads channel parameters from caen SY4527
-
-usage:
-caen_hv_reader
-
 requires CAENHVWrapper available from https://www.caen.it/products/caen-hv-wrapper-library/
 
 environment variable $CAENHVWRAPPER_ROOT must point to where the libraries and include are installed (/usr in a root installation, or elsewhere)
@@ -14,7 +9,7 @@ and
 $CAENHVWRAPPER_ROOT/include/CAENHVWrapper.h
 
 compilation:
-cd caen_hv_reader
+cd tpot_hv_interface
 mkdir build
 cd build
 cmake ..
