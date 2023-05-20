@@ -192,7 +192,8 @@ const char* get_channel_status()
         << ", \"vmon\":" << channel.m_vmon 
         << ", \"imon\":" << channel.m_imon
         << ", \"status\":" << channel.m_status
-        << ", \"trip\":" << channel.m_trip_int 
+        << ", \"status_Hex\": \"0x" << std::hex << channel.m_status << "\""<< std::dec
+	<< ", \"trip\":" << channel.m_trip_int 
         << " }"
         << std::endl;
     }
