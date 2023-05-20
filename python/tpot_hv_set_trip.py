@@ -10,10 +10,10 @@ from tpot_hv_util import *
 if len(sys.argv) < 3:
   print(
     'usage: \n'
-    '  tpot_hv_set_rdwn.py <value> <channel names>\n'
+    '  tpot_hv_set_v0.py <value> <channel names>\n'
     '\nwith\n'
-    '  <value>          the value to assign to RDWN (V/s)\n'
-    '  <channel names>  a list of single channels to which RDWN is assigned, e.g. NCOP_D SEW_R1 ...')
+    '  <value>          the value to assign to TRIP (s)\n'
+    '  <channel names>  a list of single channels to which V0SET is assigned, e.g. NCOP_D SEW_R1 ...')
   exit(0)
 
 # parse arguments
@@ -23,7 +23,7 @@ if not ch_names:
   exit(0)
 
 # ask for confirmation
-print( f'this will set RDWN to {value} V/s for the following channels: {ch_names}' )
+print( f'this will set TRIP to {value} (s) for the following channels: {ch_names}' )
 reply = input('confirm (y/n) ? ')
 if reply != 'y' and reply != 'yes':
   exit(0)
@@ -42,7 +42,7 @@ if answer == 0:
 for ch_name in ch_names:
   if channel_name_is_valid( ch_name ): 
     print( f'processing {ch_name}' )
-    c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'RDWn', ctypes.c_float(value) )
+    c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'Trip', ctypes.c_float(value) )
     time.sleep(1)
   else:
     print( f'invalid channel name: {ch_name}')

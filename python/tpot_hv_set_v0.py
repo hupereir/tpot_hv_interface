@@ -12,7 +12,7 @@ if len(sys.argv) < 3:
     'usage: \n'
     '  tpot_hv_set_v0.py <value> <channel names>\n'
     '\nwith\n'
-    '  <value>          the value to assign to V0SET ...\n'
+    '  <value>          the value to assign to V0SET (V)\n'
     '  <channel names>  a list of single channels to which V0SET is assigned, e.g. NCOP_D SEW_R1 ...')
   exit(0)
 
@@ -23,7 +23,7 @@ if not ch_names:
   exit(0)
 
 # ask for confirmation
-print( f'this will set VO to {value} for the following channels: {ch_names}' )
+print( f'this will set VO to {value} V for the following channels: {ch_names}' )
 reply = input('confirm (y/n) ? ')
 if reply != 'y' and reply != 'yes':
   exit(0)
