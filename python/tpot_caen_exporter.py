@@ -62,8 +62,7 @@ property_map = {
     'v0set': {'metric':'v0set', 'comment':'request voltage (V)', 'json':'v0set' },
     'vmon': {'metric':'vmon', 'comment':'measured voltage (V)', 'json':'vmon' },
     'imon': {'metric':'imon', 'comment':'measured current (uA)', 'json':'imon' },
-    'status': {'metric':'status', 'comment':'channel status (bit pattern)', 'json':'status' },
-    'trip': {'metric':'trip', 'comment':'channel trip (boolean)', 'json':'trip' }
+    'status': {'metric':'status', 'comment':'channel status (bit pattern)', 'json':'status' }
 }
 
 properties = list(property_map.keys())
@@ -124,6 +123,11 @@ def hv_channel_information(verbose=False):
         if 'ch_on' not in metrics:
             metrics['ch_on'] = Gauge(f"{metric_prefix}_ch_on", 'channel ON (boolean)', list(channel_label.keys()), registry=registry)
         metrics['ch_on'].labels(**channel_label).set((channel["status"]&1)==1)
+  
+        # special channel_trip property, from status
+        if 'trip' not in metrics:
+            metrics['trip'] = Gauge(f"{metric_prefix}_trip", 'channel trip (boolean)', list(channel_label.keys()), registry=registry)
+        metrics['trip'].labels(**channel_label).set((channel["status"]&(1<<9))==1)
 
 # web service
 app = Flask(__name__)
