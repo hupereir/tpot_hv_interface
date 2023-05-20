@@ -46,15 +46,18 @@ status = str(c_lib.get_channel_status())
 channels_raw = re.findall('\{.*?\}',status)
 
 for channel_raw in channels_raw:
+
+  # parse json string
+  channel = json.loads(channel_raw)
+
   # get channel name 
-  ch_name = channel_raw["ch_name"]
+  ch_name = channel["ch_name"]
   if not ch_name in selected_channels: 
     continue  
 
   # print(f"{status}")
-  json_object = json.loads(channel_raw)
-  json_formatted_string = json.dumps(json_object, indent=2)
-  print( json_formatted_string )
+  channel_formatted_string = json.dumps(channel, indent=2)
+  print( channel_formatted_string )
 
 #disconnect
 c_lib.disconnect_from_interface()
