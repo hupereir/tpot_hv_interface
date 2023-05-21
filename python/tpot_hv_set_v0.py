@@ -45,13 +45,10 @@ for ch_name in ch_names:
   c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'V0Set', ctypes.c_float(value) )
   time.sleep(1)
 
-time.sleep(2)
 for ch_name in ch_names:
-  print( f'reading {ch_name}' )
   result =  c_lib.get_parameter_float( bytes(ch_name,'ascii'), b'V0Set' )
-  print( f'channel {ch_name}, value: {result}' )
-  time.sleep(1)
-
+  if result != value:
+    print( f'{ch_name} setting failed. value: {value} readback: {result}' )
 
 #disconnect
 c_lib.disconnect_from_interface()
