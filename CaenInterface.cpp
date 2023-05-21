@@ -67,6 +67,54 @@ bool set_parameter_float( const char* name, const char* parname, float value )
   }
 }
 
+//__________________________________________
+unsigned int get_parameter_unsigned( const char* name, const char* parname )
+{
+  if( !m_connection.is_connected() ) return false;
+  const auto reply = m_connection.get_channel_id( name );
+  const auto& slot = reply.first;
+  const auto& channel = reply.second;
+  if( slot >= 0 ) 
+  {
+    // read value, check result
+    const auto result = get_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, parname);
+    const auto reply = result.first;
+    if( reply != CAENHV_OK )
+    {
+      std::cout << "get_parameter_unsigned - parname: " << parname << " failed" << std::endl;
+      return 0;
+    } else return result.second;
+  } else {
+    // channel not found
+    std::cout << "get_parameter_unsigned - channel not found: " << name << std::endl;
+    return 0;
+  }
+}
+
+//__________________________________________
+float get_parameter_float( const char* name, const char* parname )
+{
+  if( !m_connection.is_connected() ) return false;
+  const auto reply = m_connection.get_channel_id( name );
+  const auto& slot = reply.first;
+  const auto& channel = reply.second;
+  if( slot >= 0 ) 
+  {
+    // read value, check result
+    const auto result = get_parameter_value<float>( m_connection.get_handle(), slot, channel, parname);
+    const auto reply = result.first;
+    if( reply != CAENHV_OK )
+    {
+      std::cout << "get_parameter_float - parname: " << parname << " failed" << std::endl;
+      return 0;
+    } else return result.second;
+  } else {
+    // channel not found
+    std::cout << "get_parameter_float - channel not found: " << name << std::endl;
+    return false;
+  }
+}
+
 //___________________________________________
 Result<std::vector<std::string>> get_channel_names( int handle, const Slot& slot )
 {
