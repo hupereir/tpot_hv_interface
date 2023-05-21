@@ -55,9 +55,20 @@ for channel_raw in channels_raw:
   if not ch_name in selected_channels: 
     continue  
 
-  # print(f"{status}")
-  channel_formatted_string = json.dumps(channel, indent=2)
-  print( channel_formatted_string )
+  slot_id = channel["slot_id"]
+  ch_id = channel["ch_id"]
+  ch_name = channel["ch_name"]
+  v0set = channel["v0set"]
+  vmon = channel["vmon"]
+  imon = channel["imon"]
+  status_hex = channel["status_hex"]
+  trip = channel["trip"]
+
+
+  print( f'\{ \"slot_id\": {slot_id}\}' )
+#   # print(f"{status}")
+#   channel_formatted_string = json.dumps(channel, indent=2)
+#   print( channel_formatted_string )
 
 #disconnect
 c_lib.disconnect_from_interface()
