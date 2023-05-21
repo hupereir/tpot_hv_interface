@@ -23,7 +23,7 @@ if not ch_names:
   exit(0)
 
 # ask for confirmation
-print( f'this will set VO to {value} V for the following channels: {ch_names}' )
+print( f'this will set VO to {value}V for the following channels: {ch_names}' )
 reply = input('confirm (y/n) ? ')
 if reply != 'y' and reply != 'yes':
   exit(0)
