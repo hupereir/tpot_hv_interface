@@ -18,7 +18,7 @@ if len(sys.argv) < 3:
 
 # parse arguments
 value = float(sys.argv[1]);
-ch_names = filter_channel_names( sorted( set(sys.argv[2:]) ) )
+ch_names = sorted(filter_channel_names( sorted( set(sys.argv[2:]))))
 if not ch_names:
   exit(0)
 
@@ -36,15 +36,14 @@ c_lib = ctypes.CDLL(libname)
 # connect
 answer = c_lib.connect_to_interface( b'10.20.34.154', b'admin', b'admin')
 if answer == 0:
-    print( "Unable to connect" )
-    exit
+  print( "Unable to connect" )
+  exit
 
 for ch_name in ch_names:
-  if channel_name_is_valid( ch_name ): 
-    print( f'processing {ch_name}' )
-    c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'V0Set', ctypes.c_float(value) )
-    time.sleep(1)
-  else:
-    print( f'invalid channel name: {ch_name}')
+  print( f'processing {ch_name}' )
+  c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'V0Set', ctypes.c_float(value) )
+  time.sleep(1)
+
+
 #disconnect
 c_lib.disconnect_from_interface()

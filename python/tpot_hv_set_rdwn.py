@@ -18,7 +18,7 @@ if len(sys.argv) < 3:
 
 # parse arguments
 value = float(sys.argv[1]);
-ch_names = filter_channel_names( sorted( set(sys.argv[2:]) ) )
+ch_names = sorted(filter_channel_names( sorted( set(sys.argv[2:]))))
 if not ch_names:
   exit(0)
 
