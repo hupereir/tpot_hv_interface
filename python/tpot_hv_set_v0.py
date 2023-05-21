@@ -32,6 +32,7 @@ if reply != 'y' and reply != 'yes':
 path = "/home/phnxrc/hpereira/lib"
 libname = f"{path}/libtpot_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
+c_lib.get_parameter_float.restype = ctypes.c_float
 
 # connect
 answer = c_lib.connect_to_interface( b'10.20.34.154', b'admin', b'admin')
@@ -42,6 +43,13 @@ if answer == 0:
 for ch_name in ch_names:
   print( f'processing {ch_name}' )
   c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'V0Set', ctypes.c_float(value) )
+  time.sleep(1)
+
+time.sleep(2)
+for ch_name in ch_names:
+  print( f'reading {ch_name}' )
+  result =  c_lib.get_parameter_float( bytes(ch_name,'ascii'), b'V0Set' )
+  print( f'channel {ch_name}, value: {result}' )
   time.sleep(1)
 
 
