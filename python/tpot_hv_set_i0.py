@@ -32,19 +32,23 @@ if reply != 'y' and reply != 'yes':
 path = "/home/phnxrc/hpereira/lib"
 libname = f"{path}/libtpot_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
+c_lib.get_parameter_float.restype = ctypes.c_float
 
 # connect
 answer = c_lib.connect_to_interface( b'10.20.34.154', b'admin', b'admin')
 if answer == 0:
-    print( "Unable to connect" )
-    exit
+  print( "Unable to connect" )
+  exit
 
 for ch_name in ch_names:
-  if channel_name_is_valid( ch_name ): 
-    print( f'processing {ch_name}' )
-    c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'I0Set', ctypes.c_float(value) )
-    time.sleep(1)
-  else:
-    print( f'invalid channel name: {ch_name}')
+  print( f'processing {ch_name}' )
+  c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'I0Set', ctypes.c_float(value) )
+  time.sleep(1)
+
+for ch_name in ch_names:
+  result =  c_lib.get_parameter_float( bytes(ch_name,'ascii'), b'I0Set' )
+  if result != value:
+    print( f'{ch_name} setting failed. value: {value} readback: {result}' )
+
 #disconnect
 c_lib.disconnect_from_interface()
