@@ -28,6 +28,9 @@ for det_name in sorted(channel_dict.keys()):
   for ch_name in sorted(channel_dict[det_name] ):
     selected_channels.add(ch_name)
 
+if not selected_channels:
+  exit(0)
+
 # Load the shared library into ctypes
 path = "/home/phnxrc/hpereira/lib"
 libname = f"{path}/libtpot_hv_interface.so"
