@@ -60,7 +60,7 @@ for channel_raw in channels_raw:
 
   if channel_name_is_resist(ch_name):
     count_total = count_total+1
-    if channel['v0set'] > 430 and channel['status'] == 1:
+    if channel['v0set'] >= 430 and channel['status'] == 1:
       count_good = count_good+1
 
   print( '{ "slot_id": %2i, '
