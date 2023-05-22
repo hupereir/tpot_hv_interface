@@ -241,7 +241,7 @@ const char* get_channel_status()
         << ", \"imon\":" << channel.m_imon
         << ", \"status\":" << channel.m_status
         << ", \"status_Hex\": \"0x" << std::hex << channel.m_status << "\""<< std::dec
-	<< ", \"trip\":" << channel.m_trip_int 
+	<< ", \"trip\":" << ((channel.m_status&(1<<9))==1<<9)
         << " }"
         << std::endl;
     }
