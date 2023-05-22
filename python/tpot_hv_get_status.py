@@ -43,14 +43,17 @@ if answer == 0:
   print( "Unable to connect" )
   exit(1)
 
+# read status for all channels
 status = str(c_lib.get_channel_status())
 
 # split by channel
 channels_raw = re.findall('\{.*?\}',status)
 
+# counters
 count_total = 0;
 count_good = 0;
 
+# loop over channels
 for channel_raw in channels_raw:
 
   # parse json string
