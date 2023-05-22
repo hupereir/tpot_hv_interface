@@ -69,15 +69,22 @@ for channel_raw in channels_raw:
   # parse json string
   channel = json.loads(channel_raw)
 
-  # focus on tripped channels
-  if channel['trip']:
-    tripped_ch_names.add(channel['ch_name'])
+  ch_name = channel['ch_name']
+  if not channel_name_is_valid( ch_name ):
+    continue
+  print( channel )
+  trip = channel['trip']
+  if trip:
+    print( f'adding {ch_name}')
+    tripped_ch_names.add(ch_name)
 
 # exit if not channels are tripped
 if not tripped_ch_names:
+  print( 'no tripped channels found' )
   exit(0)
 
 # loop over channels, increment trip counters
+# recover
 max_trip_count = 3
 for ch_name in tripped_ch_names:
   print( f'processing {ch_name}')
@@ -102,5 +109,5 @@ for ch_name in tripped_ch_names:
   # store time of trip  
   trip_data[ch_name]['last_trip_time'] = int(time.time())
 
-# write back
+# write to file
 write_trip_data( trip_log_filename, trip_data )
