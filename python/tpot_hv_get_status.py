@@ -45,6 +45,9 @@ status = str(c_lib.get_channel_status())
 # split by channel
 channels_raw = re.findall('\{.*?\}',status)
 
+count_total = 0;
+count_good = 0;
+
 for channel_raw in channels_raw:
 
   # parse json string
@@ -54,6 +57,11 @@ for channel_raw in channels_raw:
   ch_name = channel["ch_name"]
   if not ch_name in selected_channels: 
     continue  
+
+  if channel_name_is_resist(ch_name):
+    count_total = count_total+1
+    if channel['v0set'] > 430 and channel['status'] == 1:
+      count_good = count_good+1
 
   print( '{ "slot_id": %2i, '
          '"ch_id": %2i, '
@@ -67,6 +75,8 @@ for channel_raw in channels_raw:
             channel['ch_name'],
             channel['v0set'],channel['vmon'],channel['imon'],
             channel['status_Hex'], channel['trip']))
+
+print( 'fraction good: %.3f' %(count_good/count_total) )
 
 #disconnect
 c_lib.disconnect_from_interface()

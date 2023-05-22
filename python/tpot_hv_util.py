@@ -66,6 +66,14 @@ def print_channels( channel_dict ):
 def channel_name_is_valid( channel_name ):
   return re.fullmatch( '(N|S)(CO|CI|E|W)(Z|P)_(R[1-4]|D)',channel_name )
 
+# check if a channel name is drift
+def channel_name_is_drift( channel_name ):
+  return re.fullmatch( '(N|S)(CO|CI|E|W)(Z|P)_D',channel_name )
+
+# check if a channel name is a resist region
+def channel_name_is_resist( channel_name ):
+  return re.fullmatch( '(N|S)(CO|CI|E|W)(Z|P)_R[1-4]',channel_name )
+
 def filter_channel_names( channel_names ):
   valid_channel_names = set()
   for channel_name in channel_names:
