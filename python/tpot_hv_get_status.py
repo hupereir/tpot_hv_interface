@@ -76,7 +76,7 @@ for channel_raw in channels_raw:
             channel['v0set'],channel['vmon'],channel['imon'],
             channel['status_Hex'], channel['trip']))
 
-print( f'total: {count_total} good: {count_good} ratio: %.3f%%' %(100.*count_good/count_total) )
+print( f'\ntotal: {count_total} good: {count_good} ratio: %.3f%%' %(100.*count_good/count_total) )
 
 #disconnect
 c_lib.disconnect_from_interface()
