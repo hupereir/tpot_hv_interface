@@ -101,7 +101,7 @@ for ch_name in tripped_ch_names:
   trip_data[ch_name]['last_trip_time'] = int(time.time())
 
   # recover
-  max_trip_count = 3
+  max_trip_count = 20
   trips = trip_data[ch_name]['trips']
   if trips > max_trip_count:
     # max number of trips reached, turning channel off      
@@ -110,7 +110,7 @@ for ch_name in tripped_ch_names:
     c_lib.set_channel_off( bytes(ch_name,'ascii'),0 )
   else:   
     # increment number of trips, and recover channel
-    print( f'{cha_name}: recovering trip' )  
+    print( f'{ch_name}: recovering trip' )  
     trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
     c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
   time.sleep(1)
