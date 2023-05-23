@@ -74,7 +74,6 @@ for channel_raw in channels_raw:
     continue
   trip = channel['trip']
   if trip:
-    print( f'adding {ch_name}')
     tripped_ch_names.add(ch_name)
 
 # exit if not channels are tripped
@@ -82,6 +81,12 @@ if not tripped_ch_names:
   print( 'no tripped channels found' )
   exit(0)
 
+
+# ask for confirmation
+print( f'this will recover the following tripped channels: {tripped_ch_names}' )
+reply = input('confirm (y/n) ? ')
+if reply != 'y' and reply != 'yes':
+  exit(0)
 
 # loop over channels, increment trip counters
 for ch_name in tripped_ch_names:
