@@ -82,34 +82,33 @@ if not tripped_ch_names:
   print( 'no tripped channels found' )
   exit(0)
 
-# loop over channels, increment trip counters
-# recover
-max_trip_count = 3
-for ch_name in tripped_ch_names:
-  print( f'processing {ch_name}')
-  if ch_name in trip_data:
 
-    # check how many times the channel triped
-    trips = trip_data[ch_name]['trips']
-    if trips >= max_trip_count:
-      # max number of trips reached, turning channel off      
-      print( f'{cha_name} number of trips is at maximum ({max_trip_count}). Turning the channel off' )  
-      c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
-      c_lib.set_channel_off( bytes(ch_name,'ascii'),0 )
-      time.sleep(1)
-    else:   
-      # increment number of trips, and recover channel
-      trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
-      c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
-      time.sleep(1)
+# loop over channels, increment trip counters
+for ch_name in tripped_ch_names:
+  if ch_name in trip_data:
+    # increment number of trips, and recover channel
+    trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
   else:
     # increment number of trips, and recover channel
     trip_data[ch_name] ={'trips':1}
-    c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
-    time.sleep(1)
 
   # store time of trip  
   trip_data[ch_name]['last_trip_time'] = int(time.time())
+
+  # recover
+  max_trip_count = 3
+  trips = trip_data[ch_name]['trips']
+  if trips > max_trip_count:
+    # max number of trips reached, turning channel off      
+    print( f'{cha_name}: number of trips is at maximum ({max_trip_count}). Turning the channel off' )  
+    c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
+    c_lib.set_channel_off( bytes(ch_name,'ascii'),0 )
+  else:   
+    # increment number of trips, and recover channel
+    print( f'{cha_name}: recovering trip' )  
+    trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
+    c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
+  time.sleep(1)
 
 # write to file
 write_trip_data( trip_log_filename, trip_data )
