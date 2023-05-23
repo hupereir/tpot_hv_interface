@@ -209,6 +209,8 @@ Channel::List get_channels( const Slot& slot )
   if( (reply = assign<float, &Channel::m_svmax>( handle, slot, channels, "SVMax" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_v0set>( handle, slot, channels, "V0Set" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_i0set>( handle, slot, channels, "I0Set" )) != CAENHV_OK ) return channels;
+  if( (reply = assign<float, &Channel::m_rup>( handle, slot, channels, "RUp" )) != CAENHV_OK ) return channels;
+  if( (reply = assign<float, &Channel::m_rdwn>( handle, slot, channels, "RDWn" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_vmon>( handle, slot, channels, "VMon" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_imon>( handle, slot, channels, "IMon" )) != CAENHV_OK ) return channels;
   if( (reply = assign<unsigned int, &Channel::m_status>( handle, slot, channels, "Status" )) != CAENHV_OK ) return channels;
@@ -235,6 +237,9 @@ const char* get_channel_status()
         << ", \"ch_id\":" << channel.m_id 
         << ", \"ch_name\":\"" << channel.m_name << "\""
         << ", \"v0set\":" << channel.m_v0set
+        << ", \"i0set\":" << channel.m_i0set
+        << ", \"rup\":" << channel.m_rup
+        << ", \"rdwn\":" << channel.m_rdwn
         << ", \"vmon\":" << channel.m_vmon 
         << ", \"imon\":" << channel.m_imon
         << ", \"status\":" << channel.m_status

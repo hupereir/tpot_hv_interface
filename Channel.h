@@ -22,6 +22,12 @@ class Channel
 
   //! i0set
   float m_i0set = 0;
+
+  //! ramp up
+  float m_rup = 0;
+  
+  //! ramp down
+  float m_rdwn = 0;
   
   //! vmon
   float m_vmon = 0;
