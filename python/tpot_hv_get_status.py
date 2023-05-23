@@ -24,7 +24,6 @@ channel_dict = parse_arguments( sys.argv[1:] )
 # store selected channels
 selected_channels = set()
 for det_name in sorted(channel_dict.keys()):
-  print( f'processing {det_name}' )
   for ch_name in sorted(channel_dict[det_name] ):
     selected_channels.add(ch_name)
 
@@ -73,14 +72,23 @@ for channel_raw in channels_raw:
          '"ch_id": %2i, '
          '"ch_name": "%7s", '
          '"v0set": %6.2f, '
+         '"i0set": %6.2f, '
+         '"rup": %4.0f, '
+         '"rdwn": %4.0f, '
          '"vmon": %6.2f, '
          '"imon": %7.3f, '
          '"status": "%5s", '
          '"trip": %i }'
          % (channel['slot_id'],channel['ch_id'],
             channel['ch_name'],
-            channel['v0set'],channel['vmon'],channel['imon'],
-            channel['status_Hex'], channel['trip']))
+            channel['v0set'],
+            channel['i0set'],
+            channel['rup'],
+            channel['rdwn'],
+            channel['vmon'],
+            channel['imon'],
+            channel['status_Hex'],
+            channel['trip']))
 
 print( f'\ntotal: {count_total} good: {count_good} ratio: %.3f%%' %(100.*count_good/count_total) )
 
