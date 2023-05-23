@@ -72,7 +72,6 @@ for channel_raw in channels_raw:
   ch_name = channel['ch_name']
   if not channel_name_is_valid( ch_name ):
     continue
-  print( channel )
   trip = channel['trip']
   if trip:
     print( f'adding {ch_name}')
@@ -97,14 +96,17 @@ for ch_name in tripped_ch_names:
       print( f'{cha_name} number of trips is at maximum ({max_trip_count}). Turning the channel off' )  
       c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
       c_lib.set_channel_off( bytes(ch_name,'ascii'),0 )
+      time.sleep(1)
     else:   
       # increment number of trips, and recover channel
       trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
       c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
+      time.sleep(1)
   else:
     # increment number of trips, and recover channel
     trip_data[ch_name] ={'trips':1}
     c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
+    time.sleep(1)
 
   # store time of trip  
   trip_data[ch_name]['last_trip_time'] = int(time.time())
