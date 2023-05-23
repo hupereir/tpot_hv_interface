@@ -48,7 +48,7 @@ for channel_raw in channels_raw:
   if not channel_name_is_valid(ch_name):
     continue
 
-  channel_list.add( channel )
+  channel_list.append( channel )
 
 ### read trip data from log
 def write_state( filename, trip_data ):
