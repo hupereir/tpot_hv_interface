@@ -35,7 +35,7 @@ status = str(c_lib.get_channel_status())
 # split by channel
 channels_raw = re.findall('\{.*?\}',status)
 
-channel_list = []
+channel_dict = dict()
 
 # loop over channels
 for channel_raw in channels_raw:
@@ -48,21 +48,25 @@ for channel_raw in channels_raw:
   if not channel_name_is_valid(ch_name):
     continue
 
-  channel_list.append( channel )
+  channel_info = dict((k, channel[k]) for k in ('i0set', 'v0set', 'rup', 'rdwn', 'trip'))
+  channel_dict[ch_name]=channel_info
 
 ### read trip data from log
-def write_state( filename, trip_data ):
+def write_state( filename, data ):
   
   # open file
   f = open( filename, 'w' )
 
   # parse with JSON
-  f.write(json.dumps(trip_data,indent=2)) 
+  f.write(json.dumps(data)) 
   
   f.close()
   return
 
-write_state( filename, channel_list )
+if filename:
+  write_state(filename,channel_dict)
+else:
+  print(json.dumps(channel_dict))
 
 #disconnect
 c_lib.disconnect_from_interface()
