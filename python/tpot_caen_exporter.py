@@ -22,7 +22,7 @@ parser.add_argument('-l', '--limit', default=2,
 args = parser.parse_args()
 
 throttling_limit = float(args.limit)
-print(f"Throttling request to no less than {throttling_limit} seconds")
+print(f'Throttling request to no less than {throttling_limit} seconds')
 
 # load c-library for communicating with caen module
 path = "/home/phnxrc/hpereira/lib"
@@ -52,9 +52,9 @@ metrics = {}
 print(f"Host name:        {socket.gethostname()}")
 label_host[f"hostname"] = socket.gethostname()
 
-request_counter = Counter(f"{metric_prefix}_request_counter", 'Requests processed',
+request_counter = Counter(f'{metric_prefix}_request_counter', 'Requests processed',
                           list(label_host.keys()) + ['status'], registry=registry)
-request_time = Summary(f"{metric_prefix}_requests_processing_seconds", "Inprogress HTTP requests",
+request_time = Summary(f'{metric_prefix}_requests_processing_seconds', 'Inprogress HTTP requests',
                        list(label_host.keys()), registry=registry)
 
 # define channel properties and json equivalent
@@ -75,7 +75,7 @@ def hv_channel_information(verbose=False):
     status = str(c_lib.get_channel_status())
 
     if c_lib.last_command_successful()==0:
-      print( "Reconnecting" )
+      print('Reconnecting')
       disconnect()
       connect()
       status = str(c_lib.get_channel_status())
@@ -95,7 +95,7 @@ def hv_channel_information(verbose=False):
     for channel in channels:
 
         # skip unnamed channels
-        ch_name = channel["ch_name"]
+        ch_name = channel['ch_name']
         if ch_name.startswith('CHANNEL'):
             continue
 
@@ -116,18 +116,18 @@ def hv_channel_information(verbose=False):
             value = channel[json_name]
             if metric_name not in metrics:
                 comment = property_map[property]['comment']
-                metrics[metric_name] = Gauge(f"{metric_prefix}_{metric_name}", comment, list(channel_label.keys()), registry=registry)
+                metrics[metric_name] = Gauge(f'{metric_prefix}_{metric_name}', comment, list(channel_label.keys()), registry=registry)
             metrics[metric_name].labels(**channel_label).set(value)
 
         # special channel_on property, from status
         if 'ch_on' not in metrics:
-            metrics['ch_on'] = Gauge(f"{metric_prefix}_ch_on", 'channel ON (boolean)', list(channel_label.keys()), registry=registry)
-        metrics['ch_on'].labels(**channel_label).set(bool(channel["status"]&1))
+            metrics['ch_on'] = Gauge(f'{metric_prefix}_ch_on', 'channel ON (boolean)', list(channel_label.keys()), registry=registry)
+        metrics['ch_on'].labels(**channel_label).set(bool(channel['status']&1))
   
         # special channel_trip property, from status
         if 'trip' not in metrics:
-            metrics['trip'] = Gauge(f"{metric_prefix}_trip", 'channel trip (boolean)', list(channel_label.keys()), registry=registry)
-        metrics['trip'].labels(**channel_label).set(bool(channel["status"]&(1<<9)))
+            metrics['trip'] = Gauge(f'{metric_prefix}_trip', 'channel trip (boolean)', list(channel_label.keys()), registry=registry)
+        metrics['trip'].labels(**channel_label).set(channel['trip'])
 
 # web service
 app = Flask(__name__)
@@ -173,7 +173,7 @@ def requests_metrics():
 
         request_time.labels(**label_host).observe(time.time() - start_time)
 
-    return Response(prometheus_client.generate_latest(registry), mimetype="text/plain")
+    return Response(prometheus_client.generate_latest(registry), mimetype='text/plain')
 
 requests_metrics.lastcall = time.time()
 
