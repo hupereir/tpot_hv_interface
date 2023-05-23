@@ -15,7 +15,6 @@ bool connect_to_interface(
   const char* user,
   const char* password )
 { 
-  std::cout << "connect_to_interface - connecting to " << ip << std::endl;
   m_connection.connect( ip, user, password ); 
   return m_connection.is_connected();
 }
@@ -23,7 +22,6 @@ bool connect_to_interface(
 //___________________________________________
 void disconnect_from_interface() 
 {
-  std::cout << "disconnect_from_interface" << std::endl;
   m_connection.disconnect(); 
 }
 

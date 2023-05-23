@@ -20,7 +20,8 @@ void Connection::connect(
     std::cout << "Connection::connect - already connected" << std::endl;
     return;
   }
-  
+
+  std::cout << "connecting to interface at " << ip_address << std::endl;
   m_reply = CAENHV_InitSystem( m_type, m_link_type, 
     const_cast<char*>(ip_address.c_str()),
     username.c_str(), password.c_str(), &m_handle );
@@ -31,7 +32,11 @@ void Connection::connect(
 //_____________________________________________________
 void Connection::disconnect()
 { 
-  if( m_connected ) CAENHV_DeinitSystem(m_handle); 
+  if( m_connected )
+  {
+    std::cout << "disconnecting from interface" << std::endl;
+    CAENHV_DeinitSystem(m_handle); 
+  }
   m_connected = false;
 }
 
