@@ -58,7 +58,7 @@ def write_state( filename, data ):
   f = open( filename, 'w' )
 
   # parse with JSON
-  f.write(json.dumps(data)) 
+  f.write(json.dumps(data,sort_keys=True,indent=2)) 
   
   f.close()
   return
@@ -66,7 +66,7 @@ def write_state( filename, data ):
 if filename:
   write_state(filename,channel_dict)
 else:
-  print(json.dumps(channel_dict))
+  print(json.dumps(channel_dict,sort_keys=True,indent=2))
 
 #disconnect
 c_lib.disconnect_from_interface()
