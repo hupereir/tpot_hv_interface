@@ -6,6 +6,7 @@ import json
 import re
 import argparse
 import os.path
+import datetime
 
 from tpot_hv_util import *
 
@@ -45,6 +46,23 @@ def write_trip_data( filename, trip_data ):
   
   f.close()
   return
+
+def init_mask_file():
+  det_names_south = {'SEP', 'SEZ', 'SCOP', 'SCOZ', 'SCIP', 'SCIZ', 'SWP', 'SWZ'}
+  det_names_north = {'NEP', 'NEZ', 'NCOP', 'NCOZ', 'NCIP', 'NCIZ', 'NWP', 'NWZ'}
+  det_names_all = det_names_south | det_names_north
+  suffixes = {'_R1', '_R2', '_R3', '_R4', '_D' }
+
+  mask = {}
+  for det in det_names_all:
+    for suf in suffixes:
+      detector_name = det + suf
+      mask[detector_name] = False
+  with open("home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "w") as f:
+    json.dump(mask, f, indent=2)
+
+
+
 
 # Load trip data
 trip_log_filename = '/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_trips.json'
@@ -100,27 +118,44 @@ if not args.force:
 # loop over channels, increment trip counters
 for ch_name in tripped_ch_names:
   if ch_name in trip_data:
-    # increment number of trips, and recover channel
-    trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
+    # Increment the absolute numebr of trips
+    trip_data[ch_name]['trips_abs'] += 1
+    # Check how recent the last trip was
+    last_trip = datetime.datetime.fromtimestamp(trip_data['last_trip_time'])
+    current_time = datetime.datetime.now()
+    if current_time - last_trip < datetime.timedelta(hours=1):
+      # increment number of trips, and recover channel
+      trip_data[ch_name]['trips_rel'] = trip_data[ch_name]['trips_rel']+1
+    else:
+      # if it has been longer than 1 hour, reset the trip counter
+      trip_data[ch_name]['trips_rel'] = 1
   else:
     # increment number of trips, and recover channel
-    trip_data[ch_name] ={'trips':1}
+    trip_data[ch_name] ={'trips_rel':1, 'trips_abs':1}
 
   # store time of trip  
   trip_data[ch_name]['last_trip_time'] = int(time.time())
 
   # recover
-  max_trip_count = 20
-  trips = trip_data[ch_name]['trips']
+  max_trip_count = 3
+  trips = trip_data[ch_name]['trips_rel']
   if trips > max_trip_count:
     # max number of trips reached, turning channel off      
-    print( f'{cha_name}: number of trips is at maximum ({max_trip_count}). Turning the channel off' )  
+    print( f'{ch_name}: number of trips is at maximum ({max_trip_count}). Turning the channel off' )  
     c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
     c_lib.set_channel_off( bytes(ch_name,'ascii'),0 )
+    
+    # Updating mask file
+    masked_data = None
+    with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "r") as f:
+      masked_data = json.load(f)
+    masked_data[ch_name] = True
+    with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "w") as f:
+      json.dump(masked_data, f, indent=2)
+
   else:   
     # increment number of trips, and recover channel
     print( f'{ch_name}: recovering trip' )  
-    trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
     c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
   time.sleep(0.1)
 
