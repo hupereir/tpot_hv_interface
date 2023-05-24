@@ -41,7 +41,7 @@ sub tpot_go_operating
 sub tpot_recover_trips
 {
     $button_recover_trips->configure(-relief => 'sunken' );
-    $result = `$bin_path/tpot_hv_recover_trips`;
+    $result = `$bin_path/tpot_hv_recover_trips.py --force`;
     $button_recover_trips->configure(-relief => 'raised' );
 }
 
