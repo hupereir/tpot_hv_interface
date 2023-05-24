@@ -2,28 +2,36 @@
 import ctypes
 import sys
 import time
+import argparse
 
 from tpot_hv_util import *
 
-# usage
-if len(sys.argv) == 1:
-  print(
-    'usage: \n'
-    '  tpot_hv_on.py south|north|all|<detector names>|<channel names>\n'
-    '\nwith\n'
-    '  <detector names>: a list of detectors to turn on, e.g. NCOP SEW ...\n'
-    '  <channel names> : a list of single channels to turn on, e.g. NCOP_D SEW_R1 ...')
-  exit(0)
+# parse arguments
+parser = argparse.ArgumentParser(
+  prog = 'tpot_hv_on',
+  description = 'Turns on TPOT',
+  epilog = '')
+
+parser.add_argument(
+  'channels', 
+   help='a list of detectors to turn on, e.g. NCOP SEW, or individual channels, e.g  NCOP_D SEW_R1, or south|north|all',
+   nargs='+' )
+
+parser.add_argument('-f', '--force', action='store_true', help='do not ask for confirmation')
+args = parser.parse_args()
 
 # get channel names
-channel_dict = parse_arguments( sys.argv[1:] )
+channel_dict = parse_arguments( args.channels )
+if not channel_dict:
+  exit(0)
 
 # ask for confirmation
 print( 'this will turn on the following channels:' )
 print_channels( channel_dict )
-reply = input('confirm (y/n) ? ')
-if reply != 'y' and reply != 'yes':
-  exit(0)
+if not args.force:
+  reply = input('confirm (y/n) ? ')
+  if reply != 'y' and reply != 'yes':
+    exit(0)
 
 # Load the shared library into ctypes
 path = "/home/phnxrc/hpereira/lib"

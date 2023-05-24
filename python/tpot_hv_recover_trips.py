@@ -91,8 +91,8 @@ if not tripped_ch_names:
 
 
 # ask for confirmation
+print( f'this will recover the following tripped channels: {tripped_ch_names}' )
 if not args.force:
-  print( f'this will recover the following tripped channels: {tripped_ch_names}' )
   reply = input('confirm (y/n) ? ')
   if reply != 'y' and reply != 'yes':
     exit(0)
