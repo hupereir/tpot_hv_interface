@@ -112,7 +112,7 @@ for ch_name in tripped_ch_names:
     print( f'{ch_name}: recovering trip' )  
     trip_data[ch_name]['trips'] = trip_data[ch_name]['trips']+1
     c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
-  time.sleep(1)
+  time.sleep(0.1)
 
 # write to file
 write_trip_data( trip_log_filename, trip_data )

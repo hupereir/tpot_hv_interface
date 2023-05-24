@@ -41,7 +41,7 @@ for det_name in sorted(channel_dict.keys()):
   for ch_name in sorted(channel_dict[det_name] ):
     print( f'  {ch_name}' )
     c_lib.set_channel_on( bytes(ch_name,'ascii'),0 )
-    time.sleep(1)
+    time.sleep(0.1)
   print('')
 
 #disconnect

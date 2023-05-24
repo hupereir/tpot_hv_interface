@@ -42,7 +42,7 @@ if answer == 0:
 for ch_name in ch_names:
   print( f'processing {ch_name}' )
   c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'RUp', ctypes.c_float(value) )
-  time.sleep(1)
+  time.sleep(0.1)
 
 for ch_name in ch_names:
   result =  c_lib.get_parameter_float( bytes(ch_name,'ascii'), b'RUp' )
