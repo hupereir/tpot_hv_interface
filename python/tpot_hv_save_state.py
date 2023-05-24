@@ -3,18 +3,30 @@ import ctypes
 import sys
 import time
 import json
+import argparse
 
 from tpot_hv_util import *
 
-# usage
-if len(sys.argv) < 2:
-  print( 
-    'usage: \n'
-    '  tpot_hv_save_state.py <filename>\n')
-  exit(0)
+# parse arguments
+parser = argparse.ArgumentParser(
+  prog = 'tpot_hv_save_state',
+  description = 'save HV state to a file',
+  epilog = '')
+
+parser.add_argument(
+  'filename', 
+  help='the filename to which the HV state is saved')
+
+parser.add_argument('-f', '--force', action='store_true', help='do not ask for confirmation')
+args = parser.parse_args()
 
 # filename
-filename = sys.argv[1]
+filename = args.filename
+print( f'this will save the HV state to {filename}' )
+if not args.force:
+  reply = input('confirm (y/n) ? ')
+  if reply != 'y' and reply != 'yes':
+    exit(0)
 
 # Load the shared library into ctypes
 path = "/home/phnxrc/hpereira/lib"

@@ -3,19 +3,31 @@ import ctypes
 import sys
 import time
 import json
+import argparse
 import os.path
 
 from tpot_hv_util import *
 
-#usage
-if len(sys.argv) < 2:
-  print( 
-    'usage: \n'
-    '  tpot_hv_restore_state.py <filename>\n')
-  exit(0)
+# parse arguments
+parser = argparse.ArgumentParser(
+  prog = 'tpot_hv_restore_state',
+  description = 'loads settings from a file and pass to HV power supply',
+  epilog = '')
+
+parser.add_argument(
+  'filename', 
+  help='the filename containing the HV state to be restored')
+
+parser.add_argument('-f', '--force', action='store_true', help='do not ask for confirmation')
+args = parser.parse_args()
 
 # filename
-filename = sys.argv[1]
+filename = args.filename
+print( f'this will restore the HV state to that saved in {filename}' )
+if not args.force:
+  reply = input('confirm (y/n) ? ')
+  if reply != 'y' and reply != 'yes':
+    exit(0)
 
 ### read trip data from log
 def read_data( filename ):
