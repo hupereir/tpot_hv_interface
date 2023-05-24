@@ -127,7 +127,7 @@ def hv_channel_information(verbose=False):
         # special channel_trip property, from status
         if 'trip' not in metrics:
             metrics['trip'] = Gauge(f'{metric_prefix}_trip', 'channel trip (boolean)', list(channel_label.keys()), registry=registry)
-        metrics['trip'].labels(**channel_label).set(channel['trip'])
+        metrics['trip'].labels(**channel_label).set(bool(channel['status']&(1<<9)))
 
 # web service
 app = Flask(__name__)

@@ -72,7 +72,7 @@ for channel_raw in channels_raw:
   ch_name = channel['ch_name']
   if not channel_name_is_valid( ch_name ):
     continue
-  trip = channel['trip']
+  trip = bool(channel['status']&(1<<9))
   if trip:
     tripped_ch_names.add(ch_name)
 

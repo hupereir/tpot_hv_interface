@@ -29,6 +29,9 @@ class Channel
   //! ramp down
   float m_rdwn = 0;
   
+  //! trip (s)
+  float m_trip = 0;
+  
   //! vmon
   float m_vmon = 0;
   

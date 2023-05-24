@@ -211,6 +211,7 @@ Channel::List get_channels( const Slot& slot )
   if( (reply = assign<float, &Channel::m_i0set>( handle, slot, channels, "I0Set" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_rup>( handle, slot, channels, "RUp" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_rdwn>( handle, slot, channels, "RDWn" )) != CAENHV_OK ) return channels;
+  if( (reply = assign<float, &Channel::m_trip>( handle, slot, channels, "Trip" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_vmon>( handle, slot, channels, "VMon" )) != CAENHV_OK ) return channels;
   if( (reply = assign<float, &Channel::m_imon>( handle, slot, channels, "IMon" )) != CAENHV_OK ) return channels;
   if( (reply = assign<unsigned int, &Channel::m_status>( handle, slot, channels, "Status" )) != CAENHV_OK ) return channels;
@@ -226,7 +227,6 @@ const char* get_channel_status()
   std::ostringstream out;
   
   // header
-  out << "// slot, channel, chname, vset, vmon, imon, status, trip" << std::endl;  
   for(const auto& slot:get_slots() )
   {
     
@@ -240,11 +240,11 @@ const char* get_channel_status()
         << ", \"i0set\":" << channel.m_i0set
         << ", \"rup\":" << channel.m_rup
         << ", \"rdwn\":" << channel.m_rdwn
+        << ", \"trip\":" << channel.m_trip
         << ", \"vmon\":" << channel.m_vmon 
         << ", \"imon\":" << channel.m_imon
         << ", \"status\":" << channel.m_status
         << ", \"status_Hex\": \"0x" << std::hex << channel.m_status << "\""<< std::dec
-	<< ", \"trip\":" << ((channel.m_status&(1<<9))==1<<9)
         << " }"
         << std::endl;
     }
