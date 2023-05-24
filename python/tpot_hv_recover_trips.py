@@ -4,9 +4,16 @@ import sys
 import time
 import json
 import re
+import argparse
 import os.path
 
 from tpot_hv_util import *
+
+parser = argparse.ArgumentParser(
+                    prog = 'tpot_hv_recover_trips',
+                    description = 'Recovers tripped channel in TPOT',
+                    epilog = '')
+parser.add_argument('-f', '--force', action='store_true')
 
 ### read trip data from log
 def read_trip_data( filename ):
@@ -82,10 +89,11 @@ if not tripped_ch_names:
 
 
 # ask for confirmation
-print( f'this will recover the following tripped channels: {tripped_ch_names}' )
-reply = input('confirm (y/n) ? ')
-if reply != 'y' and reply != 'yes':
-  exit(0)
+if not arg.force:
+  print( f'this will recover the following tripped channels: {tripped_ch_names}' )
+  reply = input('confirm (y/n) ? ')
+  if reply != 'y' and reply != 'yes':
+    exit(0)
 
 # loop over channels, increment trip counters
 for ch_name in tripped_ch_names:
