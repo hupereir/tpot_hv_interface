@@ -121,7 +121,7 @@ def main():
       # Increment the absolute numebr of trips
       trip_data[ch_name]['trips_abs'] += 1
       # Check how recent the last trip was
-      last_trip = datetime.datetime.fromtimestamp(trip_data['last_trip_time'])
+      last_trip = datetime.datetime.fromtimestamp(trip_data[ch_name]['last_trip_time'])
       current_time = datetime.datetime.now()
       if current_time - last_trip < datetime.timedelta(hours=1):
         # increment number of trips, and recover channel
@@ -143,7 +143,8 @@ def main():
       # max number of trips reached, turning channel off      
       print( f'{ch_name}: number of trips is at maximum ({max_trip_count}). Turning the channel off' )  
       c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
-      c_lib.set_channel_off( bytes(ch_name,'ascii'),0 )
+      time.sleep(0.2)
+      c_lib.set_channel_on( bytes(ch_name,'ascii'),0 )
       
       # Updating mask file
       masked_data = None
@@ -156,6 +157,8 @@ def main():
     else:   
       # increment number of trips, and recover channel
       print( f'{ch_name}: recovering trip' )  
+      c_lib.set_channel_on( bytes(ch_name,'ascii'),0 )
+      time.sleep(0.2)
       c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
     time.sleep(0.1)
 
