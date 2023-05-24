@@ -21,7 +21,7 @@ sub tpot_go_safe
     if( uc($reply) eq "YES" )
     {
         $result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_safe_state.json`;
-        $result = `$bin_path/tpot_hv_on.py --force all`;
+        $result = `$bin_path/tpot_hv_on.py --force --mask $config_path/tpot_mask.json all`;
     }
     $button_go_safe->configure(-relief => 'raised' );
 }
@@ -33,7 +33,7 @@ sub tpot_go_operating
     if( uc($reply) eq "YES" )
     {
         $result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_operating_state.json`;
-        $result = `$bin_path/tpot_hv_on.py --force all`;
+        $result = `$bin_path/tpot_hv_on.py --force --mask $config_path/tpot_mask.json all`;
     }
     $button_go_operating->configure(-relief => 'raised' );
 }
@@ -83,12 +83,12 @@ $button_off = $outerlabel->
     Button(-bg => $buttonbgcolor, -text => "Turn OFF", -command => [\&tpot_go_off, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_safe = $outerlabel->
+$button_go_safe = $outerlabel->
     Button(-bg => $buttonbgcolor, -text => "Go to SAFE", -command => [\&tpot_go_safe, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_operating = $outerlabel->
-    Button(-bg => $buttonbgcolor, -text => "Go to OPERATING", -command => [\&tpot_go_operating, $b],  -relief =>'raised',  -font=> $normalfont)->
+$button_go_operating = $outerlabel->
+    Button(-bg => $buttonbgcolor, -text => "Turn ON", -command => [\&tpot_go_operating, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
 $button_recover_trips = $outerlabel->
