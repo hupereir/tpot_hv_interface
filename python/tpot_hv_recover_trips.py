@@ -13,7 +13,9 @@ parser = argparse.ArgumentParser(
                     prog = 'tpot_hv_recover_trips',
                     description = 'Recovers tripped channel in TPOT',
                     epilog = '')
-parser.add_argument('-f', '--force', action='store_true')
+parser.add_argument('-f', '--force', action='store_true', help='do not ask for confirmation')
+
+args = parser.parse_args()
 
 ### read trip data from log
 def read_trip_data( filename ):
@@ -89,7 +91,7 @@ if not tripped_ch_names:
 
 
 # ask for confirmation
-if not arg.force:
+if not args.force:
   print( f'this will recover the following tripped channels: {tripped_ch_names}' )
   reply = input('confirm (y/n) ? ')
   if reply != 'y' and reply != 'yes':
