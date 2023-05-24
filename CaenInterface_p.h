@@ -114,7 +114,13 @@ template<class T>
   CAENHVRESULT set_parameter_value( int handle, int slot, unsigned short channel, const std::string& parname, T value )
 {
   auto reply = CAENHV_SetChParam( handle, slot, parname.c_str(), 1, &channel, &value );
-  if( reply != CAENHV_OK ) std::cout << "set_pararameter_value - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
+  if( reply != CAENHV_OK ) {
+    std::cout 
+      << "set_pararameter_value -"
+      << " parname: " << parname << " failed."
+      << " reply: " << std::hex << "0x" << reply << std::dec 
+      << std::endl;
+  }
   return reply;
 }
 
