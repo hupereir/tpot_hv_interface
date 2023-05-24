@@ -6,14 +6,15 @@ import json
 
 from tpot_hv_util import *
 
-print( 
-  'usage: \n'
-  '  tpot_hv_save_state.py [filename]\n')
+# usage
+if len(sys.argv) < 2:
+  print( 
+    'usage: \n'
+    '  tpot_hv_save_state.py <filename>\n')
+  exit(0)
 
-if len(sys.argv) > 1:
-  filename = sys.argv[1]
-else:
-  filename = ''
+# filename
+filename = sys.argv[1]
 
 # Load the shared library into ctypes
 path = "/home/phnxrc/hpereira/lib"
