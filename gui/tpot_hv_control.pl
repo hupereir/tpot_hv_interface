@@ -12,32 +12,37 @@ sub tpot_go_off
     if( uc($reply) eq "YES" )
     { $result = `$bin_path/tpot_hv_off.py --force all`; }
     $button_off->configure(-relief => 'raised' );
-
 }
 
 sub tpot_go_safe
 {
+    $button_go_safe->configure(-relief => 'sunken' );
     $reply = $mw->messageBox(-icon => 'question', -message => 'This will put TPOT in SAFE state. Confirm ?', -title => 'TPOT HV ON', -type => 'YesNo', -default => 'No');
     if( uc($reply) eq "YES" )
     {
         $result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_safe_state.json`;
         $result = `$bin_path/tpot_hv_on.py --force all`;
     }
+    $button_go_safe->configure(-relief => 'raised' );
 }
 
 sub tpot_go_operating
 {
+    $button_go_operating->configure(-relief => 'sunken' );
     $reply = $mw->messageBox(-icon => 'question', -message => 'This will put TPOT in OPERATING state. Confirm ?', -title => 'TPOT HV ON', -type => 'YesNo', -default => 'No');
     if( uc($reply) eq "YES" )
     {
         $result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_operating_state.json`;
         $result = `$bin_path/tpot_hv_on.py --force all`;
     }
+    $button_go_operating->configure(-relief => 'raised' );
 }
 
 sub tpot_recover_trips
 {
+    $button_recover_trips->configure(-relief => 'sunken' );
     $result = `$bin_path/tpot_hv_recover_trips`;
+    $button_recover_trips->configure(-relief => 'raised' );
 }
 
 #$color1 = "#cccc99";
