@@ -59,7 +59,7 @@ def init_mask_file():
       detector_name = det + suf
       mask[detector_name] = False
   with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "w") as f:
-    json.dump(mask, f, indent=2)
+    json.dump(mask, f, indent=2, sort_keys=True)
 
 
 
@@ -151,7 +151,7 @@ def main():
         masked_data = json.load(f)
       masked_data[ch_name] = True
       with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "w") as f:
-        json.dump(masked_data, f, indent=2)
+        json.dump(masked_data, f, indent=2, sort_keys=True)
 
     else:   
       # increment number of trips, and recover channel
