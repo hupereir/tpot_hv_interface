@@ -5,25 +5,31 @@ use Tk;
 $config_path ="/home/phnxrc/hpereira/tpot_hv_interface/config";
 $bin_path = "/home/phnxrc/hpereira/tpot_hv_interface/python";
 
-sub tpot_on
+sub tpot_go_off
 {
-
-    $result = `$bin_path/tpot_hv_on.py all`;
-}
-
-sub tpot_off
-{
-    $result = `$bin_path/tpot_hv_off.py all`;
+    $reply = $mw->messageBox(-icon => 'question', -message => 'This will turn OFF all TPOT HV channels. Confirm ?', -title => 'TPOT HV OFF', -type => 'YesNo', -default => 'No');
+    if( uc($reply) eq "YES" )
+    { $result = `$bin_path/tpot_hv_off.py --force all`; }
 }
 
 sub tpot_go_safe
 {
-    $result = `$bin_path/tpot_hv_restore_state.py $config_path/tpot_hv_safe_state.json`;
+    $reply = $mw->messageBox(-icon => 'question', -message => 'This will put TPOT in SAFE state. Confirm ?', -title => 'TPOT HV ON', -type => 'YesNo', -default => 'No');
+    if( uc($reply) eq "YES" )
+    {
+	$result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_safe_state.json`;
+	$result = `$bin_path/tpot_hv_on.py --force all`;
+    }
 }
 
 sub tpot_go_operating
 {
-    $result = `$bin_path/tpot_hv_restore_state.py $config_path/tpot_hv_operating_state.json`;
+    $reply = $mw->messageBox(-icon => 'question', -message => 'This will put TPOT in OPERATING state. Confirm ?', -title => 'TPOT HV ON', -type => 'YesNo', -default => 'No');
+    if( uc($reply) eq "YES" )
+    {
+	$result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_operating_state.json`;
+	$result = `$bin_path/tpot_hv_on.py --force all`;
+    }
 }
 
 sub tpot_recover_trips
@@ -85,20 +91,16 @@ $framename = $frame{'center'}->Label(-bg => $color1, -relief=> 'raised')->pack(-
 
 $outerlabel = $framename->Label(-bg => $color1)->pack(-side =>'top', -fill=> 'x', -padx=> '1m',  -pady=> '1m');
 
-$button_open = $outerlabel->
-    Button( -bg => $buttonbgcolor, -text => "Turn TPOT ON", -command => [\&tpot_on,$b],  -relief =>'raised',  -font=> $normalfont)->
+$button_begin = $outerlabel->
+    Button(-bg => $buttonbgcolor, -text => "Turn OFF", -command => [\&tpot_go_off, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
 $button_begin = $outerlabel->
-    Button(-bg => $buttonbgcolor, -text => "Turn TPOT OFF", -command => [\&tpot_off, $b],  -relief =>'raised',  -font=> $normalfont)->
+    Button(-bg => $buttonbgcolor, -text => "Go to SAFE", -command => [\&tpot_go_safe, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
 $button_begin = $outerlabel->
-    Button(-bg => $buttonbgcolor, -text => "Go to SAFE state", -command => [\&tpot_go_safe, $b],  -relief =>'raised',  -font=> $normalfont)->
-    pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
-
-$button_begin = $outerlabel->
-    Button(-bg => $buttonbgcolor, -text => "Go to OPERATING state", -command => [\&tpot_go_operating, $b],  -relief =>'raised',  -font=> $normalfont)->
+    Button(-bg => $buttonbgcolor, -text => "Go to OPERATING", -command => [\&tpot_go_operating, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
 $button_begin = $outerlabel->
