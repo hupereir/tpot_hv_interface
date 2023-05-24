@@ -72,7 +72,7 @@ if answer == 0:
 for det_name in sorted(channel_dict.keys()):
   print( f'processing {det_name}' )
   for ch_name in sorted(channel_dict[det_name] ):
-    if masked_channels[ch_name]:
+    if ch_name in masked_channels.keys() and masked_channels[ch_name]:
       print( f'  {ch_name} is masked' )
     else:
       print( f'  {ch_name}' )
