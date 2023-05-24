@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import ctypes
-import pathlib
 import sys
 import time
 

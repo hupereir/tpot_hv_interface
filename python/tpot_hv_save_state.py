@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 import ctypes
-import pathlib
 import sys
 import time
 import json
-import re
 
 from tpot_hv_util import *
 
 print( 
   'usage: \n'
-  '  tpot_hv_save_state.py <filename>\n')
+  '  tpot_hv_save_state.py [filename]\n')
 
 if len(sys.argv) > 1:
   filename = sys.argv[1]
