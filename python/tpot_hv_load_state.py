@@ -51,14 +51,13 @@ if answer == 0:
 
 for ch_name in sorted(channel_dict.keys() ):
   print( f'processing {ch_name}' )
-  channel_data = channel_dict[ch_name]
-  print( channel_data ) 
+  channel_data=channel_dict[ch_name]
   c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'I0Set', ctypes.c_float(channel_data['i0set']) )
   c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'V0Set', ctypes.c_float(channel_data['v0set']) )
-  c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'Rup', ctypes.c_float(channel_data['rup']) )
-  c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'RDwn', ctypes.c_float(channel_data['rdwn']) )
+  c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'RUp', ctypes.c_float(channel_data['rup']) )
+  c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'RDWn', ctypes.c_float(channel_data['rdwn']) )
   c_lib.set_parameter_float( bytes(ch_name,'ascii'), b'Trip', ctypes.c_float(channel_data['trip']) )
-  time.sleep(1)
+  time.sleep(0.1)
 
 #disconnect
 c_lib.disconnect_from_interface()
