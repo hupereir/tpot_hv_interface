@@ -7,11 +7,12 @@ $bin_path = "/home/phnxrc/hpereira/tpot_hv_interface/python";
 
 sub tpot_go_off
 {
-    $button_off->configure(-bg = $graycolor );
+    $button_off->configure(-relief => 'sunken' );
     $reply = $mw->messageBox(-icon => 'question', -message => 'This will turn OFF all TPOT HV channels. Confirm ?', -title => 'TPOT HV OFF', -type => 'YesNo', -default => 'No');
     if( uc($reply) eq "YES" )
     { $result = `$bin_path/tpot_hv_off.py --force all`; }
-    $button_off->configure(-bg = $buttonbgcolor );
+    $button_off->configure(-relief => 'raised' );
+
 }
 
 sub tpot_go_safe
