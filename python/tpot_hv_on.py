@@ -28,7 +28,7 @@ def read_mask( filename ):
   
   if not os.path.isfile(filename):
     print(f'{filename} does not exist')
-    return []
+    return {}
 
   # open file
   f = open( filename )
@@ -40,9 +40,10 @@ def read_mask( filename ):
   return masked_channels
 
 if args.mask:
+  print( f'will not turn on channels found in {args.mask}' )
   masked_channels = read_mask(args.mask)
 else:
-  masked_channels = []
+  masked_channels = {}
 
 # get channel names
 channel_dict = parse_arguments( args.channels )
@@ -71,8 +72,8 @@ if answer == 0:
 for det_name in sorted(channel_dict.keys()):
   print( f'processing {det_name}' )
   for ch_name in sorted(channel_dict[det_name] ):
-    if ch_name in masked_channels:
-      print( f'  {ch_name} - masked' )
+    if masked_channels[ch_name]:
+      print( f'  {ch_name} is masked' )
     else:
       print( f'  {ch_name}' )
       c_lib.set_channel_on( bytes(ch_name,'ascii'),1 )
