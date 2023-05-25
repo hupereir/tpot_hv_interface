@@ -7,6 +7,8 @@
 #include <sstream>
 
 static Connection m_connection;
+static CAENHVRESULT m_last_reply = CAENHV_OK;
+
 static std::string m_json_output;
 
 //___________________________________________
@@ -39,7 +41,7 @@ bool set_parameter_unsigned( const char* name, const char* parname, unsigned int
   if( slot >= 0 ) 
   {
     // assign value, return result
-    return set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, parname, value ) == CAENHV_OK;
+    return ( m_last_reply = set_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, parname, value ) ) == CAENHV_OK;
   } else {
     // channel not found
     std::cout << "set_parameter_unsigned - channel not found: " << name << std::endl;
@@ -57,7 +59,7 @@ bool set_parameter_float( const char* name, const char* parname, float value )
   if( slot >= 0 ) 
   {
     // assign value, return result
-    return set_parameter_value<float>( m_connection.get_handle(), slot, channel, parname, value ) == CAENHV_OK;
+    return ( m_last_reply = set_parameter_value<float>( m_connection.get_handle(), slot, channel, parname, value ) ) == CAENHV_OK;
   } else {
     // channel not found
     std::cout << "set_parameter_float - channel not found: " << name << std::endl;
@@ -76,8 +78,8 @@ unsigned int get_parameter_unsigned( const char* name, const char* parname )
   {
     // read value, check result
     const auto result = get_parameter_value<unsigned int>( m_connection.get_handle(), slot, channel, parname);
-    const auto reply = result.first;
-    if( reply != CAENHV_OK )
+    m_last_reply = result.first;
+    if( m_last_reply != CAENHV_OK )
     {
       std::cout << "get_parameter_unsigned - parname: " << parname << " failed" << std::endl;
       return 0;
@@ -100,8 +102,8 @@ float get_parameter_float( const char* name, const char* parname )
   {
     // read value, check result
     const auto result = get_parameter_value<float>( m_connection.get_handle(), slot, channel, parname);
-    const auto reply = result.first;
-    if( reply != CAENHV_OK )
+    m_last_reply = result.first;
+    if( m_last_reply != CAENHV_OK )
     {
       std::cout << "get_parameter_float - parname: " << parname << " failed" << std::endl;
       return 0;
@@ -126,18 +128,18 @@ Result<std::vector<std::string>> get_channel_names( int handle, const Slot& slot
   std::unique_ptr<name_t, Deleter> names(static_cast<name_t*>(malloc(channels.size()*MAX_CH_NAME)));
   
   // get channel names
-  const auto reply = CAENHV_GetChName(handle, slot.m_id, channels.size(), &channels[0], names.get() );
-  if( reply != CAENHV_OK ) 
+  m_last_reply = CAENHV_GetChName(handle, slot.m_id, channels.size(), &channels[0], names.get() );
+  if( m_last_reply != CAENHV_OK ) 
   {
-    std::cout << "get_channel_names - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
-    return {reply, std::vector<std::string>()};
+    std::cout << "get_channel_names - failed. reply: " << std::hex << "0x" << m_last_reply << std::dec << std::endl;
+    return {m_last_reply, std::vector<std::string>()};
   }
   
   std::vector<std::string> out;
   for( int i = 0; i < channels.size(); ++i )
   { out.push_back( names.get()[i] ); }
   
-  return {reply, out};
+  return {m_last_reply, out};
 }  
 
 //_____________________________________________________
@@ -153,15 +155,15 @@ Slot::List get_slots()
   safe_array<unsigned char> firmware_min_list;
   safe_array<unsigned char> firmware_max_list;
   
-  const auto reply = CAENHV_GetCrateMap(
+  m_last_reply = CAENHV_GetCrateMap(
     m_connection.get_handle(), 
     &n_slots, &n_channels_list.get(), &model_list.get(), 
     &description_list.get(), &serial_list.get(),
     &firmware_min_list.get(), &firmware_max_list.get() );
   
-  if( reply != CAENHV_OK ) 
+  if( m_last_reply != CAENHV_OK ) 
   {
-    std::cout << "get_slots - failed. reply: " << std::hex << "0x" << reply << std::dec << std::endl;
+    std::cout << "get_slots - failed. reply: " << std::hex << "0x" << m_last_reply << std::dec << std::endl;
     return Slot::List();
   }
   
@@ -192,9 +194,9 @@ Channel::List get_channels( const Slot& slot )
   // get all channel names
   const auto handle = m_connection.get_handle();
   const auto result = get_channel_names( handle, slot );
-  auto reply = result.first;
+  m_last_reply = result.first;
   const auto& names = result.second;
-  if( !( reply == CAENHV_OK && names.size() == slot.m_nchannels ) )
+  if( !( m_last_reply == CAENHV_OK && names.size() == slot.m_nchannels ) )
   { return Channel::List(); }
     
   // create channels, assign id and name
@@ -206,17 +208,17 @@ Channel::List get_channels( const Slot& slot )
   }
 
   // assign vmax, v0set, i0set, vmon, imon, status and trop, check success at each stage
-  if( (reply = assign<float, &Channel::m_svmax>( handle, slot, channels, "SVMax" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<float, &Channel::m_v0set>( handle, slot, channels, "V0Set" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<float, &Channel::m_i0set>( handle, slot, channels, "I0Set" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<float, &Channel::m_rup>( handle, slot, channels, "RUp" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<float, &Channel::m_rdwn>( handle, slot, channels, "RDWn" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<float, &Channel::m_trip>( handle, slot, channels, "Trip" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<float, &Channel::m_vmon>( handle, slot, channels, "VMon" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<float, &Channel::m_imon>( handle, slot, channels, "IMon" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<unsigned int, &Channel::m_status>( handle, slot, channels, "Status" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<unsigned int, &Channel::m_trip_int>( handle, slot, channels, "TripInt" )) != CAENHV_OK ) return channels;
-  if( (reply = assign<unsigned int, &Channel::m_trip_ext>( handle, slot, channels, "TripExt" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_svmax>( handle, slot, channels, "SVMax" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_v0set>( handle, slot, channels, "V0Set" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_i0set>( handle, slot, channels, "I0Set" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_rup>( handle, slot, channels, "RUp" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_rdwn>( handle, slot, channels, "RDWn" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_trip>( handle, slot, channels, "Trip" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_vmon>( handle, slot, channels, "VMon" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<float, &Channel::m_imon>( handle, slot, channels, "IMon" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<unsigned int, &Channel::m_status>( handle, slot, channels, "Status" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<unsigned int, &Channel::m_trip_int>( handle, slot, channels, "TripInt" )) != CAENHV_OK ) return channels;
+  if( (m_last_reply = assign<unsigned int, &Channel::m_trip_ext>( handle, slot, channels, "TripExt" )) != CAENHV_OK ) return channels;
   
   return channels;  
 }
@@ -256,4 +258,4 @@ const char* get_channel_status()
 
 //__________________________________________________
 bool last_command_successful() 
-{ return m_connection.is_connected() && m_connection.get_reply() == CAENHV_OK; }
+{ return m_connection.is_connected() && m_last_reply == CAENHV_OK; }

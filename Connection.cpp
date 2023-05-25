@@ -10,7 +10,7 @@ Connection::~Connection()
 { disconnect(); }
   
 //_____________________________________________________
-void Connection::connect(
+CAENHVRESULT Connection::connect(
   const std::string& ip_address, 
   const std::string& username,
   const std::string& password)
@@ -18,15 +18,17 @@ void Connection::connect(
   if( m_connected ) 
   {
     std::cout << "Connection::connect - already connected" << std::endl;
-    return;
+    return CAENHV_OK;
   }
 
   std::cout << "connecting to interface at " << ip_address << std::endl;
-  m_reply = CAENHV_InitSystem( m_type, m_link_type, 
+  auto reply = CAENHV_InitSystem( m_type, m_link_type, 
     const_cast<char*>(ip_address.c_str()),
     username.c_str(), password.c_str(), &m_handle );
-  m_connected = (m_reply==CAENHV_OK);
+  m_connected = (reply==CAENHV_OK);
   if( m_connected ) build_channel_map();
+  
+  return reply;
 }
 
 //_____________________________________________________

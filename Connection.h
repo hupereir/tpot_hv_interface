@@ -17,7 +17,7 @@ class Connection
     ~Connection();
 
     //! connect
-    void connect(       
+    CAENHVRESULT connect(       
       const std::string& /* ip */,
       const std::string& /* user */,
       const std::string& /* password */);
@@ -28,11 +28,7 @@ class Connection
     //! valid
     bool is_connected() const
     { return m_connected; }
-    
-    //! reply from last command
-    CAENHVRESULT get_reply() const
-    { return m_reply; }
- 
+         
     //! get handle
     int get_handle() const 
     { return m_handle; }
@@ -51,9 +47,6 @@ class Connection
     
     //! connection handle
     int m_handle = -1;
-    
-    //! last command reply
-    CAENHVRESULT m_reply = 0;
     
     //!@name connection details
     //@{
