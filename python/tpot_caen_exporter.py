@@ -123,6 +123,16 @@ def hv_channel_information(verbose=False):
         if 'ch_on' not in metrics:
             metrics['ch_on'] = Gauge(f'{metric_prefix}_ch_on', 'channel ON (boolean)', list(channel_label.keys()), registry=registry)
         metrics['ch_on'].labels(**channel_label).set(bool(channel['status']&1))
+
+        # special channel_on property, from status
+        if 'ch_rup' not in metrics:
+            metrics['ch_rup'] = Gauge(f'{metric_prefix}_ch_rup', 'channel RUP (boolean)', list(channel_label.keys()), registry=registry)
+        metrics['ch_rup'].labels(**channel_label).set(bool(channel['status']&(1<<1)))
+
+        # special channel_on property, from status
+        if 'ch_rdwn' not in metrics:
+            metrics['ch_rdwn'] = Gauge(f'{metric_prefix}_ch_rdwn', 'channel RDWN (boolean)', list(channel_label.keys()), registry=registry)
+        metrics['ch_rdwn'].labels(**channel_label).set(bool(channel['status']&(1<<2)))
   
         # special channel_trip property, from status
         if 'trip' not in metrics:
