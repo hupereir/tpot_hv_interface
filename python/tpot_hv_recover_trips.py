@@ -10,14 +10,6 @@ import datetime
 
 from tpot_hv_util import *
 
-parser = argparse.ArgumentParser(
-                    prog = 'tpot_hv_recover_trips',
-                    description = 'Recovers tripped channel in TPOT',
-                    epilog = '')
-parser.add_argument('-f', '--force', action='store_true', help='do not ask for confirmation')
-
-args = parser.parse_args()
-
 ### read trip data from log
 def read_trip_data( filename ):
   
@@ -61,9 +53,15 @@ def init_mask_file():
   with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "w") as f:
     json.dump(mask, f, indent=2, sort_keys=True)
 
-
-
 def main():
+  
+  parser = argparse.ArgumentParser(
+                      prog = 'tpot_hv_recover_trips',
+                      description = 'Recovers tripped channel in TPOT',
+                      epilog = '')
+  parser.add_argument('-f', '--force', action='store_true', help='do not ask for confirmation')
+  args = parser.parse_args()
+
   # Load trip data
   trip_log_filename = '/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_trips.json'
   trip_data = read_trip_data( trip_log_filename )
