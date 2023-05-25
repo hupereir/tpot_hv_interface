@@ -1,6 +1,7 @@
 #! /usr/bin/perl
 
 use Tk;
+require Tk::Dialog;
 
 $config_path ="/home/phnxrc/hpereira/tpot_hv_interface/config";
 $bin_path = "/home/phnxrc/hpereira/tpot_hv_interface/python";
@@ -8,7 +9,10 @@ $bin_path = "/home/phnxrc/hpereira/tpot_hv_interface/python";
 sub tpot_go_off
 {
     $button_off->configure(-relief => 'sunken' );
-    $reply = $mw->messageBox(-icon => 'question', -message => 'This will turn OFF all TPOT HV channels. Confirm ?', -title => 'TPOT HV OFF', -type => 'YesNo', -default => 'No');
+    $reply = $mw->Dialog( 
+        -text => 'This will turn OFF all TPOT HV channels. Confirm ?', 
+        -title => 'TPOT HV OFF', 
+        -buttons => ['Yes', 'No'], -default_button => 'No' )->Show( -popover => 'cursor');
     if( uc($reply) eq "YES" )
     { $result = `$bin_path/tpot_hv_off.py --force all`; }
     $button_off->configure(-relief => 'raised' );
@@ -17,7 +21,10 @@ sub tpot_go_off
 sub tpot_go_safe
 {
     $button_go_safe->configure(-relief => 'sunken' );
-    $reply = $mw->messageBox(-icon => 'question', -message => 'This will put TPOT in SAFE state. Confirm ?', -title => 'TPOT HV ON', -type => 'YesNo', -default => 'No');
+    $reply = $mw->Dialog(
+        -text => 'This will put TPOT in SAFE state. Confirm ?', 
+        -title => 'TPOT HV SAFE', 
+        -buttons => ['Yes', 'No'], -default_button => 'No' )->Show( -popover => 'cursor');
     if( uc($reply) eq "YES" )
     {
         $result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_safe_state.json`;
@@ -29,7 +36,10 @@ sub tpot_go_safe
 sub tpot_go_operating
 {
     $button_go_operating->configure(-relief => 'sunken' );
-    $reply = $mw->messageBox(-icon => 'question', -message => 'This will put TPOT in OPERATING state. Confirm ?', -title => 'TPOT HV ON', -type => 'YesNo', -default => 'No');
+    $reply = $mw->Dialog(
+        -text => 'This will turn ON all TPOT HV channels. Confirm ?', 
+        -title => 'TPOT HV ON', 
+        -buttons => ['Yes', 'No'], -default_button => 'No' )->Show( -popover => 'cursor');
     if( uc($reply) eq "YES" )
     {
         $result = `$bin_path/tpot_hv_restore_state.py --force $config_path/tpot_hv_operating_state.json`;
@@ -41,7 +51,14 @@ sub tpot_go_operating
 sub tpot_recover_trips
 {
     $button_recover_trips->configure(-relief => 'sunken' );
-    $result = `$bin_path/tpot_hv_recover_trips.py --force`;
+    $reply = $mw->Dialog(
+        -text => 'This will recover TPOT tripped channels. Confirm ?', 
+        -title => 'TPOT Recover Trips', 
+        -buttons => ['Yes', 'No'], -default_button => 'Yes' )->Show( -popover => 'cursor');
+    if( uc($reply) eq "YES" )
+    {
+        $result = `$bin_path/tpot_hv_recover_trips.py --force`;
+    }
     $button_recover_trips->configure(-relief => 'raised' );
 }
 
@@ -75,26 +92,23 @@ $label{'sline'} = $mw->Label(-text => "TPOT HV Control", -background=>$slinebg, 
 $label{'sline'}->pack(-side=> 'top', -fill=> 'x', -ipadx=> '15m', -ipady=> '1m');
 
 $frame{'center'} = $mw->Frame()->pack(-side => 'top', -fill => 'x');
-$framename = $frame{'center'}->Label(-bg => $color1, -relief=> 'raised')->pack(-side =>'left', -fill=> 'x', -ipadx=>'15m');
+$framebutton = $frame{'center'}->Label(-bg => $color1, -relief=> 'raised')->pack(-side =>'top', -fill=> 'x', -ipadx=>'15m');
 
-$outerlabel = $framename->Label(-bg => $color1)->pack(-side =>'top', -fill=> 'x', -padx=> '1m',  -pady=> '1m');
-
-$button_off = $outerlabel->
+$button_off = $framebutton->
     Button(-bg => $buttonbgcolor, -text => "Turn OFF", -command => [\&tpot_go_off, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_go_safe = $outerlabel->
+$button_go_safe = $framebutton->
     Button(-bg => $buttonbgcolor, -text => "Go to SAFE", -command => [\&tpot_go_safe, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_go_operating = $outerlabel->
+$button_go_operating = $framebutton->
     Button(-bg => $buttonbgcolor, -text => "Turn ON", -command => [\&tpot_go_operating, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_recover_trips = $outerlabel->
+$button_recover_trips = $framebutton->
     Button(-bg => $buttonbgcolor, -text => "Recover trips", -command => [\&tpot_recover_trips, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
-
 
 MainLoop();
 
