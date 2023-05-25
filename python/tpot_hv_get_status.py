@@ -4,21 +4,23 @@ import sys
 import time
 import json
 import re
+import argparse
 
 from tpot_hv_util import *
 
-# usage
-if len(sys.argv) == 1:
-  print(
-    'usage: \n'
-    '  tpot_hv_get_status.py south|north|all|<detector names>|<channel names>\n'
-    '\nwith\n'
-    '  <detector names>: a list of detectors for which to get the status, e.g. NCOP SEW ...\n'
-    '  <channel names> : a list of single channels to turn on, e.g. NCOP_D SEW_R1 ...')
-  exit(0)
+# parse arguments
+parser = argparse.ArgumentParser(
+  prog = 'tpot_hv_get_status',
+  description = 'print HV status for selected channels',
+  epilog = '')
+
+parser.add_argument(
+  'channels', 
+   help='a list of detectors to turn on, e.g. NCOP SEW, or individual channels, e.g  NCOP_D SEW_R1, or south|north|all',
+   nargs='+' )
 
 # get channel names
-channel_dict = parse_arguments( sys.argv[1:] )
+channel_dict = parse_arguments( args.channels )
 
 # store selected channels
 selected_channels = set()
@@ -52,6 +54,9 @@ count_total = 0;
 count_good = 0;
 
 # loop over channels
+
+print( 'slot_id ch_id ch_name v0set  i0set  rup  rdwn trip vmon   imon    status' )
+
 for channel_raw in channels_raw:
 
   # parse json string
@@ -67,17 +72,17 @@ for channel_raw in channels_raw:
     if channel['v0set'] >= 399 and channel['status'] == 1:
       count_good = count_good+1
 
-  print( '{ "slot_id": %2i, '
-         '"ch_id": %2i, '
-         '"ch_name": "%7s", '
-         '"v0set": %6.2f, '
-         '"i0set": %6.2f, '
-         '"rup": %4.0f, '
-         '"rdwn": %4.0f, '
-         '"trip": %4.0f, '
-         '"vmon": %6.2f, '
-         '"imon": %7.3f, '
-         '"status": "%5s" }'
+  print( '%7i '
+         '%5i '
+         '%7s '
+         '%6.2f '
+         '%6.2f '
+         '%4.0f '
+         '%4.0f '
+         '%4.0f '
+         '%6.2f '
+         '%7.3f '
+         '%6s '
          % (channel['slot_id'],channel['ch_id'],
             channel['ch_name'],
             channel['v0set'],
