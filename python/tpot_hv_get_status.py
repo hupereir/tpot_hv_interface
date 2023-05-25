@@ -18,6 +18,7 @@ parser.add_argument(
   'channels', 
    help='a list of detectors to turn on, e.g. NCOP SEW, or individual channels, e.g  NCOP_D SEW_R1, or south|north|all',
    nargs='+' )
+args = parser.parse_args()
 
 # get channel names
 channel_dict = parse_arguments( args.channels )
@@ -55,7 +56,7 @@ count_good = 0;
 
 # loop over channels
 
-print( 'slot_id ch_id ch_name v0set  i0set  rup  rdwn trip vmon   imon    status' )
+print( 'slot_id ch_id ch_name   v0set  i0set  rup rdwn trip    vmon    imon  status' )
 
 for channel_raw in channels_raw:
 
@@ -74,16 +75,17 @@ for channel_raw in channels_raw:
 
   print( '%7i '
          '%5i '
-         '%7s '
+         '%7s  '
          '%6.2f '
          '%6.2f '
          '%4.0f '
          '%4.0f '
-         '%4.0f '
+         '%4.0f  '
          '%6.2f '
          '%7.3f '
          '%6s '
-         % (channel['slot_id'],channel['ch_id'],
+         % (channel['slot_id'],
+            channel['ch_id'],
             channel['ch_name'],
             channel['v0set'],
             channel['i0set'],
