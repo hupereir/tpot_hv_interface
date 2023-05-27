@@ -32,7 +32,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 370
+    "v0set": 360
   },
   "NCIZ_D": {
     "i0set": 2,
@@ -123,7 +123,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 430
+    "v0set": 410
   },
   "NCOZ_R3": {
     "i0set": 2,
@@ -256,7 +256,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 430
+    "v0set": 410
   },
   "NWZ_R2": {
     "i0set": 2,
@@ -396,14 +396,14 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 410
+    "v0set": 400
   },
   "SCOZ_R2": {
     "i0set": 3,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 410
+    "v0set": 400
   },
   "SCOZ_R3": {
     "i0set": 2,
