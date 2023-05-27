@@ -34,7 +34,7 @@ def write_trip_data( filename, trip_data ):
   f = open( filename, 'w' )
 
   # parse with JSON
-  f.write(json.dumps(trip_data,indent=2)) 
+  f.write(json.dumps(trip_data,indent=2,sort_keys=True)) 
   
   f.close()
   return
