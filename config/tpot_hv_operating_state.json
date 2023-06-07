@@ -4,7 +4,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NCIP_R1": {
     "i0set": 2,
@@ -39,7 +39,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NCIZ_R1": {
     "i0set": 3,
@@ -74,7 +74,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NCOP_R1": {
     "i0set": 2,
@@ -109,7 +109,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NCOZ_R1": {
     "i0set": 2,
@@ -144,7 +144,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NEP_R1": {
     "i0set": 2,
@@ -179,7 +179,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NEZ_R1": {
     "i0set": 5,
@@ -214,7 +214,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NWP_R1": {
     "i0set": 2,
@@ -249,7 +249,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "NWZ_R1": {
     "i0set": 3,
@@ -284,7 +284,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SCIP_R1": {
     "i0set": 2,
@@ -319,7 +319,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SCIZ_R1": {
     "i0set": 2,
@@ -354,7 +354,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SCOP_R1": {
     "i0set": 2,
@@ -389,7 +389,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SCOZ_R1": {
     "i0set": 3,
@@ -424,7 +424,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SEP_R1": {
     "i0set": 2,
@@ -459,7 +459,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SEZ_R1": {
     "i0set": 2,
@@ -494,7 +494,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SWP_R1": {
     "i0set": 2,
@@ -529,7 +529,7 @@
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
-    "v0set": 100
+    "v0set": 300
   },
   "SWZ_R1": {
     "i0set": 2,
