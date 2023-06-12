@@ -119,11 +119,11 @@
     "v0set": 400
   },
   "NCOZ_R2": {
-    "i0set": 2,
+    "i0set": 5,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 320
   },
   "NCOZ_R3": {
     "i0set": 2,
@@ -557,6 +557,6 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 370
+    "v0set": 200
   }
 }
