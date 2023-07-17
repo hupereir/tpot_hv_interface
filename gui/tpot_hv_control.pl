@@ -6,6 +6,10 @@ require Tk::Dialog;
 $config_path ="/home/phnxrc/hpereira/tpot_hv_interface/config";
 $bin_path = "/home/phnxrc/hpereira/tpot_hv_interface/python";
 
+# binaries for LV control
+$bin_lv_path = "/home/phnxrc/hpereira/tpot_lv_interface";
+
+##########################################3
 sub tpot_go_off
 {
     $button_off->configure(-relief => 'sunken' );
@@ -18,6 +22,7 @@ sub tpot_go_off
     $button_off->configure(-relief => 'raised' );
 }
 
+##########################################3
 sub tpot_go_safe
 {
     $button_go_safe->configure(-relief => 'sunken' );
@@ -33,6 +38,7 @@ sub tpot_go_safe
     $button_go_safe->configure(-relief => 'raised' );
 }
 
+##########################################3
 sub tpot_go_operating
 {
     $button_go_operating->configure(-relief => 'sunken' );
@@ -48,6 +54,7 @@ sub tpot_go_operating
     $button_go_operating->configure(-relief => 'raised' );
 }
 
+##########################################3
 sub tpot_recover_trips
 {
     $button_recover_trips->configure(-relief => 'sunken' );
@@ -58,6 +65,21 @@ sub tpot_recover_trips
     if( uc($reply) eq "YES" )
     {
         $result = `$bin_path/tpot_hv_recover_trips.py --force`;
+    }
+    $button_recover_trips->configure(-relief => 'raised' );
+}
+
+##########################################3
+sub tpot_recover_fee_links
+{
+    $button_recover_trips->configure(-relief => 'sunken' );
+    $reply = $mw->Dialog(
+        -text => 'This will recover TPOT FEE links. Confirm ?', 
+        -title => 'TPOT Recover FEE Links', 
+        -buttons => ['Yes', 'No'], -default_button => 'Yes' )->Show( -popover => 'cursor');
+    if( uc($reply) eq "YES" )
+    {
+        $result = `$bin_lv_path/tpot_lv_recover_fee_links.py --force`;
     }
     $button_recover_trips->configure(-relief => 'raised' );
 }
@@ -86,9 +108,9 @@ $mw = MainWindow->new();
 $smallfont = $mw->fontCreate('code', -family => 'fixed',-size => 10);
 
 
-$mw->title("TPOT HV Control");
+$mw->title("TPOT LV and HV Control");
 
-$label{'sline'} = $mw->Label(-text => "TPOT HV Control", -background=>$slinebg, -font =>$bigfont);
+$label{'sline'} = $mw->Label(-text => "TPOT LV and HV Control", -background=>$slinebg, -font =>$bigfont);
 $label{'sline'}->pack(-side=> 'top', -fill=> 'x', -ipadx=> '15m', -ipady=> '1m');
 
 $frame{'center'} = $mw->Frame()->pack(-side => 'top', -fill => 'x');
@@ -108,6 +130,10 @@ $button_go_operating = $framebutton->
 
 $button_recover_trips = $framebutton->
     Button(-bg => $buttonbgcolor, -text => "Recover trips", -command => [\&tpot_recover_trips, $b],  -relief =>'raised',  -font=> $normalfont)->
+    pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
+
+$button_recover_fee_links = $framebutton->
+    Button(-bg => $buttonbgcolor, -text => "Recover FEE links", -command => [\&tpot_recover_fee_links, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
 MainLoop();
