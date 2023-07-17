@@ -72,7 +72,7 @@ sub tpot_recover_trips
 ##########################################3
 sub tpot_recover_fee_links
 {
-    $button_recover_trips->configure(-relief => 'sunken' );
+    $button_recover_fee_links->configure(-relief => 'sunken' );
     $reply = $mw->Dialog(
         -text => 'This will recover TPOT FEE links. Confirm ?', 
         -title => 'TPOT Recover FEE Links', 
@@ -81,7 +81,7 @@ sub tpot_recover_fee_links
     {
         $result = `$bin_lv_path/tpot_lv_recover_fee_links.py --force`;
     }
-    $button_recover_trips->configure(-relief => 'raised' );
+    $button_recover_fee_links->configure(-relief => 'raised' );
 }
 
 #$color1 = "#cccc99";
