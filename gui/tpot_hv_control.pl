@@ -16,7 +16,6 @@ sub tpot_go_off
     $reply = $mw->Dialog( 
         -text => 'This will turn OFF all TPOT HV channels. Confirm ?', 
         -title => 'TPOT HV OFF', 
- 	-bitmap => 'question',
 	-buttons => ['Yes', 'No'], -default_button => 'No' )->Show( -popover => 'cursor');
     if( uc($reply) eq "YES" )
     { $result = `$bin_path/tpot_hv_off.py --force all`; }
@@ -30,7 +29,6 @@ sub tpot_go_safe
     $reply = $mw->Dialog(
         -text => 'This will put TPOT in SAFE state. Confirm ?', 
         -title => 'TPOT HV SAFE', 
-	-bitmap => 'question',
         -buttons => ['Yes', 'No'], -default_button => 'No' )->Show( -popover => 'cursor');
     if( uc($reply) eq "YES" )
     {
@@ -47,7 +45,6 @@ sub tpot_go_operating
     $reply = $mw->Dialog(
         -text => 'This will turn ON all TPOT HV channels. Confirm ?', 
         -title => 'TPOT HV ON', 
-	-bitmap => 'question',
         -buttons => ['Yes', 'No'], -default_button => 'No' )->Show( -popover => 'cursor');
     if( uc($reply) eq "YES" )
     {
@@ -64,7 +61,6 @@ sub tpot_recover_trips
     $reply = $mw->Dialog(
         -text => 'This will recover TPOT tripped channels. Confirm ?', 
         -title => 'TPOT Recover Trips',
-	-bitmap => 'question',
         -buttons => ['Yes', 'No'], -default_button => 'Yes' )->Show( -popover => 'cursor');
     if( uc($reply) eq "YES" )
     {
@@ -87,23 +83,24 @@ sub tpot_recover_fee_links
     if( $vgtm_is_running )
     {
 	$reply = $mw->Dialog(
-	    -text => 'There seems to be a run ongoing. It is recommended to either stop the run or wait for the end of the current run before recovering lost fee links.', 
+	    -text => 'There seems to be a run ongoing. Recovering FEE links requires to either stop the current run, or wait for the end of the current run.', 
 	    -title => 'TPOT Recover FEE Links', 
 	    -bitmap => 'warning',
 	    -buttons => ['Ok'], -default_button => 'Ok')->Show( -popover => 'cursor');
+	$button_recover_fee_links->configure(-relief => 'raised' );
+	return;
+    } else {
+	# ask for confirmation
+	$reply = $mw->Dialog(
+	    -text => 'This will recover TPOT FEE links. Confirm ?', 
+	    -title => 'TPOT Recover FEE Links', 
+	    -buttons => ['Yes', 'No'], -default_button => 'Yes')->Show( -popover => 'cursor');
+	if( uc($reply) eq "YES" )
+	{
+	    $result = `$bin_lv_path/tpot_lv_recover_fee_links.py --force`;
+	}
+	$button_recover_fee_links->configure(-relief => 'raised' );
     }
-
-    # ask for confirmation
-    $reply = $mw->Dialog(
-        -text => 'This will recover TPOT FEE links. Confirm ?', 
-        -title => 'TPOT Recover FEE Links', 
-	-bitmap => 'question',
-        -buttons => ['Yes', 'No'], -default_button => 'Yes')->Show( -popover => 'cursor');
-    if( uc($reply) eq "YES" )
-    {
-        $result = `$bin_lv_path/tpot_lv_recover_fee_links.py --force`;
-    }
-    $button_recover_fee_links->configure(-relief => 'raised' );
 }
 
 #$color1 = "#cccc99";
@@ -151,7 +148,7 @@ $button_go_operating = $framebutton->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
 $button_recover_trips = $framebutton->
-    Button(-bg => $buttonbgcolor, -text => "Recover trips", -command => [\&tpot_recover_trips, $b],  -relief =>'raised',  -font=> $normalfont)->
+    Button(-bg => $buttonbgcolor, -text => "Recover High Voltage trips", -command => [\&tpot_recover_trips, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
 $button_recover_fee_links = $framebutton->
