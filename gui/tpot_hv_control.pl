@@ -3,11 +3,11 @@
 use Tk;
 require Tk::Dialog;
 
-$config_path ="/home/phnxrc/hpereira/tpot_hv_interface/config";
-$bin_path = "/home/phnxrc/hpereira/tpot_hv_interface/python";
+$config_path ="/home/phnxrc/operations/TPOT/tpot_hv_interface/config";
+$bin_path = "/home/phnxrc/operations/TPOT/tpot_hv_interface/python";
 
 # binaries for LV control
-$bin_lv_path = "/home/phnxrc/hpereira/tpot_lv_interface";
+$bin_lv_path = "/home/phnxrc/operations/TPOT/tpot_lv_interface";
 
 ##########################################3
 sub tpot_go_off
