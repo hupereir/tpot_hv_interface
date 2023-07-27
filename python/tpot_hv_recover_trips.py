@@ -50,7 +50,7 @@ def init_mask_file():
     for suf in suffixes:
       detector_name = det + suf
       mask[detector_name] = False
-  with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "w") as f:
+  with open("/home/phnxrc/operations/TPOT/tpot_hv_interface/config/tpot_mask.json", "w") as f:
     json.dump(mask, f, indent=2, sort_keys=True)
 
 def main():
@@ -63,11 +63,11 @@ def main():
   args = parser.parse_args()
 
   # Load trip data
-  trip_log_filename = '/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_trips.json'
+  trip_log_filename = '/home/phnxrc/operations/TPOT/tpot_hv_interface/config/tpot_trips.json'
   trip_data = read_trip_data( trip_log_filename )
 
   # Load the shared library into ctypes
-  path = "/home/phnxrc/hpereira/lib"
+  path = "/home/phnxrc/operations/TPOT/lib"
   libname = f"{path}/libtpot_hv_interface.so"
   c_lib = ctypes.CDLL(libname)
   c_lib.get_channel_status.restype = ctypes.c_char_p
@@ -146,10 +146,10 @@ def main():
       
       # Updating mask file
       masked_data = None
-      with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "r") as f:
+      with open("/home/phnxrc/operations/TPOT/tpot_hv_interface/config/tpot_mask.json", "r") as f:
         masked_data = json.load(f)
       masked_data[ch_name] = True
-      with open("/home/phnxrc/hpereira/tpot_hv_interface/config/tpot_mask.json", "w") as f:
+      with open("/home/phnxrc/operations/TPOT/tpot_hv_interface/config/tpot_mask.json", "w") as f:
         json.dump(masked_data, f, indent=2, sort_keys=True)
 
     else:   

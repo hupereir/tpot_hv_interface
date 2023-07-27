@@ -34,7 +34,7 @@ def main():
     exit(0)
 
   # Load the shared library into ctypes
-  path = "/home/phnxrc/hpereira/lib"
+  path = "/home/phnxrc/operations/TPOT/lib"
   libname = f"{path}/libtpot_hv_interface.so"
   c_lib = ctypes.CDLL(libname)
   c_lib.get_channel_status.restype = ctypes.c_char_p
