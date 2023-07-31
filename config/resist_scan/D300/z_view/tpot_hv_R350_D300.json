@@ -1,0 +1,562 @@
+{
+  "NCIP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NCIP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NCIP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NCIP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NCIP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 360
+  },
+  "NCIZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NCIZ_R1": {
+    "i0set": 3,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NCIZ_R2": {
+    "i0set": 4,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NCIZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NCIZ_R4": {
+    "i0set": 3,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NCOP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NCOP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NCOP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NCOP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NCOP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NCOZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NCOZ_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NCOZ_R2": {
+    "i0set": 5,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NCOZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NCOZ_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NEP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NEP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NEP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NEP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NEP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NEZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NEZ_R1": {
+    "i0set": 5,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NEZ_R2": {
+    "i0set": 5,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NEZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NEZ_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NWP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NWP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NWP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NWP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NWP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "NWZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "NWZ_R1": {
+    "i0set": 3,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NWZ_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NWZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "NWZ_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCIP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SCIP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SCIP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SCIP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SCIP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SCIZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SCIZ_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCIZ_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCIZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCIZ_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCOP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SCOP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SCOP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SCOP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SCOP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 380
+  },
+  "SCOZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SCOZ_R1": {
+    "i0set": 3,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCOZ_R2": {
+    "i0set": 3,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCOZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SCOZ_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SEP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SEP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SEP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SEP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SEP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SEZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SEZ_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SEZ_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SEZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SEZ_R4": {
+    "i0set": 3,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SWP_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SWP_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SWP_R2": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SWP_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SWP_R4": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 400
+  },
+  "SWZ_D": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 10,
+    "trip": 10,
+    "v0set": 300
+  },
+  "SWZ_R1": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SWZ_R2": {
+    "i0set": 8,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SWZ_R3": {
+    "i0set": 2,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  },
+  "SWZ_R4": {
+    "i0set": 5,
+    "rdwn": 20,
+    "rup": 5,
+    "trip": 10,
+    "v0set": 350
+  }
+}
