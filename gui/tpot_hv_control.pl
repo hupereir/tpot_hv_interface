@@ -185,20 +185,19 @@ $mw->title("TPOT LV and HV Control");
 $label = $mw->Label(-text => "TPOT High Voltage (HV) Control", -background=>$slinebg, -font =>$bigfont);
 $label->pack(-side=> 'top', -fill=> 'x', -ipadx=> '15m', -ipady=> '1m');
 
-$framebutton = $mw->Frame()->pack(-side => 'top', -fill => 'x');
-$button_hv_off = $framebutton->
-    Button(-bg => $buttonbgcolor, -text => "Turn OFF  High Voltage", -command => [\&tpot_hv_go_off, $b],  -relief =>'raised',  -font=> $normalfont)->
+$button_hv_off = $mw->
+    Button(-bg => $buttonbgcolor, -text => "Turn OFF High Voltage", -command => [\&tpot_hv_go_off, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_hv_go_safe = $framebutton->
+$button_hv_go_safe = $mw->
     Button(-bg => $buttonbgcolor, -text => "Go to SAFE", -command => [\&tpot_hv_go_safe, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_hv_go_operating = $framebutton->
+$button_hv_go_operating = $mw->
     Button(-bg => $buttonbgcolor, -text => "Turn ON High Voltage", -command => [\&tpot_hv_go_operating, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_hv_recover_trips = $framebutton->
+$button_hv_recover_trips = $mw->
     Button(-bg => $buttonbgcolor, -text => "Recover High Voltage trips", -command => [\&tpot_hv_recover_trips, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
@@ -206,17 +205,15 @@ $button_hv_recover_trips = $framebutton->
 $label = $mw->Label(-text => "TPOT Low Voltage (LV) Control", -background=>$slinebg, -font =>$bigfont);
 $label->pack(-side=> 'top', -fill=> 'x', -ipadx=> '15m', -ipady=> '1m');
 
-$framebutton= $mw->Frame()->pack(-side => 'top', -fill => 'x');
-
-$button_lv_off = $framebutton->
+$button_lv_off = $mw->
     Button(-bg => $buttonbgcolor, -text => "Turn OFF Low Voltage", -command => [\&tpot_lv_go_off, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_lv_on = $framebutton->
+$button_lv_on = $mw->
     Button(-bg => $buttonbgcolor, -text => "Turn ON Low Voltage", -command => [\&tpot_lv_go_on, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
-$button_lv_recover_fee_links = $framebutton->
+$button_lv_recover_fee_links = $mw->
     Button(-bg => $buttonbgcolor, -text => "Recover FEE links", -command => [\&tpot_lv_recover_fee_links, $b],  -relief =>'raised',  -font=> $normalfont)->
     pack(-side =>'top', -fill=> 'x', -ipadx=> '1m',  -ipady=> '1m');
 
