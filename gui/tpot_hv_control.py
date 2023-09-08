@@ -15,6 +15,19 @@ bin_lv_path = "/home/phnxrc/operations/TPOT/tpot_lv_interface"
 # bin_path = "/home/hpereira/sphenix/src/tpot_hv_interface/python"
 # bin_lv_path = "/home/hpereira/sphenix/src/tpot_lv_interface"
 
+# fonts definitions
+fontsize="12"
+titlefontsize="13"
+normalfont = ("arial", fontsize )
+bigfont = ("arial", titlefontsize, "bold" )
+
+# color definitions
+# buttonbgcolor='#33CCCC'
+buttonbgcolor='#0099FF'
+buttonfgcolor='#FFFFFF'
+buttonbgcolor_active='#3076E3'
+labelbgcolor='#ffffff'
+
 ##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
@@ -103,54 +116,58 @@ def tpot_lv_recover_fee_links():
     subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
   button_lv_recover_fee_links.configure( relief="raised" )
 
+##########################################3
+def generic_button( parent, text ):
+  return Button( parent, text = text, font = normalfont, bg = buttonbgcolor, fg = buttonfgcolor, activebackground = buttonbgcolor_active, activeforeground = buttonfgcolor )
+
+##########################################3
 def main():
-
-  # fonts definitions
-  fontsize="12"
-  titlefontsize="13"
-  normalfont = ("arial", fontsize )
-  bigfont = ("arial", titlefontsize, "bold" )
-
-  # color definitions
-  buttonbgcolor='#33CCCC'
-  labelbgcolor='#cccc00'
 
   root = Tk()
   root.title("TPOT LV and HV Control")
 
   ## HV controls  
-  Label( root, text= "TPOT High Voltage (HV) Control", font = bigfont, bg = labelbgcolor ).pack( side=TOP, fill=X, ipadx="15m", ipady="1m" )
+  frame = Frame( root, bg = labelbgcolor )
+  frame.pack( side=TOP, fill=BOTH )
+  Label( frame, text= "TPOT High Voltage (HV) Control", font = bigfont, bg = labelbgcolor ).pack( side=TOP, fill=X, ipadx="15m", ipady="3m" )
   
   global button_hv_off
-  button_hv_off = Button( root, text= "Turn OFF High Voltage", command=tpot_hv_go_off, font = normalfont, bg = buttonbgcolor )
-  button_hv_off.pack( side = TOP, fill=X, ipadx="1m", ipady="1m" )
+  button_hv_off = generic_button( frame, "Turn OFF High Voltage" )
+  button_hv_off.configure( command=tpot_hv_go_off )
+  button_hv_off.pack( side = TOP, fill=X, ipadx="1m", ipady="1m", padx="1m", pady="1m" )
 
-  global  button_hv_go_safe
-  button_hv_go_safe = Button( root, text= "Go to SAFE High Voltage", command=tpot_hv_go_safe, font = normalfont, bg = buttonbgcolor )
-  button_hv_go_safe.pack( side = TOP, fill=X, ipadx="1m", ipady="1m" )
+  global button_hv_go_safe
+  button_hv_go_safe = generic_button( frame, text= "Go to SAFE High Voltage" )
+  button_hv_go_safe.configure( command=tpot_hv_go_safe )
+  button_hv_go_safe.pack( side = TOP, fill=X, ipadx="1m", ipady="1m", padx="1m", pady="1m" )
 
   global button_hv_go_operating
-  button_hv_go_operating = Button( root, text= "Turn ON High Voltage", command=tpot_hv_go_operating, font = normalfont, bg = buttonbgcolor )
-  button_hv_go_operating.pack( side = TOP, fill=X, ipadx="1m", ipady="1m" )
+  button_hv_go_operating = generic_button( frame, text= "Turn ON High Voltage" )
+  button_hv_go_operating.configure( command=tpot_hv_go_operating )
+  button_hv_go_operating.pack( side = TOP, fill=X, ipadx="1m", ipady="1m", padx="1m", pady="1m" )
 
   global button_hv_recover_trips
-  button_hv_recover_trips = Button( root, text= "Recover High Voltage Trips", command=tpot_hv_recover_trips, font = normalfont, bg = buttonbgcolor )
-  button_hv_recover_trips.pack( side = TOP, fill=X, ipadx="1m", ipady="1m" )
+  button_hv_recover_trips = generic_button( frame, text= "Recover High Voltage Trips" )
+  button_hv_recover_trips.configure( command=tpot_hv_recover_trips )
+  button_hv_recover_trips.pack( side = TOP, fill=X, ipadx="1m", ipady="1m", padx="1m", pady="1m" )
 
   ## LV controls  
-  Label( root, text= "TPOT Low Voltage (LV) Control", font = bigfont, bg = labelbgcolor ).pack( side=TOP, fill=X, ipadx="15m", ipady="1m" )
+  Label( frame, text= "TPOT Low Voltage (LV) Control", font = bigfont, bg = labelbgcolor ).pack( side=TOP, fill=X, ipadx="15m", ipady="3m" )
 
   global button_lv_off
-  button_lv_off = Button( root, text= "Turn OFF Low Voltage", command=tpot_lv_go_off, font = normalfont, bg = buttonbgcolor )
-  button_lv_off.pack( side = TOP, fill=X, ipadx="1m", ipady="1m" )
+  button_lv_off = generic_button( frame, text= "Turn OFF Low Voltage" )
+  button_lv_off.configure( command=tpot_lv_go_off )
+  button_lv_off.pack( side = TOP, fill=X, ipadx="1m", ipady="1m", padx="1m", pady="1m" )
 
   global button_lv_on
-  button_lv_on = Button( root, text= "Turn ON Low Voltage", command=tpot_lv_go_on, font = normalfont, bg = buttonbgcolor )
-  button_lv_on.pack( side = TOP, fill=X, ipadx="1m", ipady="1m" )
+  button_lv_on = generic_button( frame, text= "Turn ON Low Voltage" )
+  button_lv_on.configure( command=tpot_lv_go_on )
+  button_lv_on.pack( side = TOP, fill=X, ipadx="1m", ipady="1m", padx="1m", pady="1m" )
 
   global button_lv_recover_fee_links
-  button_lv_recover_fee_links = Button( root, text= "Recover FEE links", command=tpot_lv_recover_fee_links, font = normalfont, bg = buttonbgcolor )
-  button_lv_recover_fee_links.pack( side = TOP, fill=X, ipadx="1m", ipady="1m" )
+  button_lv_recover_fee_links = generic_button( frame, text= "Recover FEE links" )
+  button_lv_recover_fee_links.configure( command=tpot_lv_recover_fee_links )
+  button_lv_recover_fee_links.pack( side = TOP, fill=X, ipadx="1m", ipady="1m", padx="1m", pady="1m" )
 
   root.mainloop()  
 
