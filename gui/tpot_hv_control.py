@@ -67,7 +67,7 @@ def tpot_lv_go_on():
   result = subprocess.run( ["gl1_gtm_client", "gtm_fullstatus"], stdout=subprocess.PIPE)
   output = result.stdout.decode('utf8').split()
   vgtm = 12
-  vgtm_is_running = int(output[1],0) & (1<<vgtm)
+  vgtm_is_running = int(output[2],0) & (1<<vgtm)
 
   if vgtm_is_running:
     messagebox.showinfo( title="TPOT LV ON", message="There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." )
@@ -90,7 +90,7 @@ def tpot_lv_recover_fee_links():
   result = subprocess.run( ["gl1_gtm_client", "gtm_fullstatus"], stdout=subprocess.PIPE)
   output = result.stdout.decode('utf8').split()
   vgtm = 12
-  vgtm_is_running = int(output[1],0) & (1<<vgtm)
+  vgtm_is_running = int(output[2],0) & (1<<vgtm)
   
   if vgtm_is_running:
     messagebox.showinfo( title="TPOT Recover FEE Links", message="There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." )
