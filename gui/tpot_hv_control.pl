@@ -96,7 +96,7 @@ sub tpot_lv_go_on
     # check if TPOT vgtm is running. Print a warning if yes
     my @result = split( ' ',`gl1_gtm_client gtm_fullstatus`);
     my $vgtm = 12;
-    my $vgtm_is_running = hex($result[1]) & (1<<$vgtm);
+    my $vgtm_is_running = hex($result[2]) & (1<<$vgtm);
 
     if( $vgtm_is_running )
     {
@@ -130,7 +130,7 @@ sub tpot_lv_recover_fee_links
     # check if TPOT vgtm is running. Print a warning if yes
     my @result = split( ' ',`gl1_gtm_client gtm_fullstatus`);
     my $vgtm = 12;
-    my $vgtm_is_running = hex($result[1]) & (1<<$vgtm);
+    my $vgtm_is_running = hex($result[2]) & (1<<$vgtm);
 
     if( $vgtm_is_running )
     {
