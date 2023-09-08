@@ -7,19 +7,19 @@ from tkinter import messagebox
 import subprocess
 
 # configuration
-# config_path ="/home/phnxrc/operations/TPOT/tpot_hv_interface/config";
-# bin_path = "/home/phnxrc/operations/TPOT/tpot_hv_interface/python";
-# bin_lv_path = "/home/phnxrc/operations/TPOT/tpot_lv_interface";
+config_path ="/home/phnxrc/operations/TPOT/tpot_hv_interface/config";
+bin_path = "/home/phnxrc/operations/TPOT/tpot_hv_interface/python";
+bin_lv_path = "/home/phnxrc/operations/TPOT/tpot_lv_interface";
 
-config_path ="/home/hpereira/sphenix/src/tpot_hv_interface/config";
-bin_path = "/home/hpereira/sphenix/src/tpot_hv_interface/python";
-bin_lv_path = "/home/hpereira/sphenix/src/tpot_lv_interface";
+# config_path ="/home/hpereira/sphenix/src/tpot_hv_interface/config";
+# bin_path = "/home/hpereira/sphenix/src/tpot_hv_interface/python";
+# bin_lv_path = "/home/hpereira/sphenix/src/tpot_lv_interface";
 
 ##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" );
   reply = messagebox.askquestion(title="TPOT HV OFF", message="This will turn OFF TPOT High Voltage. Confirm ?")
-  if reply:
+  if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_off.py", "--force", "all"] )
   button_hv_off.configure( relief="raised" );
 
@@ -27,7 +27,7 @@ def tpot_hv_go_off():
 def tpot_hv_go_safe():
   button_hv_go_safe.configure( relief="sunken" );
   reply = messagebox.askquestion(title="TPOT HV SAFE", message="This will put TPOT in SAFE state. Confirm ?")
-  if reply:
+  if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_restore_state.py", "--force", config_path+"/tpot_hv_safe_state.json"] );
     subprocess.call([bin_path+"/tpot_hv_on.py", "--force", "--mask", config_path+"/tpot_mask.json", "all"] );
   button_hv_go_safe.configure( relief="raised" );
@@ -36,7 +36,7 @@ def tpot_hv_go_safe():
 def tpot_hv_go_operating():
   button_hv_go_operating.configure( relief="sunken" );
   reply = messagebox.askquestion(title="TPOT HV ON", message="This will turn ON all TPOT HV channels. Confirm ?")
-  if reply:
+  if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_restore_state.py", "--force", config_path+"/tpot_hv_operating_state.json"] );
     subprocess.call([bin_path+"/tpot_hv_on.py", "--force", "--mask", config_path+"/tpot_mask.json", "all"] );
   button_hv_go_operating.configure( relief="raised" );
@@ -45,7 +45,7 @@ def tpot_hv_go_operating():
 def tpot_hv_recover_trips():
   button_hv_recover_trips.configure( relief="sunken" );
   reply = messagebox.askquestion(title="TPOT Recover Trips", message="This will recover TPOT tripped channels. Confirm ?")
-  if reply:
+  if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_recover_trips.py", "--force"] )
   button_hv_recover_trips.configure( relief="raised" );
 
@@ -53,7 +53,7 @@ def tpot_hv_recover_trips():
 def tpot_lv_go_off():
   button_lv_off.configure( relief="sunken" );
   reply = messagebox.askquestion(title="TPOT LV OFF", message="This will turn OFF TPOT Low Voltage. Confirm ?")
-  if reply:
+  if reply == 'yes':
     subprocess.call([bin_lv_path+"/tpot_lv_off.py", "all"] )
   button_lv_off.configure( relief="raised" );
 
@@ -76,7 +76,7 @@ def tpot_lv_go_on():
 
   # ask confirmation
   reply = messagebox.askquestion(title="TPOT LV ON", message="This will turn ON TPOT Low Voltage. Confirm ?")
-  if reply:
+  if reply == 'yes':
     subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
   button_lv_on.configure( relief="raised" );
 
@@ -99,7 +99,7 @@ def tpot_lv_recover_fee_links():
 
   # ask confirmation
   reply = messagebox.askquestion(title="TPOT Recover FEE Links", message="This will turn ON TPOT Low Voltage. Confirm ?")
-  if reply:
+  if reply == 'yes':
     subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
   button_lv_recover_fee_links.configure( relief="raised" );
 
