@@ -134,14 +134,22 @@ def main():
   root.title("TPOT LV and HV Control")
   root.minsize( 500, 485 )  
 
+  # sphenix logo
+  img = PhotoImage(file="sphenixlogo.png")
+
+  # main frame
+  mainframe = Frame(root)
+  mainframe.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
+
   ## HV controls  
-  baseframe = Frame(root)
-  baseframe.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
-  
-  frame = Frame( baseframe, bg = framebgcolor )
+  frame = Frame( mainframe, bg = framebgcolor )
   frame.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
-  Label( frame, text= "TPOT High Voltage (HV) Control", font = bigfont, anchor=W, bg = headerbgcolor, fg=headerfgcolor, padx=10, pady=10 ).pack( side=TOP, fill=X )
   
+  headerframe = Frame( frame, bg = headerbgcolor )
+  headerframe.pack( side=TOP, fill=X )
+  Label( headerframe, text= "TPOT High Voltage (HV) Control", font = bigfont, anchor=W, fg=headerfgcolor, bg = headerbgcolor, padx=10, pady=10 ).pack(side=LEFT, fill=X)
+  Label( headerframe, image=img, bg = headerbgcolor ).pack(side=RIGHT, fill=X)
+
   global button_hv_off
   button_hv_off = generic_button( frame, "Turn OFF High Voltage" )
   button_hv_off.configure( command=tpot_hv_go_off )
@@ -163,9 +171,13 @@ def main():
   button_hv_recover_trips.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
 
   ## LV controls  
-  frame = Frame( baseframe, bg = framebgcolor )
+  frame = Frame( mainframe, bg = framebgcolor )
   frame.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
-  Label( frame, text= "TPOT Low Voltage (HV) Control", font = bigfont, anchor=W, bg = headerbgcolor, fg=headerfgcolor, padx=10, pady=10 ).pack( side=TOP, fill=X )
+
+  headerframe = Frame( frame, bg = headerbgcolor )
+  headerframe.pack( side=TOP, fill=X )
+  Label( headerframe, text= "TPOT Low Voltage (LV) Control", font = bigfont, anchor=W, fg=headerfgcolor, bg = headerbgcolor, padx=10, pady=10 ).pack(side=LEFT, fill=X)
+  Label( headerframe, image=img, bg = headerbgcolor ).pack(side=RIGHT, fill=X)
 
   global button_lv_off
   button_lv_off = generic_button( frame, text= "Turn OFF Low Voltage" )
