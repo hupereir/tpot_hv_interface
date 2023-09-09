@@ -67,13 +67,13 @@ class yes_no_dialog( Toplevel ):
       self.yes_button = generic_button( self.buttonframe, "Yes" )
       self.yes_button.configure( command = self.on_yes, width=10 )
       self.yes_button.grid( row=0, column=0, padx=35 )
-      
+
       self.no_button = generic_button( self.buttonframe, "No" )
       self.no_button.configure( command = self.on_no, width=10 )
       self.no_button.grid( row=0, column=1, padx=35 )
-        
-      self.reply = "no"      
-    
+
+      self.reply = "no"
+
     def on_yes(self):
       self.reply = "yes"
       self.destroy()
@@ -83,9 +83,9 @@ class yes_no_dialog( Toplevel ):
       self.destroy()
 
     def show(self):
-      self.geometry(f"+{self.parent.winfo_x()}+{self.parent.winfo_y()}")
-      self.wm_attributes("-topmost", True)
-      self.wm_deiconify()  
+      root.eval( f"tk::PlaceWindow .{self.winfo_name()} widget ." )
+      self.wm_transient( root )
+      self.wm_deiconify()
       self.grab_set()
       self.wait_window()
       return self.reply
@@ -112,20 +112,20 @@ class information_dialog( Toplevel ):
       self.yes_button = generic_button( self, "ok" )
       self.yes_button.configure( command = self.destroy, width=10 )
       self.yes_button.pack( side=TOP, fill=Y )
-          
+
     def show(self):
-      self.geometry(f"+{self.parent.winfo_x()}+{self.parent.winfo_y()}")
-      self.wm_attributes("-topmost", True)
-      self.wm_deiconify()  
+      root.eval( f"tk::PlaceWindow .{self.winfo_name()} widget ." )
+      self.wm_transient( root )
+      self.wm_deiconify()
       self.grab_set()
       self.wait_window()
 
 ##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
- 
+
   reply = yes_no_dialog(root, "TPOT HV SAFE", "This will put TPOT in SAFE state. Confirm ?").show()
-  
+
   if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_off.py", "--force", "all"] )
   button_hv_off.configure( relief="raised" )
@@ -167,7 +167,7 @@ def tpot_lv_go_off():
 ##########################################3
 def tpot_lv_go_on():
   # turning ON the LV is essentially the same as recovering fee links
-  # keep button sunken 
+  # keep button sunken
   button_lv_on.configure( relief="sunken" )
 
   # check if TPOT vgtm is running. Print a warning if yes
@@ -190,7 +190,7 @@ def tpot_lv_go_on():
 ##########################################3
 def tpot_lv_recover_fee_links():
   # turning ON the LV is essentially the same as recovering fee links
-  # keep button sunken 
+  # keep button sunken
   button_lv_recover_fee_links.configure( relief="sunken" )
 
   # check if TPOT vgtm is running. Print a warning if yes
@@ -198,7 +198,7 @@ def tpot_lv_recover_fee_links():
   output = result.stdout.decode('utf8').split()
   vgtm = 12
   vgtm_is_running = int(output[2],0) & (1<<vgtm)
-  
+
   if vgtm_is_running:
     information_dialog( root, "TPOT Recover FEE Links", "There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." ).show()
     button_lv_recover_fee_links.configure( relief="raised" )
@@ -217,7 +217,7 @@ def main():
   global root
   root = Tk()
   root.title("TPOT LV and HV Control")
-  root.minsize( 500, 485 )  
+  root.minsize( 500, 485 )
 
   # sphenix logo
   img = PhotoImage(file="sphenixlogo.png")
@@ -226,10 +226,10 @@ def main():
   mainframe = Frame(root)
   mainframe.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
 
-  ## HV controls  
+  ## HV controls
   frame = Frame( mainframe, bg = framebgcolor )
   frame.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
-  
+
   headerframe = Frame( frame, bg = headerbgcolor )
   headerframe.pack( side=TOP, fill=X )
   Label( headerframe, text= "TPOT High Voltage (HV) Control", font = bigfont, anchor=W, fg=headerfgcolor, bg = headerbgcolor, padx=10, pady=10 ).pack(side=LEFT, fill=X)
@@ -255,7 +255,7 @@ def main():
   button_hv_recover_trips.configure( command=tpot_hv_recover_trips )
   button_hv_recover_trips.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
-  ## LV controls  
+  ## LV controls
   frame = Frame( mainframe, bg = framebgcolor )
   frame.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
 
@@ -279,7 +279,7 @@ def main():
   button_lv_recover_fee_links.configure( command=tpot_lv_recover_fee_links )
   button_lv_recover_fee_links.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
-  root.mainloop()  
+  root.mainloop()
 
 if __name__ == '__main__':
   main()
