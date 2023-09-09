@@ -38,52 +38,14 @@ class generic_button( Button ):
     Button.__init__( self, parent )
     self.configure( text = text, \
       border = 0, \
+      padx = 9, pady = 9, \
       font = normalfont, bg = buttonbgcolor, fg = buttonfgcolor, \
       activebackground = buttonbgcolor_active, activeforeground = buttonfgcolor )
 
 ##########################################3
-class yes_no_dialog( Toplevel ):
-    def __init__(self, parent, title, message ):
-      Toplevel.__init__(self, parent)
-      self.title( title )
-      self.configure( bg = framebgcolor )
-
-      l1=Label(self,bg = framebgcolor, image="::tk::icons::question")
-      l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
-
-      self.label=Label(self,text=message,bg = framebgcolor, padx=10,pady=10)
-      self.label.grid( row=0, column=1, columnspan=3,  pady=(7, 10), sticky="w")
-
-      self.yes_button = generic_button( self, "Yes" )
-      self.yes_button.configure( command = self.on_yes, width=10 )
-      self.yes_button.grid( row=1, column=1, padx=(2,35), sticky="e" )
-      
-      self.no_button = generic_button( self, "No" )
-      self.no_button.configure( command = self.on_no, width=10 )
-      self.no_button.grid( row=1, column=2, padx=(2,35), sticky="e" )
-        
-      self.reply = "no"      
-    
-    def on_yes(self):
-      self.reply = "yes"
-      self.destroy()
-
-    def on_no(self):
-      self.reply = "no"
-      self.destroy()
-
-    def show(self):
-      self.wm_deiconify()  
-      self.grab_set()
-      self.wait_window()
-      return self.reply
-
-##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
-
-  reply = yes_no_dialog( root, "TPOT HV OFF", "This will turn OFF TPOT High Voltage. Confirm ?" ).show()
-  
+  reply = messagebox.askquestion(title="TPOT HV SAFE", message="This will put TPOT in SAFE state. Confirm ?")
   print( f"reply: {reply}" )
   
   if reply == 'yes':
@@ -197,22 +159,22 @@ def main():
   global button_hv_off
   button_hv_off = generic_button( frame, "Turn OFF High Voltage" )
   button_hv_off.configure( command=tpot_hv_go_off )
-  button_hv_off.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
+  button_hv_off.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_hv_go_safe
   button_hv_go_safe = generic_button( frame, text= "Go to SAFE High Voltage" )
   button_hv_go_safe.configure( command=tpot_hv_go_safe )
-  button_hv_go_safe.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
+  button_hv_go_safe.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_hv_go_operating
   button_hv_go_operating = generic_button( frame, text= "Turn ON High Voltage" )
   button_hv_go_operating.configure( command=tpot_hv_go_operating )
-  button_hv_go_operating.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
+  button_hv_go_operating.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_hv_recover_trips
   button_hv_recover_trips = generic_button( frame, text= "Recover High Voltage Trips" )
   button_hv_recover_trips.configure( command=tpot_hv_recover_trips )
-  button_hv_recover_trips.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
+  button_hv_recover_trips.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   ## LV controls  
   frame = Frame( mainframe, bg = framebgcolor )
@@ -226,17 +188,17 @@ def main():
   global button_lv_off
   button_lv_off = generic_button( frame, text= "Turn OFF Low Voltage" )
   button_lv_off.configure( command=tpot_lv_go_off )
-  button_lv_off.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
+  button_lv_off.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_lv_on
   button_lv_on = generic_button( frame, text= "Turn ON Low Voltage" )
   button_lv_on.configure( command=tpot_lv_go_on )
-  button_lv_on.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
+  button_lv_on.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_lv_recover_fee_links
   button_lv_recover_fee_links = generic_button( frame, text= "Recover FEE links" )
   button_lv_recover_fee_links.configure( command=tpot_lv_recover_fee_links )
-  button_lv_recover_fee_links.pack( side = TOP, fill=X, ipadx=5, ipady=5, padx=buttonpadx, pady=buttonpady )
+  button_lv_recover_fee_links.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   root.mainloop()  
 
