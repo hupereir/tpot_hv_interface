@@ -217,18 +217,14 @@ def main():
   global root
   root = Tk()
   root.title("TPOT LV and HV Control")
-  root.minsize( 500, 485 )
+  root.minsize( 450, 400 )
 
   # sphenix logo
   img = PhotoImage(file="sphenixlogo.png")
 
-  # main frame
-  mainframe = Frame(root)
-  mainframe.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
-
   ## HV controls
-  frame = Frame( mainframe, bg = framebgcolor )
-  frame.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
+  frame = Frame( root, bg = framebgcolor )
+  frame.pack( side=TOP, fill=BOTH )
 
   headerframe = Frame( frame, bg = headerbgcolor )
   headerframe.pack( side=TOP, fill=X )
@@ -259,8 +255,8 @@ def main():
   button_hv_recover_trips.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   ## LV controls
-  frame = Frame( mainframe, bg = framebgcolor )
-  frame.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
+  frame = Frame( root, bg = framebgcolor )
+  frame.pack( side=TOP, fill=BOTH )
 
   headerframe = Frame( frame, bg = headerbgcolor )
   headerframe.pack( side=TOP, fill=X )
