@@ -177,7 +177,7 @@ def tpot_lv_go_on():
   vgtm_is_running = int(output[2],0) & (1<<vgtm)
 
   if vgtm_is_running:
-    information_dialog( "TPOT LV ON", "There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." ).show()
+    information_dialog( root, "TPOT LV ON", "There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." ).show()
     button_lv_on.configure( relief="raised" )
     return
 
@@ -200,7 +200,7 @@ def tpot_lv_recover_fee_links():
   vgtm_is_running = int(output[2],0) & (1<<vgtm)
   
   if vgtm_is_running:
-    information_dialog( "TPOT Recover FEE Links", "There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." ).show()
+    information_dialog( root, "TPOT Recover FEE Links", "There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." ).show()
     button_lv_recover_fee_links.configure( relief="raised" )
     return
 
