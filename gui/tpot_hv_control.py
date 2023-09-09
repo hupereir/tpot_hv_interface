@@ -26,7 +26,7 @@ bigfont = ("arial", titlefontsize, "bold" )
 headerbgcolor='#0099FF'
 headerfgcolor='#ffffff'
 framebgcolor='#ffffff'
-buttonbgcolor='#cccccc'
+buttonbgcolor='#dddddd'
 buttonfgcolor='#000000'
 buttonbgcolor_active='#bbbbbb'
 
@@ -125,7 +125,10 @@ def tpot_lv_recover_fee_links():
 
 ##########################################3
 def generic_button( parent, text ):
-  return Button( parent, text = text, font = normalfont, bg = buttonbgcolor, fg = buttonfgcolor, activebackground = buttonbgcolor_active, activeforeground = buttonfgcolor )
+  return Button( parent, text = text, \
+    border = 0, \
+    font = normalfont, bg = buttonbgcolor, fg = buttonfgcolor, \
+    activebackground = buttonbgcolor_active, activeforeground = buttonfgcolor )
 
 ##########################################3
 def main():
