@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-
 from tkinter import *
-from tkinter import ttk
 from tkinter import messagebox
-
 import subprocess
 
 # configuration
@@ -36,9 +33,59 @@ buttonpadx=5
 buttonpady=5
 
 ##########################################3
+class generic_button( Button ):
+  def __init__(self, parent, text):
+    Button.__init__( self, parent )
+    self.configure( text = text, \
+      border = 0, \
+      font = normalfont, bg = buttonbgcolor, fg = buttonfgcolor, \
+      activebackground = buttonbgcolor_active, activeforeground = buttonfgcolor )
+
+##########################################3
+class yes_no_dialog( Toplevel ):
+    def __init__(self, parent, title, message ):
+      Toplevel.__init__(self, parent)
+      self.title( title )
+      self.configure( bg = framebgcolor )
+
+      l1=Label(self,bg = framebgcolor, image="::tk::icons::question")
+      l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+
+      self.label=Label(self,text=message,bg = framebgcolor, padx=10,pady=10)
+      self.label.grid( row=0, column=1, columnspan=3,  pady=(7, 10), sticky="w")
+
+      self.yes_button = generic_button( self, "Yes" )
+      self.yes_button.configure( command = self.on_yes, width=10 )
+      self.yes_button.grid( row=1, column=1, padx=(2,35), sticky="e" )
+      
+      self.no_button = generic_button( self, "No" )
+      self.no_button.configure( command = self.on_no, width=10 )
+      self.no_button.grid( row=1, column=2, padx=(2,35), sticky="e" )
+        
+      self.reply = "no"      
+    
+    def on_yes(self):
+      self.reply = "yes"
+      self.destroy()
+
+    def on_no(self):
+      self.reply = "no"
+      self.destroy()
+
+    def show(self):
+      self.wm_deiconify()  
+      self.grab_set()
+      self.wait_window()
+      return self.reply
+
+##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
-  reply = messagebox.askquestion(title="TPOT HV OFF", message="This will turn OFF TPOT High Voltage. Confirm ?")
+
+  reply = yes_no_dialog( root, "TPOT HV OFF", "This will turn OFF TPOT High Voltage. Confirm ?" ).show()
+  
+  print( f"reply: {reply}" )
+  
   if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_off.py", "--force", "all"] )
   button_hv_off.configure( relief="raised" )
@@ -124,15 +171,9 @@ def tpot_lv_recover_fee_links():
   button_lv_recover_fee_links.configure( relief="raised" )
 
 ##########################################3
-def generic_button( parent, text ):
-  return Button( parent, text = text, \
-    border = 0, \
-    font = normalfont, bg = buttonbgcolor, fg = buttonfgcolor, \
-    activebackground = buttonbgcolor_active, activeforeground = buttonfgcolor )
-
-##########################################3
 def main():
 
+  global root
   root = Tk()
   root.title("TPOT LV and HV Control")
   root.minsize( 500, 485 )  
