@@ -132,7 +132,8 @@ def main():
 
   root = Tk()
   root.title("TPOT LV and HV Control")
-  
+  root.minsize( 500, 485 )  
+
   ## HV controls  
   baseframe = Frame(root)
   baseframe.pack( side=TOP, fill=BOTH, padx=framepadx, pady=framepady )
