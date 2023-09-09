@@ -46,23 +46,29 @@ class generic_button( Button ):
 class yes_no_dialog( Toplevel ):
     def __init__(self, parent, title, message ):
       Toplevel.__init__(self, parent)
+      self.parent=parent
       self.title( title )
-      self.geometry(f"+{parent.winfo_x()}+{parent.winfo_y()}")
-      self.configure( bg = framebgcolor )
+      self.configure( bg = framebgcolor, padx=10, pady=10 )
 
-      l1=Label(self,bg = framebgcolor, image="::tk::icons::question")
+      self.headerframe = Frame( self, bg = framebgcolor )
+      self.headerframe.pack( side=TOP, fill=Y )
+
+      l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::question")
       l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
 
-      self.label=Label(self,text=message,bg = framebgcolor, padx=10,pady=10)
-      self.label.grid( row=0, column=1, columnspan=3,  pady=(7, 10), sticky="w")
+      self.label=Label(self.headerframe,text=message,bg = framebgcolor, padx=10,pady=10)
+      self.label.grid( row=0, column=1, pady=(7, 10), sticky="w")
 
-      self.yes_button = generic_button( self, "Yes" )
+      self.buttonframe = Frame( self, bg = framebgcolor )
+      self.buttonframe.pack( side=TOP, fill=Y )
+
+      self.yes_button = generic_button( self.buttonframe, "Yes" )
       self.yes_button.configure( command = self.on_yes, width=10 )
-      self.yes_button.grid( row=1, column=1, padx=(2,35), sticky="e" )
+      self.yes_button.grid( row=0, column=0, padx=35 )
       
-      self.no_button = generic_button( self, "No" )
+      self.no_button = generic_button( self.buttonframe, "No" )
       self.no_button.configure( command = self.on_no, width=10 )
-      self.no_button.grid( row=1, column=2, padx=(2,35), sticky="e" )
+      self.no_button.grid( row=0, column=1, padx=35 )
         
       self.reply = "no"      
     
@@ -75,16 +81,46 @@ class yes_no_dialog( Toplevel ):
       self.destroy()
 
     def show(self):
+      self.geometry(f"+{self.parent.winfo_x()}+{self.parent.winfo_y()}")
+      self.wm_attributes("-topmost", True)
       self.wm_deiconify()  
       self.grab_set()
       self.wait_window()
       return self.reply
 
 ##########################################3
+class information_dialog( Toplevel ):
+    def __init__(self, parent, title, message ):
+      Toplevel.__init__(self, parent)
+      self.parent=parent
+      self.title( title )
+      self.configure( bg = framebgcolor, padx=10, pady=10 )
+
+      self.headerframe = Frame( self, bg = framebgcolor )
+      self.headerframe.pack( side=TOP, fill=Y )
+
+      l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::information")
+      l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+
+      self.label=Label(self.headerframe,text=message,bg = framebgcolor, padx=10,pady=10)
+      self.label.grid( row=0, column=1, pady=(7, 10), sticky="w")
+
+      self.yes_button = generic_button( self, "ok" )
+      self.yes_button.configure( command = self.destroy, width=10 )
+      self.yes_button.pack( side=TOP, fill=Y )
+          
+    def show(self):
+      self.geometry(f"+{self.parent.winfo_x()}+{self.parent.winfo_y()}")
+      self.wm_attributes("-topmost", True)
+      self.wm_deiconify()  
+      self.grab_set()
+      self.wait_window()
+
+##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
-  reply = messagebox.askquestion(title="TPOT HV SAFE", message="This will put TPOT in SAFE state. Confirm ?")
-  print( f"reply: {reply}" )
+  info_dialog(root, "TPOT HV SAFE", "This will put TPOT in SAFE state. Confirm ?").show()
+  reply = yes_no_dialog(root, "TPOT HV SAFE", "This will put TPOT in SAFE state. Confirm ?").show()
   
   if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_off.py", "--force", "all"] )
@@ -93,7 +129,7 @@ def tpot_hv_go_off():
 ##########################################3
 def tpot_hv_go_safe():
   button_hv_go_safe.configure( relief="sunken" )
-  reply = messagebox.askquestion(title="TPOT HV SAFE", message="This will put TPOT in SAFE state. Confirm ?")
+  reply = yes_no_dialog(root, "TPOT HV SAFE", "This will put TPOT in SAFE state. Confirm ?").show()
   if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_restore_state.py", "--force", config_path+"/tpot_hv_safe_state.json"] )
     subprocess.call([bin_path+"/tpot_hv_on.py", "--force", "--mask", config_path+"/tpot_mask.json", "all"] )
@@ -102,7 +138,7 @@ def tpot_hv_go_safe():
 ##########################################3
 def tpot_hv_go_operating():
   button_hv_go_operating.configure( relief="sunken" )
-  reply = messagebox.askquestion(title="TPOT HV ON", message="This will turn ON all TPOT HV channels. Confirm ?")
+  reply = yes_no_dialog(root, "TPOT HV ON", "This will turn ON all TPOT HV channels. Confirm ?").show()
   if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_restore_state.py", "--force", config_path+"/tpot_hv_operating_state.json"] )
     subprocess.call([bin_path+"/tpot_hv_on.py", "--force", "--mask", config_path+"/tpot_mask.json", "all"] )
@@ -111,7 +147,7 @@ def tpot_hv_go_operating():
 ##########################################3
 def tpot_hv_recover_trips():
   button_hv_recover_trips.configure( relief="sunken" )
-  reply = messagebox.askquestion(title="TPOT Recover Trips", message="This will recover TPOT tripped channels. Confirm ?")
+  reply = yes_no_dialog(root, "TPOT Recover Trips", "This will recover TPOT tripped channels. Confirm ?").show()
   if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_recover_trips.py", "--force"] )
   button_hv_recover_trips.configure( relief="raised" )
@@ -119,7 +155,7 @@ def tpot_hv_recover_trips():
 ##########################################3
 def tpot_lv_go_off():
   button_lv_off.configure( relief="sunken" )
-  reply = messagebox.askquestion(title="TPOT LV OFF", message="This will turn OFF TPOT Low Voltage. Confirm ?")
+  reply = yes_no_dialog(root, "TPOT LV OFF", "This will turn OFF TPOT Low Voltage. Confirm ?").show()
   if reply == 'yes':
     subprocess.call([bin_lv_path+"/tpot_lv_off.py", "all"] )
   button_lv_off.configure( relief="raised" )
@@ -137,12 +173,12 @@ def tpot_lv_go_on():
   vgtm_is_running = int(output[2],0) & (1<<vgtm)
 
   if vgtm_is_running:
-    messagebox.showinfo( title="TPOT LV ON", message="There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." )
+    information_dialog( "TPOT LV ON", "There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." ).show()
     button_lv_on.configure( relief="raised" )
     return
 
   # ask confirmation
-  reply = messagebox.askquestion(title="TPOT LV ON", message="This will turn ON TPOT Low Voltage. Confirm ?")
+  reply = yes_no_dialog(root, "TPOT LV ON", "This will turn ON TPOT Low Voltage. Confirm ?").show()
   if reply == 'yes':
     subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
   button_lv_on.configure( relief="raised" )
@@ -160,12 +196,13 @@ def tpot_lv_recover_fee_links():
   vgtm_is_running = int(output[2],0) & (1<<vgtm)
   
   if vgtm_is_running:
-    messagebox.showinfo( title="TPOT Recover FEE Links", message="There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." )
+    information_dialog( "TPOT Recover FEE Links", "There seems to be a run ongoing. Turning ON LV requires to either stop the current run, or wait for the end of the current run." ).show()
     button_lv_recover_fee_links.configure( relief="raised" )
     return
 
+
   # ask confirmation
-  reply = messagebox.askquestion(title="TPOT Recover FEE Links", message="This will turn ON TPOT Low Voltage. Confirm ?")
+  reply = yes_no_dialog(root, "TPOT Recover FEE Links", "This will turn ON TPOT Low Voltage. Confirm ?").show()
   if reply == 'yes':
     subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
   button_lv_recover_fee_links.configure( relief="raised" )
