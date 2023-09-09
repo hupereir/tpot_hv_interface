@@ -19,7 +19,7 @@ bin_lv_path = "/home/phnxrc/operations/TPOT/tpot_lv_interface"
 fontsize=12
 titlefontsize=13
 normalfont = ("arial", fontsize )
-bigfont = ("arial", titlefontsize )
+bigfont = ("arial", titlefontsize, "bold" )
 
 # color definitions
 # buttonbgcolor='#33CCCC'
