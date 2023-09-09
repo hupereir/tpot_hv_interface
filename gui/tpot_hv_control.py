@@ -56,7 +56,9 @@ class yes_no_dialog( Toplevel ):
       l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::question")
       l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
 
-      self.label=Label(self.headerframe,text=message,bg = framebgcolor, padx=10,pady=10)
+      self.label=Label(self.headerframe,text=message,bg = framebgcolor, \
+        font = normalfont, wraplength = 500,\
+        padx=10, pady=10)
       self.label.grid( row=0, column=1, pady=(7, 10), sticky="w")
 
       self.buttonframe = Frame( self, bg = framebgcolor )
@@ -102,7 +104,9 @@ class information_dialog( Toplevel ):
       l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::information")
       l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
 
-      self.label=Label(self.headerframe,text=message,bg = framebgcolor, padx=10,pady=10)
+      self.label=Label(self.headerframe,text=message,bg = framebgcolor,\
+        font = normalfont, wraplength = 500,\
+        padx=10, pady=10)
       self.label.grid( row=0, column=1, pady=(7, 10), sticky="w")
 
       self.yes_button = generic_button( self, "ok" )
@@ -119,7 +123,7 @@ class information_dialog( Toplevel ):
 ##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
-  info_dialog(root, "TPOT HV SAFE", "This will put TPOT in SAFE state. Confirm ?").show()
+ 
   reply = yes_no_dialog(root, "TPOT HV SAFE", "This will put TPOT in SAFE state. Confirm ?").show()
   
   if reply == 'yes':
