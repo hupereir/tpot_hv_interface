@@ -29,8 +29,8 @@ buttonbgcolor_active='#bbbbbb'
 
 framepadx=5
 framepady=5
-buttonpadx=5
-buttonpady=5
+buttonpadx=3
+buttonpady=3
 
 ##########################################3
 class generic_button( Button ):
@@ -236,7 +236,7 @@ def main():
   Label( headerframe, image=img, bg = headerbgcolor ).pack(side=RIGHT, fill=X)
 
   buttonframe = Frame( frame, bg = framebgcolor )
-  buttonframe.pack( side=TOP, fill=X, padx=5, pady=5)  
+  buttonframe.pack( side=TOP, fill=X, padx=buttonpadx, pady=buttonpady)  
 
   global button_hv_off
   button_hv_off = generic_button( buttonframe, "Turn OFF High Voltage" )
@@ -268,7 +268,7 @@ def main():
   Label( headerframe, image=img, bg = headerbgcolor ).pack(side=RIGHT, fill=X)
 
   buttonframe = Frame( frame, bg = framebgcolor )
-  buttonframe.pack( side=TOP, fill=X, padx=5, pady=5)  
+  buttonframe.pack( side=TOP, fill=X, padx=buttonpadx, pady=buttonpady)  
 
   global button_lv_off
   button_lv_off = generic_button( buttonframe, text= "Turn OFF Low Voltage" )
