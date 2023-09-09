@@ -4,7 +4,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
-from PIL import Image
 import subprocess
 
 # configuration
