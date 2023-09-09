@@ -235,23 +235,26 @@ def main():
   Label( headerframe, text= "TPOT High Voltage (HV) Control", font = bigfont, anchor=W, fg=headerfgcolor, bg = headerbgcolor, padx=10, pady=10 ).pack(side=LEFT, fill=X)
   Label( headerframe, image=img, bg = headerbgcolor ).pack(side=RIGHT, fill=X)
 
+  buttonframe = Frame( frame, bg = framebgcolor )
+  buttonframe.pack( side=TOP, fill=X, padx=5, pady=5)  
+
   global button_hv_off
-  button_hv_off = generic_button( frame, "Turn OFF High Voltage" )
+  button_hv_off = generic_button( buttonframe, "Turn OFF High Voltage" )
   button_hv_off.configure( command=tpot_hv_go_off )
   button_hv_off.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_hv_go_safe
-  button_hv_go_safe = generic_button( frame, text= "Go to SAFE High Voltage" )
+  button_hv_go_safe = generic_button( buttonframe, text= "Go to SAFE High Voltage" )
   button_hv_go_safe.configure( command=tpot_hv_go_safe )
   button_hv_go_safe.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_hv_go_operating
-  button_hv_go_operating = generic_button( frame, text= "Turn ON High Voltage" )
+  button_hv_go_operating = generic_button( buttonframe, text= "Turn ON High Voltage" )
   button_hv_go_operating.configure( command=tpot_hv_go_operating )
   button_hv_go_operating.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_hv_recover_trips
-  button_hv_recover_trips = generic_button( frame, text= "Recover High Voltage Trips" )
+  button_hv_recover_trips = generic_button( buttonframe, text= "Recover High Voltage Trips" )
   button_hv_recover_trips.configure( command=tpot_hv_recover_trips )
   button_hv_recover_trips.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
@@ -264,18 +267,21 @@ def main():
   Label( headerframe, text= "TPOT Low Voltage (LV) Control", font = bigfont, anchor=W, fg=headerfgcolor, bg = headerbgcolor, padx=10, pady=10 ).pack(side=LEFT, fill=X)
   Label( headerframe, image=img, bg = headerbgcolor ).pack(side=RIGHT, fill=X)
 
+  buttonframe = Frame( frame, bg = framebgcolor )
+  buttonframe.pack( side=TOP, fill=X, padx=5, pady=5)  
+
   global button_lv_off
-  button_lv_off = generic_button( frame, text= "Turn OFF Low Voltage" )
+  button_lv_off = generic_button( buttonframe, text= "Turn OFF Low Voltage" )
   button_lv_off.configure( command=tpot_lv_go_off )
   button_lv_off.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_lv_on
-  button_lv_on = generic_button( frame, text= "Turn ON Low Voltage" )
+  button_lv_on = generic_button( buttonframe, text= "Turn ON Low Voltage" )
   button_lv_on.configure( command=tpot_lv_go_on )
   button_lv_on.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
   global button_lv_recover_fee_links
-  button_lv_recover_fee_links = generic_button( frame, text= "Recover FEE links" )
+  button_lv_recover_fee_links = generic_button( buttonframe, text= "Recover FEE links" )
   button_lv_recover_fee_links.configure( command=tpot_lv_recover_fee_links )
   button_lv_recover_fee_links.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
