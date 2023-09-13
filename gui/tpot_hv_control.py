@@ -226,8 +226,6 @@ def main():
   # get script directory 
   script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
   img_file = f"{script_directory}/sphenixlogo.png"
-  print(script_directory)  
-  print(img_file)  
   if os.path.isfile( img_file ):
     img = PhotoImage(file=img_file)
   else:
