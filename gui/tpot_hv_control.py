@@ -19,10 +19,10 @@ normalfont = ("arial", fontsize )
 bigfont = ("arial", titlefontsize, "bold" )
 
 # color definitions
-# buttonbgcolor='#33CCCC'
 headerbgcolor='#0099FF'
 headerfgcolor='#ffffff'
 framebgcolor='#ffffff'
+
 buttonbgcolor='#dddddd'
 buttonfgcolor='#000000'
 buttonbgcolor_active='#bbbbbb'
