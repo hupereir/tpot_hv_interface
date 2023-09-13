@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 from tkinter import *
 from tkinter import messagebox
+
+import os.path
 import subprocess
+import sys
 
 # configuration
 config_path ="/home/phnxrc/operations/TPOT/tpot_hv_interface/config"
@@ -220,7 +223,15 @@ def main():
   root.minsize( 450, 400 )
 
   # sphenix logo
-  img = PhotoImage(file="sphenixlogo.png")
+  # get script directory 
+  script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+  img_file = f"{script_directory}/sphenixlogo.png"
+  print(script_directory)  
+  print(img_file)  
+  if os.path.isfile( img_file ):
+    img = PhotoImage(file=img_file)
+  else:
+    img = PhotoImage()
 
   ## HV controls
   frame = Frame( root, bg = framebgcolor )
