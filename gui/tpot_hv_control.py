@@ -56,8 +56,11 @@ class yes_no_dialog( Toplevel ):
       self.headerframe = Frame( self, bg = framebgcolor )
       self.headerframe.pack( side=TOP, fill=Y )
 
-      l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::question")
-      l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+      try:
+        l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::question")
+        l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+      except:
+        pass
 
       self.label=Label(self.headerframe,text=message,bg = framebgcolor, \
         font = normalfont, wraplength = 500,\
@@ -104,8 +107,11 @@ class information_dialog( Toplevel ):
       self.headerframe = Frame( self, bg = framebgcolor )
       self.headerframe.pack( side=TOP, fill=Y )
 
-      l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::information")
-      l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+      try:
+        l1=Label(self.headerframe,bg = framebgcolor, image="::tk::icons::information")
+        l1.grid(row=0, column=0, pady=(7, 0), padx=(10, 30), sticky="e")
+      except:
+        pass
 
       self.label=Label(self.headerframe,text=message,bg = framebgcolor,\
         font = normalfont, wraplength = 500,\
@@ -226,9 +232,9 @@ def main():
   # get script directory 
   script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
   img_file = f"{script_directory}/sphenixlogo.png"
-  if os.path.isfile( img_file ):
+  try:
     img = PhotoImage(file=img_file)
-  else:
+  except :
     img = PhotoImage()
 
   ## HV controls
