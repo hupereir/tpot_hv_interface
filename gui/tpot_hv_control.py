@@ -118,7 +118,7 @@ class information_dialog( Toplevel ):
         padx=10, pady=10)
       self.label.grid( row=0, column=1, pady=(7, 10), sticky="w")
 
-      self.yes_button = generic_button( self, "ok" )
+      self.yes_button = generic_button( self, "Ok" )
       self.yes_button.configure( command = self.destroy, width=10 )
       self.yes_button.pack( side=TOP, fill=Y )
 
