@@ -215,7 +215,7 @@ def tpot_lv_recover_fee_links():
 
 
   # ask confirmation
-  reply = yes_no_dialog(root, "TPOT Recover FEE Links", "This will turn ON TPOT Low Voltage. Confirm ?").show()
+  reply = yes_no_dialog(root, "TPOT Recover FEE Links", "This will recover lost FEE links. Confirm ?").show()
   if reply == 'yes':
     subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
   button_lv_recover_fee_links.configure( relief="raised" )
