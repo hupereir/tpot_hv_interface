@@ -9,6 +9,8 @@ from prometheus_client import CollectorRegistry, Gauge, Info, Counter, Summary
 import re
 import socket
 import time
+import pprint
+
 from threading import Lock
 
 # process input arguments
@@ -29,6 +31,10 @@ path = "/home/phnxrc/operations/TPOT/lib"
 libname = f"{path}/libtpot_hv_interface.so"
 c_lib = ctypes.CDLL(libname)
 c_lib.get_channel_status.restype = ctypes.c_char_p
+
+# check if a channel name is valid
+def channel_name_is_valid( channel_name ):
+  return re.fullmatch( '(N|S)(CO|CI|E|W)(Z|P)_(R[1-4]|D)',channel_name )
 
 # connection to caen module
 def connect( ip = '10.20.34.154', user = 'admin', password = 'admin' ):
@@ -96,7 +102,7 @@ def hv_channel_information(verbose=False):
 
         # skip unnamed channels
         ch_name = channel['ch_name']
-        if ch_name.startswith('CHANNEL'):
+        if not channel_name_is_valid( ch_name ):
             continue
 
         # parse detector name
@@ -124,12 +130,12 @@ def hv_channel_information(verbose=False):
             metrics['ch_on'] = Gauge(f'{metric_prefix}_ch_on', 'channel ON (boolean)', list(channel_label.keys()), registry=registry)
         metrics['ch_on'].labels(**channel_label).set(bool(channel['status']&1))
 
-        # special channel_on property, from status
+        # special channel_rup  property, from status
         if 'ch_rup' not in metrics:
             metrics['ch_rup'] = Gauge(f'{metric_prefix}_ch_rup', 'channel RUP (boolean)', list(channel_label.keys()), registry=registry)
         metrics['ch_rup'].labels(**channel_label).set(bool(channel['status']&(1<<1)))
 
-        # special channel_on property, from status
+        # special channel_rdown property, from status
         if 'ch_rdwn' not in metrics:
             metrics['ch_rdwn'] = Gauge(f'{metric_prefix}_ch_rdwn', 'channel RDWN (boolean)', list(channel_label.keys()), registry=registry)
         metrics['ch_rdwn'].labels(**channel_label).set(bool(channel['status']&(1<<2)))
