@@ -9,7 +9,6 @@ from prometheus_client import CollectorRegistry, Gauge, Info, Counter, Summary
 import re
 import socket
 import time
-import pprint
 
 from threading import Lock
 
