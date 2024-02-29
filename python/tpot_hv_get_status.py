@@ -17,7 +17,7 @@ def main():
   
   parser.add_argument(
     'channels', 
-    help='a list of detectors to turn on, e.g. NCOP SEW, or individual channels, e.g  NCOP_D SEW_R1, or south|north|all',
+    help='a list of channels from which the status will be printed, e.g. NCOP SEW, or individual channels, e.g  NCOP_D SEW_R1, or south|north|all',
     nargs='+' )
   args = parser.parse_args()
   
@@ -52,8 +52,8 @@ def main():
   channels_raw = re.findall('\{.*?\}',status)
 
   # counters
-  count_total = 0;
-  count_good = 0;
+  count_total = 0
+  count_good = 0
 
   # loop over channels
 
@@ -74,30 +74,31 @@ def main():
       if channel['v0set'] >= 399 and channel['status'] == 1:
         count_good = count_good+1
 
-      print( '%5i '
-             '%5i   '
-             '%7s  '
-             '%6.2f '
-             '%6.2f '
-             '%4.0f '
-             '%4.0f '
-             '%4.0f  '
-             '%6.2f '
-             '%7.3f '
-             '%6s '
-            % (channel['slot_id'],
-               channel['ch_id'],
-               channel['ch_name'],
-               channel['v0set'],
-               channel['i0set'],
-               channel['rup'],
-               channel['rdwn'],
-               channel['trip'],
-               channel['vmon'],
-               channel['imon'],
-               channel['status_Hex'] ) )
+    print( '%5i '
+           '%5i   '
+           '%7s  '
+           '%6.2f '
+           '%6.2f '
+           '%4.0f '
+           '%4.0f '
+           '%4.0f  '
+           '%6.2f '
+           '%7.3f '
+           '%6s '
+           % (channel['slot_id'],
+              channel['ch_id'],
+              channel['ch_name'],
+              channel['v0set'],
+              channel['i0set'],
+              channel['rup'],
+              channel['rdwn'],
+              channel['trip'],
+              channel['vmon'],
+              channel['imon'],
+              channel['status_Hex'] ) )
 
-  print( f'\ntotal: {count_total} good: {count_good} ratio: %.3f%%' %(100.*count_good/count_total) )
+  if count_total : 
+    print( f'\ntotal: {count_total} good: {count_good} ratio: %.3f%%' %(100.*count_good/count_total) )
 
   #disconnect
   c_lib.disconnect_from_interface()
