@@ -133,7 +133,7 @@ class information_dialog( Toplevel ):
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
 
-  reply = yes_no_dialog(root, "TPOT HV SAFE", "This will put TPOT in SAFE state. Confirm ?").show()
+  reply = yes_no_dialog(root, "TPOT HV OFF", "This will turn OFF all TPOT HV channels. Confirm ?").show()
 
   if reply == 'yes':
     subprocess.call([bin_path+"/tpot_hv_off.py", "--force", "all"] )
