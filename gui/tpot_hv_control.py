@@ -193,7 +193,7 @@ def tpot_lv_go_on():
   # ask confirmation
   reply = yes_no_dialog(root, "TPOT LV ON", "This will turn ON TPOT Low Voltage. Confirm ?").show()
   if reply == 'yes':
-    subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
+    subprocess.call([bin_lv_path+"/tpot_lv_turn_on_and_configure.py", "--force"] )
   button_lv_on.configure( relief="raised" )
 
 ##########################################3
