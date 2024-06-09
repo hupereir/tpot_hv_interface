@@ -43,7 +43,7 @@
     "v0set": 100
   },
   "NCIZ_R1": {
-    "i0set": 3,
+    "i0set": 5,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,

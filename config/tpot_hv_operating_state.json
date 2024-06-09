@@ -30,7 +30,7 @@
   "NCIP_R4": {
     "i0set": 2,
     "rdwn": 20,
-    "rup": 10,
+    "rup": 5,
     "trip": 10,
     "v0set": 400
   },
@@ -42,7 +42,7 @@
     "v0set": 400
   },
   "NCIZ_R1": {
-    "i0set": 3,
+    "i0set": 5,
     "rdwn": 20,
     "rup": 10,
     "trip": 10,
