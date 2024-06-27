@@ -11,7 +11,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NCIP_R2": {
     "i0set": 2,
@@ -25,14 +25,14 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NCIP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 360
+    "v0set": 400
   },
   "NCIZ_D": {
     "i0set": 2,
@@ -46,14 +46,14 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 420
   },
   "NCIZ_R2": {
     "i0set": 4,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 410
+    "v0set": 420
   },
   "NCIZ_R3": {
     "i0set": 2,
@@ -67,7 +67,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 420
   },
   "NCOP_D": {
     "i0set": 2,
@@ -81,28 +81,28 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NCOP_R2": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NCOP_R3": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NCOP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NCOZ_D": {
     "i0set": 2,
@@ -116,14 +116,14 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 410
+    "v0set": 420
   },
   "NCOZ_R2": {
     "i0set": 5,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 410
+    "v0set": 420
   },
   "NCOZ_R3": {
     "i0set": 2,
@@ -151,28 +151,28 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NEP_R2": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NEP_R3": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NEP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NEZ_D": {
     "i0set": 2,
@@ -221,28 +221,28 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NWP_R2": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NWP_R3": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NWP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "NWZ_D": {
     "i0set": 2,
@@ -256,7 +256,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 410
+    "v0set": 420
   },
   "NWZ_R2": {
     "i0set": 2,
@@ -270,7 +270,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 410
+    "v0set": 420
   },
   "NWZ_R4": {
     "i0set": 2,
@@ -291,28 +291,28 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SCIP_R2": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SCIP_R3": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SCIP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SCIZ_D": {
     "i0set": 2,
@@ -361,28 +361,28 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SCOP_R2": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SCOP_R3": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SCOP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 380
+    "v0set": 410
   },
   "SCOZ_D": {
     "i0set": 2,
@@ -396,14 +396,14 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 420
   },
   "SCOZ_R2": {
     "i0set": 3,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 420
   },
   "SCOZ_R3": {
     "i0set": 2,
@@ -431,28 +431,28 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SEP_R2": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SEP_R3": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SEP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SEZ_D": {
     "i0set": 2,
@@ -501,28 +501,28 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SWP_R2": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SWP_R3": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SWP_R4": {
     "i0set": 2,
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 410
   },
   "SWZ_D": {
     "i0set": 2,
@@ -557,6 +557,6 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 380
+    "v0set": 420
   }
 }
