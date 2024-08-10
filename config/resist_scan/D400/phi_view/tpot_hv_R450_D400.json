@@ -32,7 +32,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 400
+    "v0set": 380
   },
   "NCIZ_D": {
     "i0set": 2,
@@ -501,7 +501,7 @@
     "rdwn": 20,
     "rup": 5,
     "trip": 10,
-    "v0set": 450
+    "v0set": 440
   },
   "SWP_R2": {
     "i0set": 2,
