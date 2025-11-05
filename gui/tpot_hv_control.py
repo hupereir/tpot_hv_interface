@@ -10,6 +10,7 @@ import sys
 config_path ="/home/phnxrc/operations/TPOT/tpot_hv_interface/config"
 bin_path = "/home/phnxrc/operations/TPOT/tpot_hv_interface/python"
 bin_lv_path = "/home/phnxrc/operations/TPOT/tpot_lv_interface"
+gui_path = "/home/phnxrc/operations/TPOT/tpot_hv_interface/gui"
 
 # config_path ="/home/hpereira/sphenix/src/tpot_hv_interface/config"
 # bin_path = "/home/hpereira/sphenix/src/tpot_hv_interface/python"
@@ -129,6 +130,49 @@ class information_dialog( Toplevel ):
       self.grab_set()
       self.wait_window()
 
+##########################################
+class simple_input_dialog(Toplevel):
+    def __init__(self, parent, title, message):
+        Toplevel.__init__(self, parent)
+        self.parent = parent
+        self.title(title)
+        self.configure(bg=framebgcolor, padx=10, pady=10)
+
+        Label(self, text=message, bg=framebgcolor, font=normalfont, wraplength=500).pack(pady=(5, 10))
+
+        self.entry = Entry(self, font=normalfont, width=50)
+        self.entry.pack(pady=5)
+        self.entry.focus_set()
+
+        self.button_frame = Frame(self, bg=framebgcolor)
+        self.button_frame.pack(pady=(10, 0))
+
+        ok_btn = generic_button(self.button_frame, "Done")
+        ok_btn.configure(command=self.on_done, width=10)
+        ok_btn.grid(row=0, column=0, padx=20)
+
+        cancel_btn = generic_button(self.button_frame, "Cancel")
+        cancel_btn.configure(command=self.on_cancel, width=10)
+        cancel_btn.grid(row=0, column=1, padx=20)
+
+        self.result = None
+
+    def on_done(self):
+        self.result = self.entry.get().strip()
+        self.destroy()
+
+    def on_cancel(self):
+        self.result = None
+        self.destroy()
+
+    def show(self):
+        root.eval(f"tk::PlaceWindow .{self.winfo_name()} widget .")
+        self.wm_transient(root)
+        self.wm_deiconify()
+        self.grab_set()
+        self.wait_window()
+        return self.result
+
 ##########################################3
 def tpot_hv_go_off():
   button_hv_off.configure( relief="sunken" )
@@ -220,6 +264,63 @@ def tpot_lv_recover_fee_links():
     subprocess.call([bin_lv_path+"/tpot_lv_recover_fee_links.py", "--force"] )
   button_lv_recover_fee_links.configure( relief="raised" )
 
+##########################################
+def tpot_lv_elink_recovery_wizard():
+    button_lv_elink_wizard.configure(relief="sunken")
+    result = subprocess.run( ["gl1_gtm_client", "gtm_fullstatus"], stdout=subprocess.PIPE)
+    output = result.stdout.decode('utf8').split()
+    vgtm = 12
+    vgtm_is_running = int(output[2],0) & (1<<vgtm)
+
+    if vgtm_is_running:
+      information_dialog( root, "FEE Recovery Wizard", "There seems to be a run ongoing. Either stop the current run, or wait for the end of the current run." ).show()
+      button_lv_recover_fee_links.configure( relief="raised" )
+      return
+    
+    confirm = yes_no_dialog(
+        root,
+      "FEE Recovery Wizard",
+      "This will power cycle and reconfigure all LV channels (~10 mins) \n\n"
+      "DO NOT run in parallel with TPC Step 2.\n\n"
+      "Check with the Shift Leader and DAQ operator to make sure it is safe to take local runs now.\n"
+      "Confirm to continue?"
+    ).show()
+
+    if confirm != "yes":
+        button_lv_elink_wizard.configure(relief="raised")
+        return
+
+    subprocess.call([bin_lv_path + "/tpot_lv_off.py", "all"])
+
+    subprocess.call([bin_lv_path + "/tpot_lv_turn_on_and_configure.py", "--force"])
+
+    # ssh into ebdc39
+    #result = subprocess.run( ["ssh", "-t", "phnxrc@ebdc39.sphenix.bnl.gov", "bash -l /home/phnxrc/operations/TPOT/tpot_lv_interface/tpot_reconfiguration_wizard.sh"], stdout=subprocess.PIPE, stderr=subprocess.PIPE  )
+    #result = subprocess.run( [bin_lv_path + "/tpot_reconfiguration_launcher.sh"], stdout=subprocess.PIPE, stderr=subprocess.PIPE )
+    result = subprocess.run( [bin_lv_path + "/tpot_reconfiguration_launcher.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE ) 
+
+    if result.returncode == 0:
+        information_dialog(
+            root,
+            "FEE Recovery Complete",
+            'Troubleshooting and reconfiguration completed successfully.\n\n'
+            'Please check Grafana:\n'
+            ' "FEE RX Ready" should show 16 counts.\n'
+            ' "Number of lost Elinks" should be <2.\n\n'
+            'If these conditions do not hold, call an expert.'
+        ).show()
+    else:
+        error_output = result.stderr.decode('utf8') or result.stdout.decode('utf8')
+        information_dialog(
+            root,
+            "FEE Recovery Failed",
+            'The reconfiguration script reported a failure.\n\n'
+            'Please call an expert.\n\n'
+            f'Debug info:\n{error_output}'
+        ).show()
+
+    button_lv_elink_wizard.configure(relief="raised")
+
 ##########################################3
 def main():
 
@@ -291,10 +392,15 @@ def main():
   button_lv_on.configure( command=tpot_lv_go_on )
   button_lv_on.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
 
-  global button_lv_recover_fee_links
-  button_lv_recover_fee_links = generic_button( buttonframe, text= "Recover FEE links" )
-  button_lv_recover_fee_links.configure( command=tpot_lv_recover_fee_links )
-  button_lv_recover_fee_links.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
+  #global button_lv_recover_fee_links
+  #button_lv_recover_fee_links = generic_button( buttonframe, text= "Recover FEE links" )
+  #button_lv_recover_fee_links.configure( command=tpot_lv_recover_fee_links )
+  #button_lv_recover_fee_links.pack( side = TOP, fill=X, padx=buttonpadx, pady=buttonpady )
+
+  global button_lv_elink_wizard
+  button_lv_elink_wizard = generic_button(buttonframe, text="FEE Recovery Wizard")
+  button_lv_elink_wizard.configure(command=tpot_lv_elink_recovery_wizard)
+  button_lv_elink_wizard.pack(side=TOP, fill=X, padx=buttonpadx, pady=buttonpady)
 
   root.mainloop()
 
